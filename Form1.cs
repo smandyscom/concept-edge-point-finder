@@ -15,11 +15,9 @@ namespace WindowsFormsApp2
 {
     public partial class Form1 : Form
     {
-        Point __start;
-        Point __end;
-        Point __current;
-        Pen __penBlack = new Pen(Color.Black, 3);
-        Pen __penGreen = new Pen(Color.Green, 3);
+        PictureBoxIpl __box;
+
+        Point __current;    //record MouseMove
 
         bool __engaged; //engaged line drawing
 
@@ -29,36 +27,34 @@ namespace WindowsFormsApp2
         OpenCvSharp.Mat __gray = new OpenCvSharp.Mat();
         bool __isLoaded = false;
 
-        List<Bitmap> __laysers = new List<Bitmap>();
+
         Graphics __graphics = null; //current Graphics to drasw
+        
+        Line lineEngaged = null;    //the line ready to draw
+        List<Layer> layers = new List<Layer>();
+        int indexofLayer = 0;
 
         public Form1()
         {
             InitializeComponent();
-
-            //MouseMove += MouseMoveHandler;
-            //MouseClick += MouseClickHandler;
-            //Paint += PaintEventHandler;
         }
 
         private void MouseMoveHandler(Object sender, MouseEventArgs e)
-        { 
-            
+        {
+
             Control __control = (Control)sender;
 
-            __current.X = e.X;
-            __current.Y = e.Y;
-
-            if (__isLoaded)
+            if (__isLoaded && e.X <= __gray.Cols && e.Y<=__gray.Rows)
                 Text = String.Format("{0},{1},{2}",
-               __current.X,
-               __current.Y,
+                    e.X, e.Y,
                __gray.At<byte>(e.X, e.Y));
 
-            __end = __current;
+            __current = e.Location;
 
             if (__engaged)
+            {
                 __control.Invalidate(false);
+            }
         }
 
         /// <summary>
@@ -71,20 +67,20 @@ namespace WindowsFormsApp2
 
             if (e.X > __gray.Cols || e.Y > __gray.Rows || __graphics == null)
                 return;
-            
+
             PictureBoxIpl __control = (PictureBoxIpl)sender;
 
             if (!__engaged)
             {
-                __start = __current;
+                lineEngaged = new Line();
+                lineEngaged.__start = e.Location;
                 __engaged = true;
-
-                __penBlack = new Pen(Color.Black, 3);
             }
             else
             {
-                __end = __current;
+                lineEngaged.__end = e.Location;
                 __engaged = false;
+
 
                 // clear table
                 // interpolate start-end , load into table
@@ -93,14 +89,14 @@ namespace WindowsFormsApp2
                 __mattypeTable.Clear();
                 __grayValueTable.Clear();
 
-                System.Drawing.PointF __vector = __end - new System.Drawing.Size(__start);
+              PointF __vector = lineEngaged.__end - new Size(lineEngaged.__start);
 
                 float __distance = (float)Math.Sqrt(Math.Pow(__vector.X, 2) + Math.Pow(__vector.Y, 2));
                 ///turns into unit vector
                 __vector.X = __vector.X / __distance;
                 __vector.Y = __vector.Y / __distance;
 
-                PointF __accumulation = __start;
+                PointF __accumulation = lineEngaged.__start;
 
                 double __acuumulatedLength = 0;
                 while (__acuumulatedLength <= __distance)
@@ -137,34 +133,31 @@ namespace WindowsFormsApp2
 
                 PointF __edgeCoordinate = __grayValueTable.Keys.ElementAt(edgeIndex);
 
-                //point out central point
-                __graphics.DrawEllipse(__penGreen,
-                    __edgeCoordinate.X,
-                    __edgeCoordinate.Y,
-                    10,
-                    10);
 
-                //point out central point
-                __graphics.DrawEllipse(__penBlack,
-                    __mattypeTable.Keys.ElementAt(__mattypeTable.Count / 2).X,
-                    __mattypeTable.Keys.ElementAt(__mattypeTable.Count / 2).Y,
-                    2,
-                    2);
+                //point out edge point
+                Ellipse ellipse = new Ellipse();
+                ellipse.__center = __edgeCoordinate;
+                layers[indexofLayer].Add(ellipse);
+                ellipse.draw(__graphics);
 
-                __graphics.DrawLine(__penBlack, __start, __end);
+                layers[indexofLayer].Add(lineEngaged);
+                lineEngaged.draw(__graphics);
+
                 __control.Invalidate(false);
             }
 
-            toolStripStatusLabel1.Text = __start.ToString() + __end.ToString();
+            toolStripStatusLabel1.Text = lineEngaged.__start.ToString() + lineEngaged.__end.ToString();
         }
 
         private void PaintEventHandler(Object sender, PaintEventArgs e)
         {
             if (__engaged)
-                e.Graphics.DrawLine(__penBlack, __start, __end);
-            //sCreateGraphics().DrawLine(__pen, __start, __end);
+            {
+                lineEngaged.__end = __current;
+                lineEngaged.draw(e.Graphics);
+            }
         }
-        PictureBoxIpl __box;
+        
         /// <summary>
         /// 
         /// </summary>
@@ -180,43 +173,97 @@ namespace WindowsFormsApp2
             OpenCvSharp.Mat __raw = OpenCvSharp.Cv2.ImRead(@"../../lenna.png");
 
             OpenCvSharp.Cv2.CvtColor(__raw, __gray, OpenCvSharp.ColorConversionCodes.BGR2GRAY);
-            
-            __box.Image = __gray.ToBitmap(); //show base image
 
+            layers.Add(new Layer());
+
+            Bitmap bitmap = new Bitmap(__gray.Width, __gray.Height);
+            __box.Image = bitmap;
+            __graphics = Graphics.FromImage(bitmap);
+            __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
+        
+     
             ///mouse coordinate not match with image coordinate
             __box.MouseMove += MouseMoveHandler;
             __box.MouseClick += MouseClickHandler;
             __box.Paint += PaintEventHandler;
-            btnNewLayer.Click += buttonNewLayser_Click;
+            btnNewLayer.Click += btnNewLayser_Click;
             __isLoaded = true;
         }
 
-        private void buttonNewLayser_Click(object sender, EventArgs e)
+        private void btnNewLayser_Click(object sender, EventArgs e)
         {
-            Bitmap bitmap = new Bitmap(__gray.Width, __gray.Height);
-
-            Graphics.FromImage(bitmap).DrawImage(__gray.ToBitmap(), new Point(0, 0));
-
-            __laysers.Add(bitmap);
-
-            numericUpDown1.Maximum = __laysers.Count;
-            numericUpDown1.Value = __laysers.Count;
-            numericUpDown1.Minimum = 1;
+            layers.Add(new Layer());
+            numericUpDown1.Maximum = layers.Count() -1;
+            numericUpDown1.Value = layers.Count -1;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            changeLayser((int)numericUpDown1.Value);
+            indexofLayer = (int)numericUpDown1.Value;
         }
 
-        void changeLayser(int num)
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            //get bitmap of layer and show
-            Bitmap bitmap = __laysers[num - 1];
+            __graphics.Clear(Color.White);
+            layers[indexofLayer].visible = checkBox1.Checked;
+            __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
+            layers.ForEach(delegate (Layer la)
+            {
+                if (la.visible)
+                    la.DrawAllObject(__graphics);
+            });
 
-            // update current graphics
-            __graphics = Graphics.FromImage(bitmap); 
-            __box.Image =bitmap;
+            __box.Invalidate(false);
         }
+    }
+
+
+
+
+
+
+    public class Layer
+    {
+        public bool visible  = true;
+        List<Idraw> drawObjects = new List<Idraw>();
+        public void Add(Idraw obj)
+        {
+            drawObjects.Add(obj);
+        }
+        public void DrawAllObject(Graphics graphics)
+        {
+            drawObjects.ForEach(instance => instance.draw(graphics));
+        }
+    }
+
+
+    public class Line : Idraw
+    {
+        public Point __start;
+        public Point __end;
+        public Pen __penBlack = new Pen(Color.Black, 3);
+        public void draw(Graphics graphics)
+        {
+            graphics.DrawLine(__penBlack, __start, __end);
+        }
+    }
+
+    public class Ellipse : Idraw
+    {
+        public Pen __pen = new Pen(Color.Green, 3);
+        public PointF __center;
+        public float width = 10;
+        public float height = 10;
+
+        public void draw(Graphics graphics)
+        {
+            graphics.DrawEllipse(__pen, __center.X, __center.Y, width, height);
+        }
+    }
+
+
+    public interface Idraw
+    {
+        void draw(Graphics graphics);
     }
 }

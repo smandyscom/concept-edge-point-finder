@@ -44,7 +44,7 @@ namespace WindowsFormsApp2
 
             Control __control = (Control)sender;
 
-            if (__isLoaded)
+            if (__isLoaded && e.X <= __gray.Cols && e.Y<=__gray.Rows)
                 Text = String.Format("{0},{1},{2}",
                     e.X, e.Y,
                __gray.At<byte>(e.X, e.Y));

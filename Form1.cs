@@ -29,7 +29,7 @@ namespace WindowsFormsApp2
 
 
         Graphics __graphics = null; //current Graphics to drasw
-        
+
         Line lineEngaged = null;    //the line ready to draw
         List<Layer> layers = new List<Layer>();
         int indexofLayer = 0;
@@ -44,7 +44,7 @@ namespace WindowsFormsApp2
 
             Control __control = (Control)sender;
 
-            if (__isLoaded && e.X <= __gray.Cols && e.Y<=__gray.Rows)
+            if (__isLoaded && e.X <= __gray.Cols && e.Y <= __gray.Rows)
                 Text = String.Format("{0},{1},{2}",
                     e.X, e.Y,
                __gray.At<byte>(e.X, e.Y));
@@ -89,7 +89,7 @@ namespace WindowsFormsApp2
                 __mattypeTable.Clear();
                 __grayValueTable.Clear();
 
-              PointF __vector = lineEngaged.__end - new Size(lineEngaged.__start);
+                PointF __vector = lineEngaged.__end - new Size(lineEngaged.__start);
 
                 float __distance = (float)Math.Sqrt(Math.Pow(__vector.X, 2) + Math.Pow(__vector.Y, 2));
                 ///turns into unit vector
@@ -157,7 +157,7 @@ namespace WindowsFormsApp2
                 lineEngaged.draw(e.Graphics);
             }
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -180,8 +180,8 @@ namespace WindowsFormsApp2
             __box.Image = bitmap;
             __graphics = Graphics.FromImage(bitmap);
             __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
-        
-     
+
+
             ///mouse coordinate not match with image coordinate
             __box.MouseMove += MouseMoveHandler;
             __box.MouseClick += MouseClickHandler;
@@ -193,8 +193,8 @@ namespace WindowsFormsApp2
         private void btnNewLayser_Click(object sender, EventArgs e)
         {
             layers.Add(new Layer());
-            numericUpDown1.Maximum = layers.Count() -1;
-            numericUpDown1.Value = layers.Count -1;
+            numericUpDown1.Maximum = layers.Count() - 1;
+            numericUpDown1.Value = layers.Count - 1;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -218,13 +218,44 @@ namespace WindowsFormsApp2
     }
 
 
+    public class SnapPoint
+    {
+        Idraw owner = null;
+        PointF location;
 
+        public SnapPoint(PointF Location, Idraw Owner)
+        {
+            location = Location;
+            owner = Owner;
+        }
 
+        bool IsNearBy(PointF p)
+        {
+            double threshold = 10;
+            double leftPoint = location.X - threshold;
+            double rightPoint = location.X + threshold;
+            if (p.X < leftPoint || p.X > rightPoint)
+                return false;
 
+            double bottomPoint = location.Y - threshold;
+            double topPoint = location.Y + threshold;
+            if (p.Y < bottomPoint || p.Y > topPoint)
+                return false;
 
+            return true;
+        }
+
+        double Distance2(PointF p)
+        {
+            return Math.Pow(location.X - p.X, 2) + Math.Pow(location.Y - p.Y, 2);
+        }
+
+    }
+
+    
     public class Layer
     {
-        public bool visible  = true;
+        public bool visible = true;
         List<Idraw> drawObjects = new List<Idraw>();
         public void Add(Idraw obj)
         {
@@ -246,6 +277,20 @@ namespace WindowsFormsApp2
         {
             graphics.DrawLine(__penBlack, __start, __end);
         }
+
+        public SnapPoint[] GetSnapPoints()
+        {
+            SnapPoint p1 = new SnapPoint(__start, this);
+            SnapPoint p2 = new SnapPoint(__end, this);
+
+
+            SnapPoint p3 = new SnapPoint(new PointF(
+                (__start.X + __end.X) / 2,
+                (__start.Y + __end.Y) / 2
+                ),
+                this);
+            return new SnapPoint[] { p1, p2, p3 };
+        }
     }
 
     public class Ellipse : Idraw
@@ -259,11 +304,18 @@ namespace WindowsFormsApp2
         {
             graphics.DrawEllipse(__pen, __center.X, __center.Y, width, height);
         }
+
+        public SnapPoint[] GetSnapPoints()
+        {
+            SnapPoint p1 = new SnapPoint(__center, this);
+            return new SnapPoint[] { p1 };
+        }
     }
 
 
     public interface Idraw
     {
         void draw(Graphics graphics);
+        SnapPoint[] GetSnapPoints();
     }
 }

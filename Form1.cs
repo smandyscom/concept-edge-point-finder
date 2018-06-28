@@ -29,7 +29,7 @@ namespace WindowsFormsApp2
         Graphics __graphics = null; //current Graphics to drasw
 
         Line lineEngaged = null;    //the line ready to draw
-        List<Layer> layers = new List<Layer>();
+        List<Layer> layerCollection = new List<Layer>();
         int indexofLayer = 0;
 
         SnapPoint snapPoint = null;
@@ -150,10 +150,10 @@ namespace WindowsFormsApp2
                 //point out edge point
                 Ellipse ellipse = new Ellipse();
                 ellipse.__center = __edgeCoordinate;
-                layers[indexofLayer].Add(ellipse);
+                layerCollection[indexofLayer].Add(ellipse);
                 ellipse.draw(__graphics);
 
-                layers[indexofLayer].Add(lineEngaged);
+                layerCollection[indexofLayer].Add(lineEngaged);
                 lineEngaged.draw(__graphics);
 
                 __control.Invalidate(false);
@@ -190,11 +190,14 @@ namespace WindowsFormsApp2
 
             OpenCvSharp.Cv2.CvtColor(__raw, __gray, OpenCvSharp.ColorConversionCodes.BGR2GRAY);
 
-            layers.Add(new Layer());
+            layerCollection.Add(new Layer());
 
             Bitmap bitmap = new Bitmap(__gray.Width, __gray.Height);
             __box.Image = bitmap;
             __graphics = Graphics.FromImage(bitmap);
+            __graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+            __graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            __graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
             __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
 
 
@@ -208,9 +211,9 @@ namespace WindowsFormsApp2
 
         private void btnNewLayser_Click(object sender, EventArgs e)
         {
-            layers.Add(new Layer());
-            numericUpDown1.Maximum = layers.Count() - 1;
-            numericUpDown1.Value = layers.Count - 1;
+            layerCollection.Add(new Layer());
+            numericUpDown1.Maximum = layerCollection.Count() - 1;
+            numericUpDown1.Value = layerCollection.Count - 1;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -221,9 +224,9 @@ namespace WindowsFormsApp2
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             __graphics.Clear(Color.White);
-            layers[indexofLayer].visible = checkBox1.Checked;
+            layerCollection[indexofLayer].visible = checkBox1.Checked;
             __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
-            layers.ForEach(delegate (Layer la)
+            layerCollection.ForEach(delegate (Layer la)
             {
                 if (la.visible)
                     la.DrawAllObject(__graphics);
@@ -235,13 +238,13 @@ namespace WindowsFormsApp2
 
         SnapPoint findSnapPoint(Point hit)
         {
-            List<SnapPoint> candidate = new List<SnapPoint>();
-            foreach (Layer la in layers)
+            List<SnapPoint> candidates = new List<SnapPoint>();
+            foreach (Layer la in layerCollection.FindAll(la => la.visible))
             {
-                candidate.AddRange(la.snapPoints.FindAll(p => p.IsNearBy(hit)));
+                candidates.AddRange(la.snapPoints.FindAll(p => p.IsNearBy(hit)));
             }
-            if (candidate.Count > 0)
-                return candidate.OrderBy(p => p.Distance2(hit)).First();
+            if (candidates.Count > 0)
+                return candidates.OrderBy(p => p.Distance2(hit)).First();
 
             return null;
         }
@@ -257,6 +260,8 @@ namespace WindowsFormsApp2
         Idraw owner = null;
         PointF location;
         public PointF Location { get { return location; } }
+        float range = 10;
+
         public SnapPoint(PointF Location, Idraw Owner)
         {
             location = Location;
@@ -265,14 +270,14 @@ namespace WindowsFormsApp2
 
         public bool IsNearBy(PointF p)
         {
-            double threshold = 10;
-            double leftPoint = location.X - threshold;
-            double rightPoint = location.X + threshold;
+
+            double leftPoint = location.X - range;
+            double rightPoint = location.X + range;
             if (p.X < leftPoint || p.X > rightPoint)
                 return false;
 
-            double bottomPoint = location.Y - threshold;
-            double topPoint = location.Y + threshold;
+            double bottomPoint = location.Y - range;
+            double topPoint = location.Y + range;
             if (p.Y < bottomPoint || p.Y > topPoint)
                 return false;
 
@@ -287,8 +292,7 @@ namespace WindowsFormsApp2
 
         public void draw(Graphics g)
         {
-            int with = 10;
-            g.DrawRectangle(new Pen(Color.Cyan), location.X - with / 2, location.Y - with / 2, 10, 10);
+            g.DrawRectangle(new Pen(Color.Cyan), location.X - range / 2, location.Y - range / 2, range, range);
         }
 
         public override bool Equals(object obj)

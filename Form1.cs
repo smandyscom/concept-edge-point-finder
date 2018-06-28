@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenCvSharp.Extensions;
 using OpenCvSharp.UserInterface;
-using System.Drawing.Imaging;
+using WindowsFormsApp2.Interface;
+using WindowsFormsApp2.DrawObjects;
 
 namespace WindowsFormsApp2
 {
@@ -17,7 +15,7 @@ namespace WindowsFormsApp2
     {
         PictureBoxIpl __box;
 
-        Point __current;    //record MouseMove
+        Point __current;    //record MouseMove or snapPoint location
 
         bool __engaged; //engaged line drawing
 
@@ -33,6 +31,8 @@ namespace WindowsFormsApp2
         Line lineEngaged = null;    //the line ready to draw
         List<Layer> layers = new List<Layer>();
         int indexofLayer = 0;
+
+        SnapPoint snapPoint = null;
 
         public Form1()
         {
@@ -51,7 +51,20 @@ namespace WindowsFormsApp2
 
             __current = e.Location;
 
-            if (__engaged)
+            bool repaint = false;
+            SnapPoint newsnapPoint = findSnapPoint(e.Location);
+            if (snapPoint == null && newsnapPoint == null)  // not close to any snapPoint
+                repaint = false;
+            else if (newsnapPoint != null && !newsnapPoint.Equals(snapPoint) // approach new snapPoint
+                || (newsnapPoint == null && snapPoint != null)) // away from old  snapPoint need to clear
+                repaint = true;
+            if ((snapPoint = newsnapPoint) != null)
+                __current = Point.Round(snapPoint.Location);
+
+
+
+
+            if (__engaged || repaint)
             {
                 __control.Invalidate(false);
             }
@@ -73,12 +86,12 @@ namespace WindowsFormsApp2
             if (!__engaged)
             {
                 lineEngaged = new Line();
-                lineEngaged.__start = e.Location;
+                lineEngaged.__start = __current;
                 __engaged = true;
             }
             else
             {
-                lineEngaged.__end = e.Location;
+                lineEngaged.__end = __current;
                 __engaged = false;
 
 
@@ -151,9 +164,12 @@ namespace WindowsFormsApp2
 
         private void PaintEventHandler(Object sender, PaintEventArgs e)
         {
+            if (snapPoint != null)
+                snapPoint.draw(e.Graphics);
+
             if (__engaged)
             {
-                lineEngaged.__end = __current;
+                lineEngaged.__end = __current;  //attract to snapPoint
                 lineEngaged.draw(e.Graphics);
             }
         }
@@ -215,21 +231,39 @@ namespace WindowsFormsApp2
 
             __box.Invalidate(false);
         }
+
+
+        SnapPoint findSnapPoint(Point hit)
+        {
+            List<SnapPoint> candidate = new List<SnapPoint>();
+            foreach (Layer la in layers)
+            {
+                candidate.AddRange(la.snapPoints.FindAll(p => p.IsNearBy(hit)));
+            }
+            if (candidate.Count > 0)
+                return candidate.OrderBy(p => p.Distance2(hit)).First();
+
+            return null;
+        }
+
     }
+
+
+
 
 
     public class SnapPoint
     {
         Idraw owner = null;
         PointF location;
-
+        public PointF Location { get { return location; } }
         public SnapPoint(PointF Location, Idraw Owner)
         {
             location = Location;
             owner = Owner;
         }
 
-        bool IsNearBy(PointF p)
+        public bool IsNearBy(PointF p)
         {
             double threshold = 10;
             double leftPoint = location.X - threshold;
@@ -245,77 +279,49 @@ namespace WindowsFormsApp2
             return true;
         }
 
-        double Distance2(PointF p)
+        public double Distance2(PointF p)
         {
             return Math.Pow(location.X - p.X, 2) + Math.Pow(location.Y - p.Y, 2);
         }
 
+
+        public void draw(Graphics g)
+        {
+            int with = 10;
+            g.DrawRectangle(new Pen(Color.Cyan), location.X - with / 2, location.Y - with / 2, 10, 10);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (GetType() != obj.GetType())
+                return false;
+
+            SnapPoint right = (SnapPoint)obj;
+            return (location.X == right.location.X) && (location.Y == right.location.Y);
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)Math.Pow(location.X, location.Y);
+        }
     }
 
-    
+
     public class Layer
     {
         public bool visible = true;
         List<Idraw> drawObjects = new List<Idraw>();
+        public List<SnapPoint> snapPoints = new List<SnapPoint>();
         public void Add(Idraw obj)
         {
             drawObjects.Add(obj);
+            snapPoints.AddRange(obj.GetSnapPoints());
         }
         public void DrawAllObject(Graphics graphics)
         {
             drawObjects.ForEach(instance => instance.draw(graphics));
         }
-    }
-
-
-    public class Line : Idraw
-    {
-        public Point __start;
-        public Point __end;
-        public Pen __penBlack = new Pen(Color.Black, 3);
-        public void draw(Graphics graphics)
-        {
-            graphics.DrawLine(__penBlack, __start, __end);
-        }
-
-        public SnapPoint[] GetSnapPoints()
-        {
-            SnapPoint p1 = new SnapPoint(__start, this);
-            SnapPoint p2 = new SnapPoint(__end, this);
-
-
-            SnapPoint p3 = new SnapPoint(new PointF(
-                (__start.X + __end.X) / 2,
-                (__start.Y + __end.Y) / 2
-                ),
-                this);
-            return new SnapPoint[] { p1, p2, p3 };
-        }
-    }
-
-    public class Ellipse : Idraw
-    {
-        public Pen __pen = new Pen(Color.Green, 3);
-        public PointF __center;
-        public float width = 10;
-        public float height = 10;
-
-        public void draw(Graphics graphics)
-        {
-            graphics.DrawEllipse(__pen, __center.X, __center.Y, width, height);
-        }
-
-        public SnapPoint[] GetSnapPoints()
-        {
-            SnapPoint p1 = new SnapPoint(__center, this);
-            return new SnapPoint[] { p1 };
-        }
-    }
-
-
-    public interface Idraw
-    {
-        void draw(Graphics graphics);
-        SnapPoint[] GetSnapPoints();
     }
 }

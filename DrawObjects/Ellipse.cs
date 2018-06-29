@@ -12,7 +12,7 @@ namespace WindowsFormsApp2.DrawObjects
 
         public void draw(Graphics graphics)
         {
-            graphics.DrawEllipse(__pen, __center.X, __center.Y, width, height);
+            graphics.DrawEllipse(__pen, __center.X - width / 2, __center.Y - height / 2, width, height);
         }
 
         public SnapPoint[] GetSnapPoints()

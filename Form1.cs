@@ -19,8 +19,7 @@ namespace WindowsFormsApp2
 
         bool __engaged; //engaged line drawing
 
-        Dictionary<PointF, OpenCvSharp.MatType> __mattypeTable = new Dictionary<PointF, OpenCvSharp.MatType>();
-        Dictionary<PointF, byte> __grayValueTable = new Dictionary<PointF, byte>();
+
 
         OpenCvSharp.Mat __gray = new OpenCvSharp.Mat();
         bool __isLoaded = false;
@@ -29,8 +28,10 @@ namespace WindowsFormsApp2
         Graphics __graphics = null; //current Graphics to drasw
 
         Line lineEngaged = null;    //the line ready to draw
-        List<Layer> layerCollection = new List<Layer>();
-        int indexofLayer = 0;
+
+
+        Model dataModel = new Model();
+
 
         SnapPoint snapPoint = null;
 
@@ -52,7 +53,7 @@ namespace WindowsFormsApp2
             __current = e.Location;
 
             bool repaint = false;
-            SnapPoint newsnapPoint = findSnapPoint(e.Location);
+            SnapPoint newsnapPoint = dataModel.FindSnapPoint(e.Location);
             if (snapPoint == null && newsnapPoint == null)  // not close to any snapPoint
                 repaint = false;
             else if (newsnapPoint != null && !newsnapPoint.Equals(snapPoint) // approach new snapPoint
@@ -95,65 +96,16 @@ namespace WindowsFormsApp2
                 __engaged = false;
 
 
-                // clear table
-                // interpolate start-end , load into table
-                // access each point's gray value
-                // post handling
-                __mattypeTable.Clear();
-                __grayValueTable.Clear();
 
-                PointF __vector = lineEngaged.__end - new Size(lineEngaged.__start);
-
-                float __distance = (float)Math.Sqrt(Math.Pow(__vector.X, 2) + Math.Pow(__vector.Y, 2));
-                ///turns into unit vector
-                __vector.X = __vector.X / __distance;
-                __vector.Y = __vector.Y / __distance;
-
-                PointF __accumulation = lineEngaged.__start;
-
-                double __acuumulatedLength = 0;
-                while (__acuumulatedLength <= __distance)
-                {
-                    __accumulation += new SizeF(__vector);
-
-                    //establish pair of coordinate , gray value
-                    __mattypeTable.Add(__accumulation,
-                        __gray.At<OpenCvSharp.MatType>(
-                            Convert.ToInt32(__accumulation.Y),
-                            Convert.ToInt32(__accumulation.X)
-                            )
-                            );
-                    __grayValueTable.Add(__accumulation,
-                        __gray.At<byte>(
-                            Convert.ToInt32(__accumulation.Y),
-                            Convert.ToInt32(__accumulation.X)
-                            )
-                            );
-
-
-                    //unit length added one
-                    __acuumulatedLength++;
-                }
-
-                //diff and find maximum
-                List<byte> __grayValueList = __grayValueTable.Values.ToList();
-                List<int> __diffValueList = new List<int>();
-                for (int i = 0; i < __grayValueList.Count - 1; i++)
-                {
-                    __diffValueList.Add(Math.Abs(__grayValueList[i + 1] - __grayValueList[i]));
-                }
-                int edgeIndex = __diffValueList.IndexOf(__diffValueList.Max());
-
-                PointF __edgeCoordinate = __grayValueTable.Keys.ElementAt(edgeIndex);
 
 
                 //point out edge point
                 Ellipse ellipse = new Ellipse();
-                ellipse.__center = __edgeCoordinate;
-                layerCollection[indexofLayer].Add(ellipse);
+                ellipse.__center = Utils.GetEdgePoint(ref __gray, ref lineEngaged);
+                dataModel.ActiveLayer.Add(ellipse);
                 ellipse.draw(__graphics);
 
-                layerCollection[indexofLayer].Add(lineEngaged);
+                dataModel.ActiveLayer.Add(lineEngaged);
                 lineEngaged.draw(__graphics);
 
                 __control.Invalidate(false);
@@ -190,7 +142,7 @@ namespace WindowsFormsApp2
 
             OpenCvSharp.Cv2.CvtColor(__raw, __gray, OpenCvSharp.ColorConversionCodes.BGR2GRAY);
 
-            layerCollection.Add(new Layer());
+
 
             Bitmap bitmap = new Bitmap(__gray.Width, __gray.Height);
             __box.Image = bitmap;
@@ -211,128 +163,25 @@ namespace WindowsFormsApp2
 
         private void btnNewLayser_Click(object sender, EventArgs e)
         {
-            layerCollection.Add(new Layer());
-            numericUpDown1.Maximum = layerCollection.Count() - 1;
-            numericUpDown1.Value = layerCollection.Count - 1;
+
+            numericUpDown1.Maximum = dataModel.CreateNewLayer();
+            numericUpDown1.Value = numericUpDown1.Maximum;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            indexofLayer = (int)numericUpDown1.Value;
+            dataModel.IndexofActiveLayer = (int) numericUpDown1.Value;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             __graphics.Clear(Color.White);
-            layerCollection[indexofLayer].visible = checkBox1.Checked;
+            dataModel.SetLayerVisible((int) numericUpDown1.Value, checkBox1.Checked);
             __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
-            layerCollection.ForEach(delegate (Layer la)
-            {
-                if (la.visible)
-                    la.DrawAllObject(__graphics);
-            });
+            dataModel.DrawAllLayersObjects(__graphics);
 
             __box.Invalidate(false);
         }
-
-
-        SnapPoint findSnapPoint(Point hit)
-        {
-            List<SnapPoint> candidates = new List<SnapPoint>();
-            foreach (Layer la in layerCollection.FindAll(la => la.visible))
-            {
-                candidates.AddRange(la.snapPoints.FindAll(p => p.IsNearBy(hit)));
-            }
-            if (candidates.Count > 0)
-                return candidates.OrderBy(p => p.Distance2(hit)).First();
-
-            return null;
-        }
-
     }
 
-
-
-
-
-    public class SnapPoint
-    {
-        Idraw owner = null;
-        PointF location;
-        public PointF Location { get { return location; } }
-        float range = 10;
-
-        public SnapPoint(PointF Location, Idraw Owner)
-        {
-            location = Location;
-            owner = Owner;
-        }
-
-        public bool IsNearBy(PointF p)
-        {
-
-            double leftPoint = location.X - range;
-            double rightPoint = location.X + range;
-            if (p.X < leftPoint || p.X > rightPoint)
-                return false;
-
-            double bottomPoint = location.Y - range;
-            double topPoint = location.Y + range;
-            if (p.Y < bottomPoint || p.Y > topPoint)
-                return false;
-
-            return true;
-        }
-
-        public double Distance2(PointF p)
-        {
-            return Math.Pow(location.X - p.X, 2) + Math.Pow(location.Y - p.Y, 2);
-        }
-
-
-        public void draw(Graphics g)
-        {
-            g.DrawRectangle(new Pen(Color.Cyan), location.X - range / 2, location.Y - range / 2, range, range);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
-            if (GetType() != obj.GetType())
-                return false;
-
-            SnapPoint right = (SnapPoint)obj;
-            return (location.X == right.location.X) && (location.Y == right.location.Y);
-        }
-
-        public override int GetHashCode()
-        {
-            return (int)Math.Pow(location.X, location.Y);
-        }
-    }
-
-
-    public class Layer
-    {
-        public bool visible = true;
-        List<Idraw> drawObjects = new List<Idraw>();
-        public List<SnapPoint> snapPoints = new List<SnapPoint>();
-        public void Add(Idraw obj)
-        {
-            drawObjects.Add(obj);
-            snapPoints.AddRange(obj.GetSnapPoints());
-            PointF intersection;
-            foreach (Idraw shape in drawObjects)
-            {
-                if ((intersection = Utils.GetIntersectPoint(obj, shape)) != PointF.Empty)
-                    snapPoints.Add(new SnapPoint(intersection,obj));
-            }
-
-        }
-        public void DrawAllObject(Graphics graphics)
-        {
-            drawObjects.ForEach(instance => instance.draw(graphics));
-        }
-    }
 }

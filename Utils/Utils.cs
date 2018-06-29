@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using WindowsFormsApp2.Interface;
 using WindowsFormsApp2.DrawObjects;
+using OpenCvSharp;
 namespace WindowsFormsApp2
 {
     class Utils
@@ -25,7 +26,7 @@ namespace WindowsFormsApp2
 
         }
 
-        public static PointF LinesIntersect(Point lp1, Point lp2, Point lp3, Point lp4, bool extendA, bool extendB)
+        public static PointF LinesIntersect(System.Drawing.Point lp1, System.Drawing.Point lp2, System.Drawing.Point lp3, System.Drawing.Point lp4, bool extendA, bool extendB)
         {
             double x1 = lp1.X;
             double x2 = lp2.X;
@@ -70,6 +71,67 @@ namespace WindowsFormsApp2
             return PointF.Empty;
         }
 
+
+
+
+
+        public static PointF GetEdgePoint(ref Mat imgGray, ref Line lineEngaged)
+        {
+
+            Dictionary<PointF, MatType> __mattypeTable = new Dictionary<PointF, MatType>();
+            Dictionary<PointF, byte> __grayValueTable = new Dictionary<PointF, byte>();
+
+            // clear table
+            // interpolate start-end , load into table
+            // access each point's gray value
+            // post handling
+            __mattypeTable.Clear();
+            __grayValueTable.Clear();
+
+            PointF __vector = lineEngaged.__end - new System.Drawing.Size(lineEngaged.__start);
+
+            float __distance = (float)Math.Sqrt(Math.Pow(__vector.X, 2) + Math.Pow(__vector.Y, 2));
+            ///turns into unit vector
+            __vector.X = __vector.X / __distance;
+            __vector.Y = __vector.Y / __distance;
+
+            PointF __accumulation = lineEngaged.__start;
+
+            double __acuumulatedLength = 0;
+            while (__acuumulatedLength <= __distance)
+            {
+                __accumulation += new SizeF(__vector);
+
+                //establish pair of coordinate , gray value
+                __mattypeTable.Add(__accumulation,
+                    imgGray.At<MatType>(
+                        Convert.ToInt32(__accumulation.Y),
+                        Convert.ToInt32(__accumulation.X)
+                        )
+                        );
+                __grayValueTable.Add(__accumulation,
+                    imgGray.At<byte>(
+                        Convert.ToInt32(__accumulation.Y),
+                        Convert.ToInt32(__accumulation.X)
+                        )
+                        );
+
+
+                //unit length added one
+                __acuumulatedLength++;
+            }
+
+            //diff and find maximum
+            List<byte> __grayValueList = __grayValueTable.Values.ToList();
+            List<int> __diffValueList = new List<int>();
+            for (int i = 0; i < __grayValueList.Count - 1; i++)
+            {
+                __diffValueList.Add(Math.Abs(__grayValueList[i + 1] - __grayValueList[i]));
+            }
+            int edgeIndex = __diffValueList.IndexOf(__diffValueList.Max());
+
+           return __grayValueTable.Keys.ElementAt(edgeIndex);
+        }
 
     }   //Utils
 }   //namespace

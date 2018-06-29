@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WindowsFormsApp2.Interface;
 
 namespace WindowsFormsApp2
 {
     public class Layer
     {
-        public bool visible = true;
+        public bool visible { get; set; } = true;
         List<Idraw> drawObjects = new List<Idraw>();
         public List<SnapPoint> snapPoints = new List<SnapPoint>();
         public void Add(Idraw obj)

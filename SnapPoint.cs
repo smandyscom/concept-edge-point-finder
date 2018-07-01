@@ -6,29 +6,48 @@ using WindowsFormsApp2.Interface;
 
 namespace WindowsFormsApp2
 {
+
+    enum PointType
+    {
+        start,
+        end,
+        center,
+        edge
+    };
+
+
     public class SnapPoint
     {
+        PointType Type = PointType.start;
+        public SnapPoint upstream = null;
+
         Idraw owner = null;
-        PointF location;
-        public PointF Location { get { return location; } }
+
+
+        public PointF Location;
         float range = 10;
 
-        public SnapPoint(PointF Location, Idraw Owner)
+        public SnapPoint(PointF location, Idraw Owner)
         {
-            location = Location;
+            Location = location;
+            owner = Owner;
+        }
+
+        public SnapPoint(Idraw Owner)
+        {
             owner = Owner;
         }
 
         public bool IsNearBy(PointF p)
         {
 
-            double leftPoint = location.X - range;
-            double rightPoint = location.X + range;
+            double leftPoint = Location.X - range;
+            double rightPoint = Location.X + range;
             if (p.X < leftPoint || p.X > rightPoint)
                 return false;
 
-            double bottomPoint = location.Y - range;
-            double topPoint = location.Y + range;
+            double bottomPoint = Location.Y - range;
+            double topPoint = Location.Y + range;
             if (p.Y < bottomPoint || p.Y > topPoint)
                 return false;
 
@@ -37,13 +56,13 @@ namespace WindowsFormsApp2
 
         public double Distance2(PointF p)
         {
-            return Math.Pow(location.X - p.X, 2) + Math.Pow(location.Y - p.Y, 2);
+            return Math.Pow(Location.X - p.X, 2) + Math.Pow(Location.Y - p.Y, 2);
         }
 
 
         public void draw(Graphics g)
         {
-            g.DrawRectangle(new Pen(Color.Cyan), location.X - range / 2, location.Y - range / 2, range, range);
+            g.DrawRectangle(new Pen(Color.Cyan), Location.X - range / 2, Location.Y - range / 2, range, range);
         }
 
         public override bool Equals(object obj)
@@ -54,12 +73,12 @@ namespace WindowsFormsApp2
                 return false;
 
             SnapPoint right = (SnapPoint)obj;
-            return (location.X == right.location.X) && (location.Y == right.location.Y);
+            return (Location.X == right.Location.X) && (Location.Y == right.Location.Y);
         }
 
         public override int GetHashCode()
         {
-            return (int)Math.Pow(location.X, location.Y);
+            return (int)Math.Pow(Location.X, Location.Y);
         }
     }
 }

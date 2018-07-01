@@ -87,26 +87,20 @@ namespace WindowsFormsApp2
             if (!__engaged)
             {
                 lineEngaged = new Line();
-                lineEngaged.__start = __current;
+                lineEngaged.__start.Location = __current;
                 __engaged = true;
             }
             else
             {
-                lineEngaged.__end = __current;
+                lineEngaged.__end.Location = __current;
                 __engaged = false;
 
 
-
-
-
                 //point out edge point
-                Ellipse ellipse = new Ellipse();
-                ellipse.__center = Utils.GetEdgePoint(ref __gray, ref lineEngaged);
-                dataModel.ActiveLayer.Add(ellipse);
-                ellipse.draw(__graphics);
+
 
                 dataModel.ActiveLayer.Add(lineEngaged);
-                lineEngaged.draw(__graphics);
+                lineEngaged.draw(__graphics, __gray);
 
                 __control.Invalidate(false);
             }
@@ -121,8 +115,8 @@ namespace WindowsFormsApp2
 
             if (__engaged)
             {
-                lineEngaged.__end = __current;  //attract to snapPoint
-                lineEngaged.draw(e.Graphics);
+                lineEngaged.__end.Location = __current;  //attract to snapPoint
+                lineEngaged.draw(e.Graphics, __gray);
             }
         }
 
@@ -170,13 +164,13 @@ namespace WindowsFormsApp2
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            dataModel.IndexofActiveLayer = (int) numericUpDown1.Value;
+            dataModel.IndexofActiveLayer = (int)numericUpDown1.Value;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             __graphics.Clear(Color.White);
-            dataModel.SetLayerVisible((int) numericUpDown1.Value, checkBox1.Checked);
+            dataModel.SetLayerVisible((int)numericUpDown1.Value, checkBox1.Checked);
             __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
             dataModel.DrawAllLayersObjects(__graphics);
 

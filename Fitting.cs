@@ -8,7 +8,7 @@ using OpenCvSharp;
 
 namespace WindowsFormsApp2.Fitting
 {
-    class Fitting
+    public class Fitting
     {
         /// <summary>
         /// SVD solve minimum error solution
@@ -30,7 +30,12 @@ namespace WindowsFormsApp2.Fitting
             return vt.T().Col[__minLocation.Y];            
         }
 
-        public static Mat CircleFitting(List<OpenCvSharp.Point> pointCloud)
+        /// <summary>
+        /// Form : ax^2 + by^2 + cx +dy + e = 0;
+        /// </summary>
+        /// <param name="pointCloud"></param>
+        /// <returns></returns>
+        internal static Mat EllipseFitting(List<OpenCvSharp.Point> pointCloud)
         {
             //turns(stack pointClund into vertical stacked matrix
             Mat concatedCoords = new Mat();
@@ -59,6 +64,96 @@ namespace WindowsFormsApp2.Fitting
             //[0, 0, e
 
             return null;
+        }
+
+        public enum FittingCategrory
+        {
+            Polynominal,
+            Ellipse,
+        }
+
+
+        // Flows
+        // 1. turns each xVectors to coeff matrix
+        // 2. cascaded them into coeff-matrix
+        // 3. get Right singular vector of coeff-matrix
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xVectors"> should be nxm , row vector as eneity</param>
+        /// <param name="yVectors"> should be nx1</param>
+        /// <param name="categrory"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static Mat DataFitting(Mat xVectors, Mat yVectors, FittingCategrory categrory, params int[] args)
+        {
+            Mat xCoeffMatrix = new Mat();
+            Mat __eachCoeff = new Mat();
+            Mat __eachX = new Mat();
+
+            for (int i = 0; i < xVectors.Rows; i++)
+            {
+                __eachX = xVectors[i, i+1, 0, xVectors.Cols];
+
+                switch (categrory)
+                {
+                    case FittingCategrory.Polynominal:
+                        __eachCoeff = GeneratePolynomialCoeff(__eachX, args[0]);
+                        break;
+                    case FittingCategrory.Ellipse:
+                        __eachCoeff = GenerateEllipseCoeff(__eachX);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (i == 0)
+                    xCoeffMatrix = __eachCoeff;
+                else
+                    Cv2.VConcat(xCoeffMatrix, __eachCoeff, xCoeffMatrix);
+            }
+
+            //General solution (yVecotr:=zero vector) + Particular solution (yVector:=non zero vector
+
+            return RightSingularVector(xCoeffMatrix) + xCoeffMatrix.Inv(DecompTypes.SVD) * yVectors;
+        }
+
+        /// <summary>
+        /// [x^n  x^(n-1) ..... x y 1 ]
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        internal static Mat GeneratePolynomialCoeff(Mat xyCoord,int order = 1)
+        {
+            Mat coeffVector = new Mat(1, order + 2, MatType.CV_64FC1);
+
+            //
+            coeffVector.Set<double>(0, coeffVector.Cols - 1,1);
+            coeffVector.Set<double>(0, coeffVector.Cols - 2, xyCoord.At<double>(0,1)); //y
+            //
+            for (int i = 0; i < coeffVector.Cols-2; i++)
+            {
+                coeffVector.Set<double>(0, i, Math.Pow(xyCoord.At <double>(0,0), order - i));
+            }
+
+            return coeffVector;
+        }
+
+        /// <summary>
+        /// [x^2 y^2 x y 1]
+        /// </summary>
+        /// <returns></returns>
+        internal static Mat GenerateEllipseCoeff(Mat xyCoord)
+        {
+            Mat coeffVector = GeneratePolynomialCoeff(xyCoord);
+            Mat coeffVectorQua = new Mat(1, 2, MatType.CV_64FC1);
+            //
+            coeffVectorQua.Set<double>(0, 0, Math.Pow(xyCoord.At<double>(0, 0), 2));
+            coeffVectorQua.Set<double>(0, 1, Math.Pow(xyCoord.At<double>(0, 1), 2));
+            Cv2.HConcat(coeffVectorQua, coeffVector, coeffVector);
+
+            return coeffVector;
         }
     }
 }

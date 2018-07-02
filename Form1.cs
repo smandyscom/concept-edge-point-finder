@@ -293,6 +293,27 @@ namespace WindowsFormsApp2
         {
             if (sender == buttonFittingLine)
             {
+                //turns selection snap point into coeff array
+                OpenCvSharp.Mat __xVectors = new OpenCvSharp.Mat();
+                OpenCvSharp.Mat __yVectors = new OpenCvSharp.Mat(__selectedPoints.Count, 1, OpenCvSharp.MatType.CV_64FC1);
+                List<OpenCvSharp.Mat> __coords = new List<OpenCvSharp.Mat>();
+
+                __selectedPoints.ForEach(__snap =>
+                {
+                    OpenCvSharp.Mat __each = new OpenCvSharp.Mat(1, 2, OpenCvSharp.MatType.CV_64FC1);
+                    __each.Set<double>(0, 0, __snap.Location.X);
+                    __each.Set<double>(0, 1, __snap.Location.Y);
+
+                    __coords.Add(__each);
+                });
+
+                OpenCvSharp.Cv2.VConcat(__coords.ToArray(), __xVectors);
+
+                Line __newLine = new Line();
+                 __newLine.Coefficient =  
+                    Fitting.Fitting.DataFitting(__xVectors, __yVectors, Fitting.Fitting.FittingCategrory.Polynominal, 1);
+
+                __newLine.draw(__graphics);
             }
             else if (sender == buttonSelectionClear)
             {

@@ -127,6 +127,7 @@
             this.buttonFittingLine.TabIndex = 6;
             this.buttonFittingLine.Text = "Fitting a line";
             this.buttonFittingLine.UseVisualStyleBackColor = true;
+            this.buttonFittingLine.Click += new System.EventHandler(this.fittingFeatureClick);
             // 
             // textBoxSelectionCounter
             // 

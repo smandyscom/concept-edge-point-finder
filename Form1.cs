@@ -11,6 +11,12 @@ using WindowsFormsApp2.DrawObjects;
 
 namespace WindowsFormsApp2
 {
+    enum TaskEnum
+    {
+        line,
+        select
+    }
+
     public partial class Form1 : Form
     {
         PictureBoxIpl __box;
@@ -34,6 +40,9 @@ namespace WindowsFormsApp2
 
 
         SnapPoint snapPoint = null;
+
+
+        TaskEnum taskType = TaskEnum.select;
 
         public Form1()
         {
@@ -84,28 +93,39 @@ namespace WindowsFormsApp2
 
             PictureBoxIpl __control = (PictureBoxIpl)sender;
 
-            if (!__engaged)
+            Idraw selectedObject;
+
+            if (taskType == TaskEnum.select)
             {
-                lineEngaged = new Line();
-                lineEngaged.__start.Location = __current;
-                __engaged = true;
-            }
-            else
-            {
-                lineEngaged.__end.Location = __current;
-                __engaged = false;
-
-
-                //point out edge point
-
-
-                dataModel.ActiveLayer.Add(lineEngaged);
-                lineEngaged.draw(__graphics, __gray);
-
+                if ((selectedObject = dataModel.GetHitObject(e.Location)) != null)
+                    selectedObject.draw(__graphics);
                 __control.Invalidate(false);
             }
+            else if (taskType == TaskEnum.line)
+            {
+                if (!__engaged)
+                {
+                    lineEngaged = new Line();
+                    lineEngaged.__start.Location = __current;
+                    __engaged = true;
+                }
+                else
+                {
+                    lineEngaged.__end.Location = __current;
+                    __engaged = false;
 
-            toolStripStatusLabel1.Text = lineEngaged.__start.ToString() + lineEngaged.__end.ToString();
+
+                    //point out edge point
+
+
+                    dataModel.ActiveLayer.Add(lineEngaged);
+                    lineEngaged.draw(__graphics, __gray);
+
+                    __control.Invalidate(false);
+                }
+
+                toolStripStatusLabel1.Text = lineEngaged.__start.ToString() + lineEngaged.__end.ToString();
+            }
         }
 
         private void PaintEventHandler(Object sender, PaintEventArgs e)
@@ -152,6 +172,8 @@ namespace WindowsFormsApp2
             __box.MouseClick += MouseClickHandler;
             __box.Paint += PaintEventHandler;
             btnNewLayer.Click += btnNewLayser_Click;
+            btnLine.Click += btnTask_Click;
+            btnSelect.Click += btnTask_Click;
             __isLoaded = true;
         }
 
@@ -160,6 +182,17 @@ namespace WindowsFormsApp2
 
             numericUpDown1.Maximum = dataModel.CreateNewLayer();
             numericUpDown1.Value = numericUpDown1.Maximum;
+        }
+
+
+        private void btnTask_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn.Name == btnLine.Name)
+                taskType = TaskEnum.line;
+            else if (btn.Name == btnSelect.Name)
+                taskType = TaskEnum.select;
+
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)

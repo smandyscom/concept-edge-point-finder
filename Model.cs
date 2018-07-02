@@ -79,8 +79,14 @@ namespace WindowsFormsApp2
 
         public Idraw GetHitObject(Point hit)
         {
+            foreach (Layer la in LayerCollection)
+            {
+                Idraw obj = la.GetHitObject(hit);
+                if (obj != null)
+                    return obj;
+            }
             return null;
         }
 
-    }
+    }   //Modal
 }

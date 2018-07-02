@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using WindowsFormsApp2.DrawObjects;
 using WindowsFormsApp2.Interface;
 
 namespace WindowsFormsApp2
@@ -27,5 +28,16 @@ namespace WindowsFormsApp2
         {
             drawObjects.ForEach(instance => instance.draw(graphics));
         }
+
+        public Idraw GetHitObject(PointF hit)
+        {
+           return drawObjects.Find(delegate (Idraw shape)
+            {
+                Line line = shape as Line;
+               var obj = line.isHitOnObject(hit);
+                return (obj != null);
+            });
+        }
+
     }
 }

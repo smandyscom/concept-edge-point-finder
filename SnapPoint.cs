@@ -7,11 +7,13 @@ using WindowsFormsApp2.Interface;
 namespace WindowsFormsApp2
 {
 
-    enum PointType
+   public enum PointType
     {
         start,
         end,
+        mid,
         center,
+        intersection,
         edge
     };
 
@@ -33,9 +35,10 @@ namespace WindowsFormsApp2
             owner = Owner;
         }
 
-        public SnapPoint(Idraw Owner)
+        public SnapPoint(Idraw Owner,PointType type)
         {
             owner = Owner;
+            Type = type;
         }
 
         public bool IsNearBy(PointF p)

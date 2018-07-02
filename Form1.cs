@@ -6,8 +6,12 @@ using System.Linq;
 using System.Windows.Forms;
 using OpenCvSharp.Extensions;
 using OpenCvSharp.UserInterface;
+
 using WindowsFormsApp2.Interface;
 using WindowsFormsApp2.DrawObjects;
+
+using WindowsFormsApp2.Fitting;
+
 
 namespace WindowsFormsApp2
 {
@@ -47,6 +51,11 @@ namespace WindowsFormsApp2
         public Form1()
         {
             InitializeComponent();
+
+            int rows = 5;
+            int cols = 3;
+            OpenCvSharp.Mat __input =OpenCvSharp.Mat.Ones(rows,cols,OpenCvSharp.MatType.CV_32FC1);
+            OpenCvSharp.Mat __output = Fitting.Fitting.RightSingularVector(__input);
         }
 
         private void MouseMoveHandler(Object sender, MouseEventArgs e)

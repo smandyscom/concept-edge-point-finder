@@ -12,4 +12,9 @@ namespace WindowsFormsApp2.Interface
         bool isSelected { get; set; }
         bool isHitObject(PointF hit);
     }
+
+    public interface ICoeffcient
+    {
+        Mat Coefficient { get; set; }
+    }
 }

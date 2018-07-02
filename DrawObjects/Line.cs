@@ -7,7 +7,9 @@ using System.Linq;
 
 namespace WindowsFormsApp2.DrawObjects
 {
-    public class Line : Idraw
+    public class Line : 
+        Idraw,
+        ICoeffcient
     {
         public SnapPoint __start;
         public SnapPoint __end;
@@ -18,7 +20,28 @@ namespace WindowsFormsApp2.DrawObjects
         static Pen __penBlack = new Pen(Color.Black, 3);
         static Pen __penGreen = new Pen(Color.Green, 3);
 
+        Mat __coefficient = new Mat();
+
         public bool isSelected { get; set; }
+
+        /// <summary>
+        /// ax+by+c=0
+        /// input : [a b c]
+        /// </summary>
+        public Mat Coefficient {
+            get => __coefficient;
+            set{
+                //take [a b c] turns into start/end point
+                __coefficient = value;
+
+                __start.Location.X = 0;
+                __start.Location.Y = (float)((-1 * __coefficient.At<double>(0,2) )/ __coefficient.At<double>(0,1)); // y = -c/b
+
+                __end.Location.Y = 0;
+                __end.Location.X = (float)((-1 * __coefficient.At<double>(0, 2)) / __coefficient.At<double>(0, 0));// x = -c/a
+            }
+        }
+
 
         public void draw(Graphics graphics, Mat gray = null)
         {

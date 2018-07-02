@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenCvSharp;
 
 namespace WindowsFormsApp2.Interface
 {
@@ -11,5 +9,7 @@ namespace WindowsFormsApp2.Interface
     {
         void draw(Graphics graphics);
         SnapPoint[] GetSnapPoints();
+        bool isSelected { get; set; }
+        bool isHitObject(PointF hit);
     }
 }

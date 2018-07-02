@@ -15,6 +15,12 @@ using WindowsFormsApp2.Fitting;
 
 namespace WindowsFormsApp2
 {
+    enum TaskEnum
+    {
+        line,
+        select
+    }
+
     public partial class Form1 : Form
     {
         PictureBoxIpl __box;
@@ -39,13 +45,18 @@ namespace WindowsFormsApp2
 
         SnapPoint snapPoint = null;
 
+
+        TaskEnum taskType = TaskEnum.select;
+
+        bool isDragging;
+
         public Form1()
         {
             InitializeComponent();
 
             int rows = 5;
             int cols = 3;
-            OpenCvSharp.Mat __input =OpenCvSharp.Mat.Ones(rows,cols,OpenCvSharp.MatType.CV_32FC1);
+            OpenCvSharp.Mat __input = OpenCvSharp.Mat.Ones(rows, cols, OpenCvSharp.MatType.CV_32FC1);
             OpenCvSharp.Mat __output = Fitting.Fitting.RightSingularVector(__input);
         }
 
@@ -62,6 +73,7 @@ namespace WindowsFormsApp2
             __current = e.Location;
 
             bool repaint = false;
+
             SnapPoint newsnapPoint = dataModel.FindSnapPoint(e.Location);
             if (snapPoint == null && newsnapPoint == null)  // not close to any snapPoint
                 repaint = false;
@@ -72,14 +84,28 @@ namespace WindowsFormsApp2
                 __current = Point.Round(snapPoint.Location);
 
 
-
+            if (e.Button == MouseButtons.Left && selectedObject != null)
+            {
+                isDragging = true;
+                SnapPoint p = selectedObject as SnapPoint;
+                Type objectType = selectedObject.GetType();
+                if (objectType == typeof(Line))
+                {
+                    //  TODO offset feature
+                }
+                else if (objectType == typeof(SnapPoint) && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center))
+                {
+                    p.Location = __current;
+                }
+                repaint = true;
+            }
 
             if (__engaged || repaint)
             {
                 __control.Invalidate(false);
             }
         }
-
+        Idraw selectedObject;
         /// <summary>
         /// 
         /// </summary>
@@ -93,45 +119,73 @@ namespace WindowsFormsApp2
 
             PictureBoxIpl __control = (PictureBoxIpl)sender;
 
-            if (!__engaged)
+
+            if (taskType == TaskEnum.select)
             {
-                lineEngaged = new Line();
-                lineEngaged.__start = __current;
-                __engaged = true;
+
             }
-            else
+            else if (taskType == TaskEnum.line)
             {
-                lineEngaged.__end = __current;
-                __engaged = false;
+                if (!__engaged)
+                {
+                    lineEngaged = new Line();
+                    lineEngaged.__start.Location = __current;
+                    if (snapPoint != null) lineEngaged.__start.upstream = snapPoint;
+                    __engaged = true;
+                }
+                else
+                {
+                    lineEngaged.__end.Location = __current;
+                    if (snapPoint != null) lineEngaged.__end.upstream = snapPoint;
+                    __engaged = false;
 
 
+                    //point out edge point
 
 
+                    dataModel.ActiveLayer.Add(lineEngaged);
+                    lineEngaged.draw(__graphics, __gray);
 
-                //point out edge point
-                Ellipse ellipse = new Ellipse();
-                ellipse.__center = Utils.GetEdgePoint(ref __gray, ref lineEngaged);
-                dataModel.ActiveLayer.Add(ellipse);
-                ellipse.draw(__graphics);
+                    __control.Invalidate(false);
+                }
 
-                dataModel.ActiveLayer.Add(lineEngaged);
-                lineEngaged.draw(__graphics);
-
-                __control.Invalidate(false);
+                toolStripStatusLabel1.Text = lineEngaged.__start.ToString() + lineEngaged.__end.ToString();
             }
-
-            toolStripStatusLabel1.Text = lineEngaged.__start.ToString() + lineEngaged.__end.ToString();
         }
 
+        Point mousedownLocation;
+        private void MouseDownHandler(Object sender, MouseEventArgs e)
+        {
+
+            if (taskType == TaskEnum.select)
+            {
+                PictureBoxIpl __control = (PictureBoxIpl)sender;
+                if (selectedObject != null) selectedObject.isSelected = false;
+                selectedObject = dataModel.GetHitObject(e.Location);
+                //isDragging = (selectedObject != null);
+                mousedownLocation = e.Location;
+                __control.Invalidate(false);
+            }
+        }
+
+        private void MouseUpHandler(Object sender, MouseEventArgs e)
+        {
+            if (isDragging && selectedObject != null)
+                ClearAndDraw();
+            isDragging = false;
+        }
         private void PaintEventHandler(Object sender, PaintEventArgs e)
         {
+            if (isDragging)
+                dataModel.Rework(e.Graphics, __gray);   //preview status
+            if (selectedObject != null)
+                selectedObject.draw(e.Graphics);
             if (snapPoint != null)
                 snapPoint.draw(e.Graphics);
-
             if (__engaged)
             {
-                lineEngaged.__end = __current;  //attract to snapPoint
-                lineEngaged.draw(e.Graphics);
+                lineEngaged.__end.Location = __current;  //attract to snapPoint
+                lineEngaged.draw(e.Graphics, __gray);
             }
         }
 
@@ -165,32 +219,51 @@ namespace WindowsFormsApp2
             ///mouse coordinate not match with image coordinate
             __box.MouseMove += MouseMoveHandler;
             __box.MouseClick += MouseClickHandler;
+            __box.MouseDown += MouseDownHandler;
+            __box.MouseUp += MouseUpHandler;
+
             __box.Paint += PaintEventHandler;
             btnNewLayer.Click += btnNewLayser_Click;
+            btnLine.Click += btnTask_Click;
+            btnSelect.Click += btnTask_Click;
             __isLoaded = true;
         }
 
         private void btnNewLayser_Click(object sender, EventArgs e)
         {
-
             numericUpDown1.Maximum = dataModel.CreateNewLayer();
             numericUpDown1.Value = numericUpDown1.Maximum;
         }
 
+
+        private void btnTask_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            selectedObject = null;
+            if (btn.Name == btnLine.Name)
+                taskType = TaskEnum.line;
+            else if (btn.Name == btnSelect.Name)
+                taskType = TaskEnum.select;
+        }
+
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            dataModel.IndexofActiveLayer = (int) numericUpDown1.Value;
+            dataModel.IndexofActiveLayer = (int)numericUpDown1.Value;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
+            dataModel.SetLayerVisible((int)numericUpDown1.Value, checkBox1.Checked);
+        }
+
+        private void ClearAndDraw()
+        {
             __graphics.Clear(Color.White);
-            dataModel.SetLayerVisible((int) numericUpDown1.Value, checkBox1.Checked);
             __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
             dataModel.DrawAllLayersObjects(__graphics);
-
             __box.Invalidate(false);
         }
+
     }
 
 }

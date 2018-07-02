@@ -50,6 +50,14 @@ namespace WindowsFormsApp2
 
         bool isDragging;
 
+        Idraw selectedObject;
+
+        /// <summary>
+        /// Forehand of fitting
+        /// </summary>
+        private List<SnapPoint> __selectedPoints = new List<SnapPoint>();
+        bool __isMultiSelection;
+
         public Form1()
         {
             InitializeComponent();
@@ -105,7 +113,7 @@ namespace WindowsFormsApp2
                 __control.Invalidate(false);
             }
         }
-        Idraw selectedObject;
+        
         /// <summary>
         /// 
         /// </summary>
@@ -164,6 +172,18 @@ namespace WindowsFormsApp2
                 selectedObject = dataModel.GetHitObject(e.Location);
                 //isDragging = (selectedObject != null);
                 mousedownLocation = e.Location;
+
+                //!multi selection
+                if (__isMultiSelection)
+                {
+                    if (selectedObject is SnapPoint)
+                    {
+                        __selectedPoints.Add((SnapPoint)selectedObject);
+                    }
+                }
+
+                textBoxSelectionCounter.Text = __selectedPoints.Count.ToString();
+
                 __control.Invalidate(false);
             }
         }
@@ -221,7 +241,7 @@ namespace WindowsFormsApp2
             __box.MouseClick += MouseClickHandler;
             __box.MouseDown += MouseDownHandler;
             __box.MouseUp += MouseUpHandler;
-
+            
             __box.Paint += PaintEventHandler;
             btnNewLayer.Click += btnNewLayser_Click;
             btnLine.Click += btnTask_Click;
@@ -264,6 +284,27 @@ namespace WindowsFormsApp2
             __box.Invalidate(false);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void fittingFeatureClick(object sender, EventArgs e)
+        {
+            if (sender == buttonFittingLine)
+            {
+            }
+            else if (sender == buttonSelectionClear)
+            {
+                __selectedPoints.Clear();
+                textBoxSelectionCounter.Text = Convert.ToString(0);
+            }
+        }
+
+        private void multiSelectHandler(object sender, EventArgs e)
+        {
+            __isMultiSelection = checkBoxMulti.Checked;
+        }
     }
 
 }

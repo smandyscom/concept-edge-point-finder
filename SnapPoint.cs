@@ -7,7 +7,7 @@ using WindowsFormsApp2.Interface;
 namespace WindowsFormsApp2
 {
 
-    public enum PointType
+    public  enum  PointType
     {
         start,
         end,
@@ -20,29 +20,20 @@ namespace WindowsFormsApp2
 
     public class SnapPoint : Idraw
     {
-        PointType Type = PointType.start;
+        public PointType Type = PointType.start;
         public SnapPoint upstream = null;
 
-        Idraw owner = null;
+        public Idraw owner = null;
 
 
         public PointF Location;
         float range = 10;
 
-        public bool isSelected
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+        public bool isSelected { get; set; }
+        
+          
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public SnapPoint(PointF location, Idraw Owner)
+        public SnapPoint(PointF location, Idraw Owner, PointType type = PointType.mid)
         {
             Location = location;
             owner = Owner;
@@ -79,7 +70,6 @@ namespace WindowsFormsApp2
         public void draw(Graphics g)
         {
             g.DrawRectangle(new Pen(Color.Cyan), Location.X - range / 2, Location.Y - range / 2, range, range);
-          
         }
 
         public override bool Equals(object obj)

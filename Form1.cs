@@ -48,13 +48,15 @@ namespace WindowsFormsApp2
 
         TaskEnum taskType = TaskEnum.select;
 
+        bool isDragging;
+
         public Form1()
         {
             InitializeComponent();
 
             int rows = 5;
             int cols = 3;
-            OpenCvSharp.Mat __input =OpenCvSharp.Mat.Ones(rows,cols,OpenCvSharp.MatType.CV_32FC1);
+            OpenCvSharp.Mat __input = OpenCvSharp.Mat.Ones(rows, cols, OpenCvSharp.MatType.CV_32FC1);
             OpenCvSharp.Mat __output = Fitting.Fitting.RightSingularVector(__input);
         }
 
@@ -71,16 +73,33 @@ namespace WindowsFormsApp2
             __current = e.Location;
 
             bool repaint = false;
-          
-                SnapPoint newsnapPoint = dataModel.FindSnapPoint(e.Location);
-                if (snapPoint == null && newsnapPoint == null)  // not close to any snapPoint
-                    repaint = false;
-                else if (newsnapPoint != null && !newsnapPoint.Equals(snapPoint) // approach new snapPoint
-                    || (newsnapPoint == null && snapPoint != null)) // away from old  snapPoint need to clear
-                    repaint = true;
-                if ((snapPoint = newsnapPoint) != null)
-                    __current = Point.Round(snapPoint.Location);
-            
+
+            SnapPoint newsnapPoint = dataModel.FindSnapPoint(e.Location);
+            if (snapPoint == null && newsnapPoint == null)  // not close to any snapPoint
+                repaint = false;
+            else if (newsnapPoint != null && !newsnapPoint.Equals(snapPoint) // approach new snapPoint
+                || (newsnapPoint == null && snapPoint != null)) // away from old  snapPoint need to clear
+                repaint = true;
+            if ((snapPoint = newsnapPoint) != null)
+                __current = Point.Round(snapPoint.Location);
+
+
+            if (e.Button == MouseButtons.Left && selectedObject != null)
+            {
+                isDragging = true;
+                SnapPoint p = selectedObject as SnapPoint;
+                Type objectType = selectedObject.GetType();
+                if (objectType == typeof(Line))
+                {
+                    //  TODO offset feature
+                }
+                else if (objectType == typeof(SnapPoint) && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center))
+                {
+                    p.Location = __current;
+                }
+                repaint = true;
+            }
+
             if (__engaged || repaint)
             {
                 __control.Invalidate(false);
@@ -100,11 +119,10 @@ namespace WindowsFormsApp2
 
             PictureBoxIpl __control = (PictureBoxIpl)sender;
 
-            
+
             if (taskType == TaskEnum.select)
             {
-                selectedObject = dataModel.GetHitObject(e.Location);
-                    __control.Invalidate(false);
+
             }
             else if (taskType == TaskEnum.line)
             {
@@ -112,11 +130,13 @@ namespace WindowsFormsApp2
                 {
                     lineEngaged = new Line();
                     lineEngaged.__start.Location = __current;
+                    if (snapPoint != null) lineEngaged.__start.upstream = snapPoint;
                     __engaged = true;
                 }
                 else
                 {
                     lineEngaged.__end.Location = __current;
+                    if (snapPoint != null) lineEngaged.__end.upstream = snapPoint;
                     __engaged = false;
 
 
@@ -133,14 +153,35 @@ namespace WindowsFormsApp2
             }
         }
 
+        Point mousedownLocation;
+        private void MouseDownHandler(Object sender, MouseEventArgs e)
+        {
+
+            if (taskType == TaskEnum.select)
+            {
+                PictureBoxIpl __control = (PictureBoxIpl)sender;
+                if (selectedObject != null) selectedObject.isSelected = false;
+                selectedObject = dataModel.GetHitObject(e.Location);
+                //isDragging = (selectedObject != null);
+                mousedownLocation = e.Location;
+                __control.Invalidate(false);
+            }
+        }
+
+        private void MouseUpHandler(Object sender, MouseEventArgs e)
+        {
+            if (isDragging && selectedObject != null)
+                ClearAndDraw();
+            isDragging = false;
+        }
         private void PaintEventHandler(Object sender, PaintEventArgs e)
         {
+            if (isDragging)
+                dataModel.Rework(e.Graphics, __gray);   //preview status
             if (selectedObject != null)
                 selectedObject.draw(e.Graphics);
-
             if (snapPoint != null)
                 snapPoint.draw(e.Graphics);
-
             if (__engaged)
             {
                 lineEngaged.__end.Location = __current;  //attract to snapPoint
@@ -178,6 +219,9 @@ namespace WindowsFormsApp2
             ///mouse coordinate not match with image coordinate
             __box.MouseMove += MouseMoveHandler;
             __box.MouseClick += MouseClickHandler;
+            __box.MouseDown += MouseDownHandler;
+            __box.MouseUp += MouseUpHandler;
+
             __box.Paint += PaintEventHandler;
             btnNewLayer.Click += btnNewLayser_Click;
             btnLine.Click += btnTask_Click;
@@ -187,7 +231,6 @@ namespace WindowsFormsApp2
 
         private void btnNewLayser_Click(object sender, EventArgs e)
         {
-
             numericUpDown1.Maximum = dataModel.CreateNewLayer();
             numericUpDown1.Value = numericUpDown1.Maximum;
         }
@@ -201,7 +244,6 @@ namespace WindowsFormsApp2
                 taskType = TaskEnum.line;
             else if (btn.Name == btnSelect.Name)
                 taskType = TaskEnum.select;
-
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -211,13 +253,17 @@ namespace WindowsFormsApp2
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            __graphics.Clear(Color.White);
             dataModel.SetLayerVisible((int)numericUpDown1.Value, checkBox1.Checked);
+        }
+
+        private void ClearAndDraw()
+        {
+            __graphics.Clear(Color.White);
             __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
             dataModel.DrawAllLayersObjects(__graphics);
-
             __box.Invalidate(false);
         }
+
     }
 
 }

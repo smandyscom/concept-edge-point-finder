@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using WindowsFormsApp2.DrawObjects;
 using WindowsFormsApp2.Interface;
 
 namespace WindowsFormsApp2
@@ -36,7 +37,16 @@ namespace WindowsFormsApp2
                 candidates.AddRange(la.snapPoints.FindAll(p => p.isHitObject(hit)));
             }
             if (candidates.Count > 0)
-                return candidates.OrderBy(p => p.Distance2(hit)).First();
+            {
+                candidates.OrderBy(p => p.Distance2(hit));
+                double dis = candidates.First().Distance2(hit);
+
+                // find the min distance and no upstream snapPoint
+                List<SnapPoint> min = candidates.FindAll(p => p.Distance2(hit) == dis);
+                List<SnapPoint> isolate = min.FindAll(p => p.upstream == null);
+                return min.Union(isolate).First();
+            }
+
 
             return null;
         }
@@ -74,6 +84,25 @@ namespace WindowsFormsApp2
                 if (layer.visible)
                     layer.DrawAllObject(graphics);
             });
+        }
+
+
+        public void Rework(Graphics graphics , OpenCvSharp.Mat gray)
+        {
+            //update snapPoint
+            foreach (Layer layer in LayerCollection)
+            {
+                foreach (Idraw obj in layer.drawObjects)
+                {
+                    foreach (SnapPoint p in obj.GetSnapPoints())
+                    {
+                        if (p.upstream != null)
+                            p.Location = p.upstream.Location;
+                    }
+                    //temp assume obj is line
+                    (obj as Line).draw(graphics, gray);
+                }
+            }
         }
 
 

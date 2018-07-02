@@ -10,7 +10,7 @@ namespace WindowsFormsApp2
     public class Layer
     {
         public bool visible { get; set; } = true;
-        List<Idraw> drawObjects = new List<Idraw>();
+        public List<Idraw> drawObjects = new List<Idraw>();
         public List<SnapPoint> snapPoints = new List<SnapPoint>();
         public void Add(Idraw obj)
         {
@@ -20,7 +20,7 @@ namespace WindowsFormsApp2
             foreach (Idraw shape in drawObjects)
             {
                 if ((intersection = Utils.GetIntersectPoint(obj, shape)) != PointF.Empty)
-                    snapPoints.Add(new SnapPoint(intersection, obj));
+                    snapPoints.Add(new SnapPoint(intersection, obj, PointType.intersection));
             }
 
         }

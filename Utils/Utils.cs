@@ -36,6 +36,9 @@ namespace WindowsFormsApp2
 
         public static PointF LinesIntersect(System.Drawing.PointF lp1, System.Drawing.PointF lp2, System.Drawing.PointF lp3, System.Drawing.PointF lp4, bool extendA, bool extendB)
         {
+            if (lp1 == lp3 || lp1 == lp4 || lp2 == lp3 || lp2 == lp4)   // avoid start or end point
+                return PointF.Empty;
+
             double x1 = lp1.X;
             double x2 = lp2.X;
             double x3 = lp3.X;

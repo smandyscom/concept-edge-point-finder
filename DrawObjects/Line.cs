@@ -124,7 +124,7 @@ namespace WindowsFormsApp2.DrawObjects
 
             PointF p1 = __start.Location;
             PointF p2 = __end.Location;
-            float halflinewidth = 0.5f;
+            float halflinewidth = 1.0f;
 
 
             // check bounding rect, this is faster than creating a new rectangle and call r.Contains

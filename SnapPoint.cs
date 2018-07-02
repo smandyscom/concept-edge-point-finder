@@ -7,7 +7,7 @@ using WindowsFormsApp2.Interface;
 namespace WindowsFormsApp2
 {
 
-   public enum PointType
+    public enum PointType
     {
         start,
         end,
@@ -18,7 +18,7 @@ namespace WindowsFormsApp2
     };
 
 
-    public class SnapPoint
+    public class SnapPoint : Idraw
     {
         PointType Type = PointType.start;
         public SnapPoint upstream = null;
@@ -29,19 +29,32 @@ namespace WindowsFormsApp2
         public PointF Location;
         float range = 10;
 
+        public bool isSelected
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public SnapPoint(PointF location, Idraw Owner)
         {
             Location = location;
             owner = Owner;
         }
 
-        public SnapPoint(Idraw Owner,PointType type)
+        public SnapPoint(Idraw Owner, PointType type)
         {
             owner = Owner;
             Type = type;
         }
 
-        public bool IsNearBy(PointF p)
+        public bool isHitObject(PointF p)
         {
 
             double leftPoint = Location.X - range;
@@ -66,6 +79,7 @@ namespace WindowsFormsApp2
         public void draw(Graphics g)
         {
             g.DrawRectangle(new Pen(Color.Cyan), Location.X - range / 2, Location.Y - range / 2, range, range);
+          
         }
 
         public override bool Equals(object obj)
@@ -82,6 +96,11 @@ namespace WindowsFormsApp2
         public override int GetHashCode()
         {
             return (int)Math.Pow(Location.X, Location.Y);
+        }
+
+        public SnapPoint[] GetSnapPoints()
+        {
+            return new SnapPoint[] { this };
         }
     }
 }

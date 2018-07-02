@@ -33,7 +33,7 @@ namespace WindowsFormsApp2
             List<SnapPoint> candidates = new List<SnapPoint>();
             foreach (Layer la in LayerCollection.FindAll(la => la.visible))
             {
-                candidates.AddRange(la.snapPoints.FindAll(p => p.IsNearBy(hit)));
+                candidates.AddRange(la.snapPoints.FindAll(p => p.isHitObject(hit)));
             }
             if (candidates.Count > 0)
                 return candidates.OrderBy(p => p.Distance2(hit)).First();

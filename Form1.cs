@@ -71,24 +71,22 @@ namespace WindowsFormsApp2
             __current = e.Location;
 
             bool repaint = false;
-            SnapPoint newsnapPoint = dataModel.FindSnapPoint(e.Location);
-            if (snapPoint == null && newsnapPoint == null)  // not close to any snapPoint
-                repaint = false;
-            else if (newsnapPoint != null && !newsnapPoint.Equals(snapPoint) // approach new snapPoint
-                || (newsnapPoint == null && snapPoint != null)) // away from old  snapPoint need to clear
-                repaint = true;
-            if ((snapPoint = newsnapPoint) != null)
-                __current = Point.Round(snapPoint.Location);
-
-
-
-
+          
+                SnapPoint newsnapPoint = dataModel.FindSnapPoint(e.Location);
+                if (snapPoint == null && newsnapPoint == null)  // not close to any snapPoint
+                    repaint = false;
+                else if (newsnapPoint != null && !newsnapPoint.Equals(snapPoint) // approach new snapPoint
+                    || (newsnapPoint == null && snapPoint != null)) // away from old  snapPoint need to clear
+                    repaint = true;
+                if ((snapPoint = newsnapPoint) != null)
+                    __current = Point.Round(snapPoint.Location);
+            
             if (__engaged || repaint)
             {
                 __control.Invalidate(false);
             }
         }
-
+        Idraw selectedObject;
         /// <summary>
         /// 
         /// </summary>
@@ -102,13 +100,11 @@ namespace WindowsFormsApp2
 
             PictureBoxIpl __control = (PictureBoxIpl)sender;
 
-            Idraw selectedObject;
-
+            
             if (taskType == TaskEnum.select)
             {
-                if ((selectedObject = dataModel.GetHitObject(e.Location)) != null)
-                    selectedObject.draw(__graphics);
-                __control.Invalidate(false);
+                selectedObject = dataModel.GetHitObject(e.Location);
+                    __control.Invalidate(false);
             }
             else if (taskType == TaskEnum.line)
             {
@@ -139,6 +135,9 @@ namespace WindowsFormsApp2
 
         private void PaintEventHandler(Object sender, PaintEventArgs e)
         {
+            if (selectedObject != null)
+                selectedObject.draw(e.Graphics);
+
             if (snapPoint != null)
                 snapPoint.draw(e.Graphics);
 
@@ -197,6 +196,7 @@ namespace WindowsFormsApp2
         private void btnTask_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
+            selectedObject = null;
             if (btn.Name == btnLine.Name)
                 taskType = TaskEnum.line;
             else if (btn.Name == btnSelect.Name)

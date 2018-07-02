@@ -31,12 +31,11 @@ namespace WindowsFormsApp2
 
         public Idraw GetHitObject(PointF hit)
         {
-           return drawObjects.Find(delegate (Idraw shape)
-            {
-                Line line = shape as Line;
-               var obj = line.isHitOnObject(hit);
-                return (obj != null);
-            });
+            List<SnapPoint> candidates = snapPoints.FindAll(p => p.isHitObject(hit));
+            if (candidates.Count > 0)
+                return candidates.OrderBy(p => p.Distance2(hit)).First();
+
+            return drawObjects.Find(obj => obj.isHitObject(hit));
         }
 
     }

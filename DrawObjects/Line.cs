@@ -85,8 +85,6 @@ namespace WindowsFormsApp2.DrawObjects
         }
 
 
-
-
         PointF GetEdgePoint(Mat imgGray)
         {
 

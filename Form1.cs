@@ -67,7 +67,7 @@ namespace WindowsFormsApp2
             OpenCvSharp.Mat __input = OpenCvSharp.Mat.Ones(rows, cols, OpenCvSharp.MatType.CV_32FC1);
             OpenCvSharp.Mat __output = Fitting.Fitting.RightSingularVector(__input);
         }
-
+        Point lastMove = Point.Empty;
         private void MouseMoveHandler(Object sender, MouseEventArgs e)
         {
 
@@ -96,10 +96,13 @@ namespace WindowsFormsApp2
             {
                 isDragging = true;
                 SnapPoint p = selectedObject as SnapPoint;
+                Line line = selectedObject as Line;
                 Type objectType = selectedObject.GetType();
                 if (objectType == typeof(Line))
                 {
-                    //  TODO offset feature
+                    Point diff = __current - new Size(lastMove);
+                    line.__start.Location += new Size(diff);
+                    line.__end.Location += new Size(diff);
                 }
                 else if (objectType == typeof(SnapPoint) && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center))
                 {
@@ -107,6 +110,8 @@ namespace WindowsFormsApp2
                 }
                 repaint = true;
             }
+
+            lastMove = __current;
 
             if (__engaged || repaint)
             {
@@ -190,7 +195,10 @@ namespace WindowsFormsApp2
 
         private void MouseUpHandler(Object sender, MouseEventArgs e)
         {
+            Point diff = e.Location - new Size(mousedownLocation);
+            double dis = Math.Abs(diff.X) + Math.Abs(diff.Y);
             if (isDragging && selectedObject != null)
+                if (dis > 10) selectedObject.isSelected = false;
                 ClearAndDraw();
             isDragging = false;
         }

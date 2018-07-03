@@ -45,7 +45,7 @@ namespace WindowsFormsApp2.DrawObjects
         }
 
 
-        public void draw(Graphics graphics, Mat gray = null)
+        public void draw(Graphics graphics, Mat gray)
         {
 
             if (gray != null)

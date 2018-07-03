@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace WindowsFormsApp2.DrawObjects
 {
-    public class Line : 
+    public class Line :
         Idraw,
         ICoeffcient
     {
@@ -28,14 +28,16 @@ namespace WindowsFormsApp2.DrawObjects
         /// ax+by+c=0
         /// input : [a b c]
         /// </summary>
-        public Mat Coefficient {
-            get => __coefficient;
-            set{
+        public Mat Coefficient
+        {
+            get { return __coefficient; }
+            set
+            {
                 //take [a b c] turns into start/end point
                 __coefficient = value;
 
                 __start.Location.X = 0;
-                __start.Location.Y = (float)((-1 * __coefficient.At<double>(0,2) )/ __coefficient.At<double>(0,1)); // y = -c/b
+                __start.Location.Y = (float)((-1 * __coefficient.At<double>(0, 2)) / __coefficient.At<double>(0, 1)); // y = -c/b
 
                 __end.Location.Y = 0;
                 __end.Location.X = (float)((-1 * __coefficient.At<double>(0, 2)) / __coefficient.At<double>(0, 0));// x = -c/a
@@ -43,7 +45,7 @@ namespace WindowsFormsApp2.DrawObjects
         }
 
 
-        public void draw(Graphics graphics, Mat gray = null)
+        public void draw(Graphics graphics, Mat gray)
         {
 
             if (gray != null)
@@ -68,7 +70,7 @@ namespace WindowsFormsApp2.DrawObjects
             graphics.DrawEllipse(__penGreen, __edge.Location.X - width / 2, __edge.Location.Y - width / 2, width, width);
         }
 
- 
+
         public Line()
         {
             __start = new SnapPoint(this, PointType.start);
@@ -82,8 +84,6 @@ namespace WindowsFormsApp2.DrawObjects
             return new SnapPoint[] { __start, __end, __mid, __edge };
         }
 
-
-      
 
         PointF GetEdgePoint(Mat imgGray)
         {
@@ -205,7 +205,7 @@ namespace WindowsFormsApp2.DrawObjects
             double h = Math.Sin(A) * c;
 
             // now if height is smaller than half linewidth, the hitpoint is within the line
-            isSelected =( h <= halflinewidth);
+            isSelected = (h <= halflinewidth);
             return isSelected;
         }
     }

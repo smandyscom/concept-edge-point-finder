@@ -14,10 +14,10 @@ namespace WindowsFormsApp2
         {
             Type type1 = shape1.GetType();
             Type type2 = shape2.GetType();
-            if (type1 == typeof(Line) && type2 == typeof(Line))
+            if (type1 == typeof(LineBase) && type2 == typeof(LineBase))
             {
-                Line line1 = shape1 as Line;
-                Line line2 = shape2 as Line;
+                LineBase line1 = shape1 as LineBase;
+                LineBase line2 = shape2 as LineBase;
 
 
                 PointF p1 = line1.__start.Location;

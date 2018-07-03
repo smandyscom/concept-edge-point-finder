@@ -100,7 +100,15 @@ namespace WindowsFormsApp2
                             p.Location = p.upstream.Location;
                     }
                     //temp assume obj is line
-                    (obj as Line).draw(graphics, gray);
+                    Type type = obj.GetType();
+                    if (type == typeof(LineEdgePoint))
+                        (obj as LineEdgePoint).draw(graphics, gray);
+                    else if (type ==typeof(LineFitted))
+                    {
+                        (obj as LineFitted).Fit();
+                        (obj as LineFitted).draw(graphics);
+                    }
+
                 }
             }
         }

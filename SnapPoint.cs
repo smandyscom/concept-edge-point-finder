@@ -88,9 +88,14 @@ namespace WindowsFormsApp2
             return (int)Math.Pow(Location.X, Location.Y);
         }
 
-        public SnapPoint[] GetSnapPoints()
+        public List<SnapPoint> GetSnapPoints()
         {
-            return new SnapPoint[] { this };
+            return new List<SnapPoint>() { this};
+        }
+
+        public override string ToString()
+        {
+            return Type.ToString() + Location.ToString();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace WindowsFormsApp2
 
         Graphics __graphics = null; //current Graphics to drasw
 
-        Line lineEngaged = null;    //the line ready to draw
+        LineEdgePoint lineEngaged = null;    //the line ready to draw
 
 
         Model dataModel = new Model();
@@ -67,7 +67,7 @@ namespace WindowsFormsApp2
             OpenCvSharp.Mat __input = OpenCvSharp.Mat.Ones(rows, cols, OpenCvSharp.MatType.CV_32FC1);
             OpenCvSharp.Mat __output = Fitting.Fitting.RightSingularVector(__input);
         }
-
+        Point lastMove = Point.Empty;
         private void MouseMoveHandler(Object sender, MouseEventArgs e)
         {
 
@@ -96,17 +96,22 @@ namespace WindowsFormsApp2
             {
                 isDragging = true;
                 SnapPoint p = selectedObject as SnapPoint;
+                LineEdgePoint line = selectedObject as LineEdgePoint;
                 Type objectType = selectedObject.GetType();
-                if (objectType == typeof(Line))
+                if (objectType == typeof(LineEdgePoint))
                 {
-                    //  TODO offset feature
+                    Point diff = __current - new Size(lastMove);
+                    line.__start.Location += new Size(diff);
+                    line.__end.Location += new Size(diff);
                 }
-                else if (objectType == typeof(SnapPoint) && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center))
+                else if (objectType == typeof(SnapPoint) && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center) && p.upstream==null)
                 {
                     p.Location = __current;
                 }
                 repaint = true;
             }
+
+            lastMove = __current;
 
             if (__engaged || repaint)
             {
@@ -136,7 +141,7 @@ namespace WindowsFormsApp2
             {
                 if (!__engaged)
                 {
-                    lineEngaged = new Line();
+                    lineEngaged = new LineEdgePoint();
                     lineEngaged.__start.Location = __current;
                     if (snapPoint != null) lineEngaged.__start.upstream = snapPoint;
                     __engaged = true;
@@ -190,7 +195,10 @@ namespace WindowsFormsApp2
 
         private void MouseUpHandler(Object sender, MouseEventArgs e)
         {
+            Point diff = e.Location - new Size(mousedownLocation);
+            double dis = Math.Abs(diff.X) + Math.Abs(diff.Y);
             if (isDragging && selectedObject != null)
+                if (dis > 10) selectedObject.isSelected = false;
                 ClearAndDraw();
             isDragging = false;
         }
@@ -258,11 +266,10 @@ namespace WindowsFormsApp2
 
         private void btnTask_Click(object sender, EventArgs e)
         {
-            Button btn = sender as Button;
             selectedObject = null;
-            if (btn.Name == btnLine.Name)
+            if (sender == btnLine)
                 taskType = TaskEnum.line;
-            else if (btn.Name == btnSelect.Name)
+            else if (sender == btnSelect)
                 taskType = TaskEnum.select;
         }
 
@@ -284,6 +291,8 @@ namespace WindowsFormsApp2
             __box.Invalidate(false);
         }
 
+
+        
         /// <summary>
         /// 
         /// </summary>
@@ -293,26 +302,10 @@ namespace WindowsFormsApp2
         {
             if (sender == buttonFittingLine)
             {
-                //turns selection snap point into coeff array
-                OpenCvSharp.Mat __xVectors = new OpenCvSharp.Mat();
-                OpenCvSharp.Mat __yVectors = new OpenCvSharp.Mat(__selectedPoints.Count, 1, OpenCvSharp.MatType.CV_64FC1);
-                List<OpenCvSharp.Mat> __coords = new List<OpenCvSharp.Mat>();
-
-                __selectedPoints.ForEach(__snap =>
-                {
-                    OpenCvSharp.Mat __each = new OpenCvSharp.Mat(1, 2, OpenCvSharp.MatType.CV_64FC1);
-                    __each.Set<double>(0, 0, __snap.Location.X);
-                    __each.Set<double>(0, 1, __snap.Location.Y);
-
-                    __coords.Add(__each);
-                });
-
-                OpenCvSharp.Cv2.VConcat(__coords.ToArray(), __xVectors);
-
-                Line __newLine = new Line();
-                 __newLine.Coefficient =  
-                    Fitting.Fitting.DataFitting(__xVectors, __yVectors, Fitting.Fitting.FittingCategrory.Polynominal, 1);
-
+                LineFitted __newLine = new LineFitted();
+                dataModel.ActiveLayer.Add(__newLine);
+                __newLine.__selectedPoints = __selectedPoints;
+                __newLine.Fit();
                 __newLine.draw(__graphics);
             }
             else if (sender == buttonSelectionClear)

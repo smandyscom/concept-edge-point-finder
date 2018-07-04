@@ -92,7 +92,7 @@ namespace WindowsFormsApp2
                 __current = Point.Round(snapPoint.Location);
 
 
-            if (e.Button == MouseButtons.Left && selectedObject != null)
+            if (e.Button == MouseButtons.Left && selectedObject != null && taskType == TaskEnum.select)
             {
                 isDragging = true;
                 SnapPoint p = selectedObject as SnapPoint;
@@ -104,7 +104,7 @@ namespace WindowsFormsApp2
                     line.__start.Location += new Size(diff);
                     line.__end.Location += new Size(diff);
                 }
-                else if (objectType == typeof(SnapPoint) && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center) && p.upstream==null)
+                else if (objectType == typeof(SnapPoint) && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center) && p.upstream == null)
                 {
                     p.Location = __current;
                 }
@@ -118,7 +118,7 @@ namespace WindowsFormsApp2
                 __control.Invalidate(false);
             }
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -143,21 +143,17 @@ namespace WindowsFormsApp2
                 {
                     lineEngaged = new LineEdgePoint();
                     lineEngaged.__start.Location = __current;
-                    if (snapPoint != null) lineEngaged.__start.upstream = snapPoint;
+                    lineEngaged.__start.upstream = snapPoint;
                     __engaged = true;
                 }
                 else
                 {
                     lineEngaged.__end.Location = __current;
-                    if (snapPoint != null) lineEngaged.__end.upstream = snapPoint;
+                    lineEngaged.__end.upstream = snapPoint;
                     __engaged = false;
 
-
-                    //point out edge point
-
-
                     dataModel.ActiveLayer.Add(lineEngaged);
-                    lineEngaged.draw(__graphics, __gray);
+                    lineEngaged.draw(__graphics);
 
                     __control.Invalidate(false);
                 }
@@ -170,13 +166,14 @@ namespace WindowsFormsApp2
         private void MouseDownHandler(Object sender, MouseEventArgs e)
         {
 
+            mousedownLocation = e.Location;
             if (taskType == TaskEnum.select)
             {
                 PictureBoxIpl __control = (PictureBoxIpl)sender;
                 if (selectedObject != null) selectedObject.isSelected = false;
                 selectedObject = dataModel.GetHitObject(e.Location);
                 //isDragging = (selectedObject != null);
-                mousedownLocation = e.Location;
+
 
                 //!multi selection
                 if (__isMultiSelection)
@@ -197,9 +194,11 @@ namespace WindowsFormsApp2
         {
             Point diff = e.Location - new Size(mousedownLocation);
             double dis = Math.Abs(diff.X) + Math.Abs(diff.Y);
-            if (isDragging && selectedObject != null)
-                if (dis > 10) selectedObject.isSelected = false;
+            if (isDragging && selectedObject != null && dis > 10)
+            {
+                selectedObject.isSelected = false;
                 ClearAndDraw();
+            }
             isDragging = false;
         }
         private void PaintEventHandler(Object sender, PaintEventArgs e)
@@ -249,7 +248,7 @@ namespace WindowsFormsApp2
             __box.MouseClick += MouseClickHandler;
             __box.MouseDown += MouseDownHandler;
             __box.MouseUp += MouseUpHandler;
-            
+
             __box.Paint += PaintEventHandler;
             btnNewLayer.Click += btnNewLayser_Click;
             btnLine.Click += btnTask_Click;
@@ -292,7 +291,7 @@ namespace WindowsFormsApp2
         }
 
 
-        
+
         /// <summary>
         /// 
         /// </summary>

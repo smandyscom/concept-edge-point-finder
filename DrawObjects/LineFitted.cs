@@ -40,22 +40,9 @@ namespace WindowsFormsApp2.DrawObjects
         public void Fit()
         {
             //turns selection snap point into coeff array
-            Mat __xVectors = new Mat();
-            Mat __yVectors = new Mat(__selectedPoints.Count, 1, MatType.CV_64FC1);
-            List<Mat> __coords = new List<Mat>();
-
-            __selectedPoints.ForEach(__snap =>
-            {
-                Mat __each = new Mat(1, 2, MatType.CV_64FC1);
-                __each.Set<double>(0, 0, __snap.Location.X);
-                __each.Set<double>(0, 1, __snap.Location.Y);
-
-                __coords.Add(__each);
-            });
-
-            Cv2.VConcat(__coords.ToArray(), __xVectors);
+            Mat __yVectors = Mat.Zeros(__selectedPoints.Count, 1, MatType.CV_64FC1);
             Coefficient =
-               Fitting.Fitting.DataFitting(__xVectors, __yVectors, Fitting.Fitting.FittingCategrory.Polynominal, 1);
+               Fitting.Fitting.DataFitting(Utils.ToCoordsCoefficients(__selectedPoints), __yVectors, Fitting.Fitting.FittingCategrory.Polynominal, 1);
         }
     }
 }

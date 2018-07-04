@@ -83,5 +83,30 @@ namespace WindowsFormsApp2
         }
 
 
+        /// <summary>
+        /// Tool function to transform data format
+        /// </summary>
+        /// <param name="__points"></param>
+        /// <returns></returns>
+        public static OpenCvSharp.Mat ToCoordsCoefficients(List<SnapPoint> __points)
+        {
+            //turns selection snap point into coeff array
+            Mat __xVectors = new Mat();
+            List<Mat> __coords = new List<Mat>();
+
+            __points.ForEach(__snap =>
+            {
+                Mat __each = new Mat(1, 2, MatType.CV_64FC1);
+                __each.Set<double>(0, 0, __snap.Location.X);
+                __each.Set<double>(0, 1, __snap.Location.Y);
+
+                __coords.Add(__each);
+            });
+
+            Cv2.VConcat(__coords.ToArray(), __xVectors);
+
+            return __xVectors;
+        }
+
     }   //Utils
 }   //namespace

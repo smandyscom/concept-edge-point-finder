@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisplayInteraction.cs" />
+    <Compile Include="DrawObjects\CircleBase.cs" />
     <Compile Include="DrawObjects\Ellipse.cs" />
     <Compile Include="DrawObjects\LineBase.cs" />
     <Compile Include="DrawObjects\LineEdgePoint.cs" />

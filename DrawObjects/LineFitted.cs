@@ -8,7 +8,7 @@ using WindowsFormsApp2.Interface;
 
 namespace WindowsFormsApp2.DrawObjects
 {
-    class LineFitted : LineBase, ICoeffcient
+    public class LineFitted : LineBase, ICoeffcient
     {
         Mat __coefficient = new Mat();
 
@@ -36,13 +36,13 @@ namespace WindowsFormsApp2.DrawObjects
             return (isSelected = false);
         }
 
-
-        public void Fit()
+        public override Idraw Update(object data = null)
         {
             //turns selection snap point into coeff array
             Mat __yVectors = Mat.Zeros(__selectedPoints.Count, 1, MatType.CV_64FC1);
             Coefficient =
                Fitting.Fitting.DataFitting(Utils.ToCoordsCoefficients(__selectedPoints), __yVectors, Fitting.Fitting.FittingCategrory.Polynominal, 1);
+            return this;
         }
     }
 }

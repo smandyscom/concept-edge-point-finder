@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenCvSharp;
+using WindowsFormsApp2.Interface;
 
 namespace WindowsFormsApp2.DrawObjects
 {
@@ -17,14 +18,15 @@ namespace WindowsFormsApp2.DrawObjects
             __mid = new SnapPoint(this, PointType.mid);
             __edge = new SnapPoint(this, PointType.edge);
         }
-        public void draw(Graphics graphics, Mat gray)
+        public override Idraw Update(object data = null)
         {
+            Mat gray = data as Mat;
+            if (gray == null) throw new Exception("input type error");
             __edge.Location = GetEdgePoint(gray);
             __mid.Location.X = (__start.Location.X + __end.Location.X) / 2;
             __mid.Location.Y = (__start.Location.Y + __end.Location.Y) / 2;
-            draw(graphics);
+            return this;
         }
-
         public override void draw(Graphics graphics)
         {
             base.draw(graphics);

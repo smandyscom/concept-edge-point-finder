@@ -100,5 +100,10 @@ namespace WindowsFormsApp2
         {
             return Type.ToString() + Location.ToString();
         }
+
+        public Idraw Update(object data = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

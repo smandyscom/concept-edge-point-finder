@@ -188,6 +188,10 @@ namespace WindowsFormsApp2
             {
                 DspInteraction.DataModel.FitLine(__selectedPoints, true).draw(__graphics);
             }
+            else if (sender == buttonCircle)
+            {
+                DspInteraction.DataModel.FitCircle(__selectedPoints, true).draw(__graphics);
+            }
             else if (sender == buttonSelectionClear)
             {
                 __selectedPoints.Clear();

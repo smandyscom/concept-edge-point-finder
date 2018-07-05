@@ -40,6 +40,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.buttonSelectionClear = new System.Windows.Forms.Button();
             this.checkBoxMulti = new System.Windows.Forms.CheckBox();
+            this.buttonCircle = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
@@ -167,11 +168,22 @@
             this.checkBoxMulti.UseVisualStyleBackColor = true;
             this.checkBoxMulti.CheckedChanged += new System.EventHandler(this.multiSelectHandler);
             // 
+            // buttonCircle
+            // 
+            this.buttonCircle.Location = new System.Drawing.Point(610, 222);
+            this.buttonCircle.Name = "buttonCircle";
+            this.buttonCircle.Size = new System.Drawing.Size(95, 23);
+            this.buttonCircle.TabIndex = 11;
+            this.buttonCircle.Text = "Fitting a circle";
+            this.buttonCircle.UseVisualStyleBackColor = true;
+            this.buttonCircle.Click += new System.EventHandler(this.fittingFeatureClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonCircle);
             this.Controls.Add(this.checkBoxMulti);
             this.Controls.Add(this.buttonSelectionClear);
             this.Controls.Add(this.label1);
@@ -208,6 +220,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonSelectionClear;
         private System.Windows.Forms.CheckBox checkBoxMulti;
+        private System.Windows.Forms.Button buttonCircle;
     }
 }
 

@@ -38,11 +38,11 @@ namespace WindowsFormsApp2.DrawObjects
                 __center.Location.X = (float)(-1* a)/2;
                 __center.Location.Y = (float)(-1 * b) / 2;
 
-                __radius = (float)Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2) - 4 * c) / 2;
+                __radius = (float)(Math.Sqrt(Math.Pow(a/2, 2) + Math.Pow(b/2, 2) - c));
             }
         }
 
-        public void Fit()
+        public override Idraw Update(object data = null)
         {
             //
             Mat __yVectors = Mat.Zeros(__selectedPoints.Count, 1, MatType.CV_64FC1);
@@ -55,6 +55,8 @@ namespace WindowsFormsApp2.DrawObjects
             }
              Coefficient =
                Fitting.Fitting.DataFitting(Utils.ToCoordsCoefficients(__selectedPoints), __yVectors, Fitting.Fitting.FittingCategrory.Polynominal, 1);
+
+            return this;
         }
     }//class
 }

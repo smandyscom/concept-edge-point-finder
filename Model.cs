@@ -129,7 +129,12 @@ namespace WindowsFormsApp2
             return null;
         }
 
-
+        /// <summary>
+        /// Improvement , use Factory pattern as generized interface
+        /// </summary>
+        /// <param name="selection"></param>
+        /// <param name="add"></param>
+        /// <returns></returns>
         public LineFitted FitLine(List<SnapPoint> selection, bool add)
         {
             LineFitted line = new LineFitted();
@@ -138,6 +143,17 @@ namespace WindowsFormsApp2
             if (add) activeLayer.Add(line);
 
             return line;
+        }
+
+        public CircleFitted FitCircle(List<SnapPoint> selection, bool add)
+        {
+            CircleFitted __circle = new CircleFitted();
+            __circle.__selectedPoints = selection;
+            __circle.Update();
+            if (add)
+                activeLayer.Add(__circle);
+
+            return __circle;
         }
 
     }   //Modal

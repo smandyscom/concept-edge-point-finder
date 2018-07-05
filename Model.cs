@@ -71,10 +71,11 @@ namespace WindowsFormsApp2
             LayerCollection.Add(activeLayer);
             return IndexofActiveLayer;
         }
-
+        public EventHandler VisibleChanged;
         public void SetLayerVisible(int index, bool visible)
         {
             LayerCollection[index].visible = visible;
+            VisibleChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void DrawAllLayersObjects(Graphics graphics)
@@ -86,8 +87,11 @@ namespace WindowsFormsApp2
             });
         }
 
-
-        public void Rework(Graphics graphics , OpenCvSharp.Mat gray)
+        /// <summary>
+        /// re-calculate all Idraw object status
+        /// </summary>
+        /// <param name="gray"></param>
+        public void UpdateAllObjects(OpenCvSharp.Mat gray)
         {
             //update snapPoint
             foreach (Layer layer in LayerCollection)
@@ -102,11 +106,10 @@ namespace WindowsFormsApp2
                     //temp assume obj is line
                     Type type = obj.GetType();
                     if (type == typeof(LineEdgePoint))
-                        (obj as LineEdgePoint).draw(graphics, gray);
-                    else if (type ==typeof(LineFitted))
+                        (obj as LineEdgePoint).Update(gray);
+                    else if (type == typeof(LineFitted))
                     {
-                        (obj as LineFitted).Fit();
-                        (obj as LineFitted).draw(graphics);
+                        (obj as LineFitted).Update();
                     }
 
                 }
@@ -118,11 +121,23 @@ namespace WindowsFormsApp2
         {
             foreach (Layer la in LayerCollection)
             {
+                if (!la.visible) continue;
                 Idraw obj = la.GetHitObject(hit);
                 if (obj != null)
                     return obj;
             }
             return null;
+        }
+
+
+        public LineFitted FitLine(List<SnapPoint> selection, bool add)
+        {
+            LineFitted line = new LineFitted();
+            line.__selectedPoints = selection;
+            line.Update();
+            if (add) activeLayer.Add(line);
+
+            return line;
         }
 
     }   //Modal

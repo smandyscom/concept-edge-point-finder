@@ -42,5 +42,8 @@ namespace WindowsFormsApp2.DrawObjects
             //throw new NotImplementedException();
             return false;
         }
+
+        public abstract Idraw Update(object data = null);
+      
     }
 }

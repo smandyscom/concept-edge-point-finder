@@ -11,6 +11,7 @@ namespace WindowsFormsApp2.Interface
         List<SnapPoint> GetSnapPoints();
         bool isSelected { get; set; }
         bool isHitObject(PointF hit);
+        Idraw Update(object data = null);
     }
 
     public interface ICoeffcient

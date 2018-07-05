@@ -15,21 +15,15 @@ using WindowsFormsApp2.Fitting;
 
 namespace WindowsFormsApp2
 {
-    enum TaskEnum
-    {
-        line,
-        select
-    }
+
 
     public partial class Form1 : Form
     {
         PictureBoxIpl __box;
 
-        Point __current;    //record MouseMove or snapPoint location
-
-        bool __engaged; //engaged line drawing
 
 
+        IDisplay DspInteraction = new DisplayInteraction();
 
         OpenCvSharp.Mat __gray = new OpenCvSharp.Mat();
         bool __isLoaded = false;
@@ -37,20 +31,7 @@ namespace WindowsFormsApp2
 
         Graphics __graphics = null; //current Graphics to drasw
 
-        LineEdgePoint lineEngaged = null;    //the line ready to draw
-
-
-        Model dataModel = new Model();
-
-
-        SnapPoint snapPoint = null;
-
-
-        TaskEnum taskType = TaskEnum.select;
-
-        bool isDragging;
-
-        Idraw selectedObject;
+  
 
         /// <summary>
         /// Forehand of fitting
@@ -67,153 +48,57 @@ namespace WindowsFormsApp2
             OpenCvSharp.Mat __input = OpenCvSharp.Mat.Ones(rows, cols, OpenCvSharp.MatType.CV_32FC1);
             OpenCvSharp.Mat __output = Fitting.Fitting.RightSingularVector(__input);
         }
-        Point lastMove = Point.Empty;
-        private void MouseMoveHandler(Object sender, MouseEventArgs e)
+     
+        private void MouseMoveHandler(object sender, MouseEventArgs e)
         {
-
-            Control __control = (Control)sender;
-
             if (__isLoaded && e.X <= __gray.Cols && e.Y <= __gray.Rows)
                 Text = String.Format("{0},{1},{2}",
                     e.X, e.Y,
                __gray.At<byte>(e.X, e.Y));
 
-            __current = e.Location;
-
-            bool repaint = false;
-
-            SnapPoint newsnapPoint = dataModel.FindSnapPoint(e.Location);
-            if (snapPoint == null && newsnapPoint == null)  // not close to any snapPoint
-                repaint = false;
-            else if (newsnapPoint != null && !newsnapPoint.Equals(snapPoint) // approach new snapPoint
-                || (newsnapPoint == null && snapPoint != null)) // away from old  snapPoint need to clear
-                repaint = true;
-            if ((snapPoint = newsnapPoint) != null)
-                __current = Point.Round(snapPoint.Location);
-
-
-            if (e.Button == MouseButtons.Left && selectedObject != null && taskType == TaskEnum.select)
-            {
-                isDragging = true;
-                SnapPoint p = selectedObject as SnapPoint;
-                LineEdgePoint line = selectedObject as LineEdgePoint;
-                Type objectType = selectedObject.GetType();
-                if (objectType == typeof(LineEdgePoint))
-                {
-                    Point diff = __current - new Size(lastMove);
-                    line.__start.Location += new Size(diff);
-                    line.__end.Location += new Size(diff);
-                }
-                else if (objectType == typeof(SnapPoint) && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center) && p.upstream == null)
-                {
-                    p.Location = __current;
-                }
-                repaint = true;
-            }
-
-            lastMove = __current;
-
-            if (__engaged || repaint)
-            {
-                __control.Invalidate(false);
-            }
+            DspInteraction.HandleMouseMove(sender, e);
+        
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MouseClickHandler(Object sender, MouseEventArgs e)
+        private void MouseClickHandler(object sender, MouseEventArgs e)
         {
 
             if (e.X > __gray.Cols || e.Y > __gray.Rows || __graphics == null)
                 return;
 
+            DspInteraction.HandleMouseClick(sender, e);
+
+                //toolStripStatusLabel1.Text = lineEngaged.__start.ToString() + lineEngaged.__end.ToString();
+            }
+        
+
+
+        private void MouseDownHandler(object sender, MouseEventArgs e)
+        {
+
             PictureBoxIpl __control = (PictureBoxIpl)sender;
 
+            DspInteraction.HandleMouseDown(sender, e);
 
-            if (taskType == TaskEnum.select)
+            //!multi selection
+            if (__isMultiSelection)
             {
-
-            }
-            else if (taskType == TaskEnum.line)
-            {
-                if (!__engaged)
+                if (DspInteraction.SelectedObject is SnapPoint)
                 {
-                    lineEngaged = new LineEdgePoint();
-                    lineEngaged.__start.Location = __current;
-                    lineEngaged.__start.upstream = snapPoint;
-                    __engaged = true;
+                    __selectedPoints.Add((SnapPoint)DspInteraction.SelectedObject);
                 }
-                else
-                {
-                    lineEngaged.__end.Location = __current;
-                    lineEngaged.__end.upstream = snapPoint;
-                    __engaged = false;
-
-                    dataModel.ActiveLayer.Add(lineEngaged);
-                    lineEngaged.draw(__graphics);
-
-                    __control.Invalidate(false);
-                }
-
-                toolStripStatusLabel1.Text = lineEngaged.__start.ToString() + lineEngaged.__end.ToString();
             }
+
+            textBoxSelectionCounter.Text = __selectedPoints.Count.ToString();
         }
 
-        Point mousedownLocation;
-        private void MouseDownHandler(Object sender, MouseEventArgs e)
+        private void MouseUpHandler(object sender, MouseEventArgs e)
         {
-
-            mousedownLocation = e.Location;
-            if (taskType == TaskEnum.select)
-            {
-                PictureBoxIpl __control = (PictureBoxIpl)sender;
-                if (selectedObject != null) selectedObject.isSelected = false;
-                selectedObject = dataModel.GetHitObject(e.Location);
-                //isDragging = (selectedObject != null);
-
-
-                //!multi selection
-                if (__isMultiSelection)
-                {
-                    if (selectedObject is SnapPoint)
-                    {
-                        __selectedPoints.Add((SnapPoint)selectedObject);
-                    }
-                }
-
-                textBoxSelectionCounter.Text = __selectedPoints.Count.ToString();
-
-                __control.Invalidate(false);
-            }
+            DspInteraction.HandleMouseUp(sender, e);
         }
-
-        private void MouseUpHandler(Object sender, MouseEventArgs e)
+        private void PaintEventHandler(object sender, PaintEventArgs e)
         {
-            Point diff = e.Location - new Size(mousedownLocation);
-            double dis = Math.Abs(diff.X) + Math.Abs(diff.Y);
-            if (isDragging && selectedObject != null && dis > 10)
-            {
-                selectedObject.isSelected = false;
-                ClearAndDraw();
-            }
-            isDragging = false;
-        }
-        private void PaintEventHandler(Object sender, PaintEventArgs e)
-        {
-            if (isDragging)
-                dataModel.Rework(e.Graphics, __gray);   //preview status
-            if (selectedObject != null)
-                selectedObject.draw(e.Graphics);
-            if (snapPoint != null)
-                snapPoint.draw(e.Graphics);
-            if (__engaged)
-            {
-                lineEngaged.__end.Location = __current;  //attract to snapPoint
-                lineEngaged.draw(e.Graphics, __gray);
-            }
+            DspInteraction.HandlePaintEvent(sender, e);
         }
 
         /// <summary>
@@ -243,6 +128,12 @@ namespace WindowsFormsApp2
             __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
 
 
+            DspInteraction.Graphics = __graphics;
+            DspInteraction.Gray = __gray;
+            DspInteraction.DoInvalid += delegate { __box.Invalidate(false); };
+            DspInteraction.StatusChange += delegate { ClearAndDraw(); };
+            
+
             ///mouse coordinate not match with image coordinate
             __box.MouseMove += MouseMoveHandler;
             __box.MouseClick += MouseClickHandler;
@@ -256,56 +147,46 @@ namespace WindowsFormsApp2
             __isLoaded = true;
         }
 
+      
         private void btnNewLayser_Click(object sender, EventArgs e)
         {
-            numericUpDown1.Maximum = dataModel.CreateNewLayer();
+            numericUpDown1.Maximum = DspInteraction.DataModel.CreateNewLayer();
             numericUpDown1.Value = numericUpDown1.Maximum;
         }
 
 
         private void btnTask_Click(object sender, EventArgs e)
         {
-            selectedObject = null;
+
             if (sender == btnLine)
-                taskType = TaskEnum.line;
+                DspInteraction.Task = TaskType.SearchEdge;
             else if (sender == btnSelect)
-                taskType = TaskEnum.select;
+                DspInteraction.Task = TaskType.Select;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            dataModel.IndexofActiveLayer = (int)numericUpDown1.Value;
+           DspInteraction.DataModel.IndexofActiveLayer = (int)numericUpDown1.Value;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            dataModel.SetLayerVisible((int)numericUpDown1.Value, checkBox1.Checked);
+            DspInteraction.DataModel.SetLayerVisible((int)numericUpDown1.Value, checkBox1.Checked);
         }
 
         private void ClearAndDraw()
         {
             __graphics.Clear(Color.White);
             __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
-            dataModel.DrawAllLayersObjects(__graphics);
+            DspInteraction.DataModel.DrawAllLayersObjects(__graphics);
             __box.Invalidate(false);
         }
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+     
         private void fittingFeatureClick(object sender, EventArgs e)
         {
             if (sender == buttonFittingLine)
             {
-                LineFitted __newLine = new LineFitted();
-                dataModel.ActiveLayer.Add(__newLine);
-                __newLine.__selectedPoints = __selectedPoints;
-                __newLine.Fit();
-                __newLine.draw(__graphics);
+                DspInteraction.DataModel.FitLine(__selectedPoints, true).draw(__graphics);
             }
             else if (sender == buttonSelectionClear)
             {

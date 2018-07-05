@@ -7,9 +7,9 @@ using WindowsFormsApp2.Interface;
 namespace WindowsFormsApp2
 {
 
-    public  enum  PointType
+    public  enum  PointType :short
     {
-        start,
+        start =1,
         end,
         mid,
         center,
@@ -80,12 +80,15 @@ namespace WindowsFormsApp2
                 return false;
 
             SnapPoint right = (SnapPoint)obj;
+            if (upstream != right.upstream || Type != right.Type)
+                return false;
+
             return (Location.X == right.Location.X) && (Location.Y == right.Location.Y);
         }
 
         public override int GetHashCode()
         {
-            return (int)Math.Pow(Location.X, Location.Y);
+            return (int)Math.Pow(Location.X, Location.Y) * (int) Type;
         }
 
         public List<SnapPoint> GetSnapPoints()

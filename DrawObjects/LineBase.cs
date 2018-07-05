@@ -103,5 +103,8 @@ namespace WindowsFormsApp2.DrawObjects
             isSelected = (h <= halflinewidth);
             return isSelected;
         }
+
+        public abstract Idraw Update(object data = null);
+       
     }
 }

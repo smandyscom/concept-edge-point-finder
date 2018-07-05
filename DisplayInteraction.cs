@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Windows.Forms;
+
 using WindowsFormsApp2.DrawObjects;
 using WindowsFormsApp2.Interface;
 
@@ -13,30 +14,48 @@ namespace WindowsFormsApp2
 {
     class DisplayInteraction : IDisplay
     {
-        public Graphics __graphics;
+        protected Graphics __graphics;
+        public Graphics Graphics { set { __graphics = value; } }
+
+        protected OpenCvSharp.Mat __gray;
+        public OpenCvSharp.Mat Gray { set { __gray = value; } }
+
         protected Model __dataModel = new Model();
         public Model DataModel { get { return __dataModel; } }
 
-
-        public MouseLocation mouseLocation { get; set; }
-
         protected TaskType __taskType;
-        public TaskType Task { set { __taskType = value; } }
+        public TaskType Task
+        {
+            set
+            {
+                __taskType = value;
+                __selectedObject = null;
+            }
+        }
+
+        public Idraw SelectedObject { get { return __selectedObject; } }
+
+
+        public DisplayInteraction()
+        {
+            __dataModel.VisibleChanged += delegate { Reorganize(); };
+        }
+        private MouseLocation mouseLocation = new MouseLocation();
+
 
         public event EventHandler DoInvalid;
-        public event EventHandler ClearAndDraw;
-
+        public event EventHandler StatusChange;
 
         protected SnapPoint __snap;
-        protected Idraw selectedObject;
+        protected Idraw __selectedObject;
         protected bool isDragging = false;
 
         protected LineEdgePoint lineEngaged;
-        protected bool __engaged = false;
+        protected bool __engaged = false;   //engaged line drawing
 
-        public void DrawAllLayersObjects(Graphics graphics)
+        public void DrawAllLayersObjects()
         {
-            __dataModel.DrawAllLayersObjects(graphics);
+            __dataModel.DrawAllLayersObjects(__graphics);
         }
 
         public void HandleMouseClick(object sender, MouseEventArgs e)
@@ -83,8 +102,8 @@ namespace WindowsFormsApp2
             mouseLocation.down = e.Location;
             if (__taskType == TaskType.Select)
             {
-                if (selectedObject != null) selectedObject.isSelected = false;
-                selectedObject = DataModel.GetHitObject(e.Location);
+                if (__selectedObject != null) __selectedObject.isSelected = false;
+                __selectedObject = DataModel.GetHitObject(e.Location);
                 DoInvalid(this, EventArgs.Empty);
             }
         }
@@ -105,7 +124,7 @@ namespace WindowsFormsApp2
 
             mouseLocation.last = mouseLocation.current;
 
-            if (isDragging || isSnaped)
+            if (isDragging || isSnaped || __engaged)
                 DoInvalid(this, EventArgs.Empty);
         }
 
@@ -128,18 +147,17 @@ namespace WindowsFormsApp2
 
         private bool isDraggingObject(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && selectedObject != null)
+            if (e.Button == MouseButtons.Left && __selectedObject != null)
             {
-                LineEdgePoint line = selectedObject as LineEdgePoint;
-                SnapPoint p = selectedObject as SnapPoint;
-                if (selectedObject is LineEdgePoint)
+                LineEdgePoint line = __selectedObject as LineEdgePoint;
+                SnapPoint p = __selectedObject as SnapPoint;
+                if (__selectedObject is LineEdgePoint)
                 {
-
                     Point diff = mouseLocation.current - new Size(mouseLocation.last);
                     line.__start.Location += new Size(diff);
                     line.__end.Location += new Size(diff);
                 }
-                else if (selectedObject is SnapPoint && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center) && p.upstream == null)
+                else if (__selectedObject is SnapPoint && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center) && p.upstream == null)
                 {
                     p.Location = mouseLocation.current;
                 }
@@ -153,20 +171,42 @@ namespace WindowsFormsApp2
         {
             Point diff = e.Location - new Size(mouseLocation.down);
             double dis = Math.Abs(diff.X) + Math.Abs(diff.Y);
-            if (isDragging && selectedObject != null && dis > 10)
-            {
-                selectedObject.isSelected = false;
-                ClearAndDraw(this, EventArgs.Empty);
-            }
+            if (isDragging && __selectedObject != null && dis > 10)
+                Reorganize();
+
             isDragging = false;
         }
 
-        public void UpdateAllObjects(Graphics graphics, OpenCvSharp.Mat gray)
+
+
+        public void HandlePaintEvent(object sender, PaintEventArgs e)
         {
-            __dataModel.Rework(graphics, gray);
+            if (isDragging)
+            {
+                __dataModel.UpdateAllObjects( __gray);   
+                __dataModel.DrawAllLayersObjects(e.Graphics);   //preview status
+            }
+            if (__selectedObject != null)
+                __selectedObject.draw(e.Graphics);
+            if (__snap != null)
+                __snap.draw(e.Graphics);
+            if (__engaged)
+            {
+                lineEngaged.__end.Location = mouseLocation.current;  //attract to snapPoint
+                lineEngaged.Update(__gray);
+                lineEngaged.draw(e.Graphics);
+            }
         }
 
-
+        /// <summary>
+        /// Idraw objects status has changed, info graphics create new
+        /// </summary>
+        private void Reorganize()
+        {
+            if (__selectedObject != null) __selectedObject.isSelected = false;
+            __selectedObject = null;
+            StatusChange?.Invoke(this, EventArgs.Empty);
+        }
 
     }
 }

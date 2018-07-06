@@ -123,6 +123,22 @@ namespace WindowsFormsApp2
         }
     }
 
+    public class InterSectPoint : SnapBase
+    {
 
+        private Idraw owner1;
+        private Idraw owner2;
+        public InterSectPoint( PointF location,Idraw owner1, Idraw owner2) : base(location, PointType.intersection)
+        {
+            this.owner1 = owner1;
+            this.owner2 = owner2;
+        }
+
+        public override Idraw Update(object data = null)
+        {
+            Location = Utils.GetIntersectPoint(owner1, owner2);
+            return this;
+        }
+    }
 
 }

@@ -20,9 +20,8 @@ namespace WindowsFormsApp2
             foreach (Idraw shape in drawObjects)
             {
                 if ((intersection = Utils.GetIntersectPoint(obj, shape)) != PointF.Empty)
-                    drawObjects.Add(new SnapPoint(intersection, PointType.intersection));
+                    drawObjects.Add(new InterSectPoint(intersection, obj,shape));
             }
-
         }
         public void DrawAllObject(Graphics graphics)
         {

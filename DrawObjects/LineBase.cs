@@ -27,13 +27,13 @@ namespace WindowsFormsApp2.DrawObjects
 
         public LineBase()
         {
-            __start = new SnapPoint(this, PointType.start);
-            __end = new SnapPoint(this, PointType.end);
+            __start = new SnapPoint(PointF.Empty, PointType.start);
+            __end = new SnapPoint(PointF.Empty, PointType.end);
         }
 
-        public virtual List<SnapPoint> GetSnapPoints()
+        public virtual List<SnapBase> GetSnapPoints()
         {
-            return new List<SnapPoint>() { __start,__end};
+            return new List<SnapBase>() { __start,__end};
         }
 
         public virtual bool isHitObject(PointF hit)

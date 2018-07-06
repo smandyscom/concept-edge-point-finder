@@ -13,7 +13,7 @@ namespace WindowsFormsApp2.DrawObjects
     {
         Mat __coefficient = new Mat();
 
-        public List<SnapPoint> __selectedPoints = new List<SnapPoint>();
+        public List<SnapBase> __selectedPoints = new List<SnapBase>();
 
         enum CoefficientDefinition : int
         {

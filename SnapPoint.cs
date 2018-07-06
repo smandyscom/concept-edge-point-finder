@@ -7,9 +7,9 @@ using WindowsFormsApp2.Interface;
 namespace WindowsFormsApp2
 {
 
-    public  enum  PointType :short
+    public enum PointType : short
     {
-        start =1,
+        start = 1,
         end,
         mid,
         center,
@@ -18,30 +18,24 @@ namespace WindowsFormsApp2
     };
 
 
-    public class SnapPoint : Idraw
+    public abstract class SnapBase : Idraw
     {
         public PointType Type = PointType.start;
-        public SnapPoint upstream = null;
+        //public SnapPoint upstream = null;
 
-        public Idraw owner = null;
+        // public Idraw owner = null;
 
 
         public PointF Location;
         float range = 10;
 
         public bool isSelected { get; set; }
-        
-          
 
-        public SnapPoint(PointF location, Idraw Owner, PointType type = PointType.mid)
+
+
+        public SnapBase(PointF location, PointType type)
         {
             Location = location;
-            owner = Owner;
-        }
-
-        public SnapPoint(Idraw Owner, PointType type)
-        {
-            owner = Owner;
             Type = type;
         }
 
@@ -79,8 +73,9 @@ namespace WindowsFormsApp2
             if (GetType() != obj.GetType())
                 return false;
 
-            SnapPoint right = (SnapPoint)obj;
-            if (upstream != right.upstream || Type != right.Type)
+            SnapBase right = (SnapBase)obj;
+
+            if (Type != right.Type)
                 return false;
 
             return (Location.X == right.Location.X) && (Location.Y == right.Location.Y);
@@ -88,12 +83,12 @@ namespace WindowsFormsApp2
 
         public override int GetHashCode()
         {
-            return (int)Math.Pow(Location.X, Location.Y) * (int) Type;
+            return (int)Math.Pow(Location.X, Location.Y) * (int)Type;
         }
 
-        public List<SnapPoint> GetSnapPoints()
+        public List<SnapBase> GetSnapPoints()
         {
-            return new List<SnapPoint>() { this};
+            return new List<SnapBase>() { this };
         }
 
         public override string ToString()
@@ -101,9 +96,33 @@ namespace WindowsFormsApp2
             return Type.ToString() + Location.ToString();
         }
 
-        public Idraw Update(object data = null)
+        public abstract Idraw Update(object data = null);
+    }
+
+    public class SnapPoint : SnapBase
+    {
+        public SnapBase upstream;
+
+        public SnapPoint(PointF location, PointType type) : base(location, type)
         {
-            throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                SnapPoint right = obj as SnapPoint;
+                return upstream == right.upstream;
+            }
+            return false;
+        }
+        public override Idraw Update(object data = null)
+        {
+            if (upstream != null) Location = upstream.Location;
+            return this;
         }
     }
+
+
+
 }

@@ -46,7 +46,7 @@ namespace WindowsFormsApp2
         public event EventHandler DoInvalid;
         public event EventHandler StatusChange;
 
-        protected SnapPoint __snap;
+        protected SnapBase __snap;
         protected Idraw __selectedObject;
         protected bool isDragging = false;
 
@@ -131,7 +131,7 @@ namespace WindowsFormsApp2
         protected bool isSnapChanged(Point e)
         {
             bool repaint = false;
-            SnapPoint newsnap = __dataModel.FindSnapPoint(e);
+            SnapBase newsnap = __dataModel.FindSnapPoint(e);
             if (__snap == null && newsnap == null)  // not close to any snapPoint
                 repaint = false;
             else if (newsnap != null && !newsnap.Equals(__snap) // approach new snapPoint
@@ -150,14 +150,14 @@ namespace WindowsFormsApp2
             if (e.Button == MouseButtons.Left && __selectedObject != null)
             {
                 LineEdgePoint line = __selectedObject as LineEdgePoint;
-                SnapPoint p = __selectedObject as SnapPoint;
+                SnapBase p = __selectedObject as SnapBase;
                 if (__selectedObject is LineEdgePoint)
                 {
                     Point diff = mouseLocation.current - new Size(mouseLocation.last);
                     line.__start.Location += new Size(diff);
                     line.__end.Location += new Size(diff);
                 }
-                else if (__selectedObject is SnapPoint && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center) && p.upstream == null)
+                else if (__selectedObject is SnapBase && (p.Type == PointType.start || p.Type == PointType.end || p.Type == PointType.center))
                 {
                     p.Location = mouseLocation.current;
                 }

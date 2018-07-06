@@ -88,7 +88,7 @@ namespace WindowsFormsApp2
         /// </summary>
         /// <param name="__points"></param>
         /// <returns></returns>
-        public static OpenCvSharp.Mat ToCoordsCoefficients(List<SnapPoint> __points)
+        public static OpenCvSharp.Mat ToCoordsCoefficients(List<SnapBase> __points)
         {
             //turns selection snap point into coeff array
             Mat __xVectors = new Mat();

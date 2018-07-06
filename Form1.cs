@@ -36,7 +36,7 @@ namespace WindowsFormsApp2
         /// <summary>
         /// Forehand of fitting
         /// </summary>
-        private List<SnapPoint> __selectedPoints = new List<SnapPoint>();
+        private List<SnapBase> __selectedPoints = new List<SnapBase>();
         bool __isMultiSelection;
 
         public Form1()
@@ -83,9 +83,9 @@ namespace WindowsFormsApp2
             //!multi selection
             if (__isMultiSelection)
             {
-                if (DspInteraction.SelectedObject is SnapPoint)
+                if (DspInteraction.SelectedObject is SnapBase)
                 {
-                    __selectedPoints.Add((SnapPoint)DspInteraction.SelectedObject);
+                    __selectedPoints.Add((SnapBase)DspInteraction.SelectedObject);
                 }
             }
 

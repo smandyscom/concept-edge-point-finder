@@ -18,7 +18,7 @@ namespace WindowsFormsApp2.DrawObjects
 
         public CircleBase()
         {
-            __center = new SnapPoint(this, PointType.center);
+            __center = new SnapPoint(PointF.Empty, PointType.center);
         }
 
         public bool isSelected
@@ -41,9 +41,9 @@ namespace WindowsFormsApp2.DrawObjects
                 __radius*2);
         }
 
-        public List<SnapPoint> GetSnapPoints()
+        public List<SnapBase> GetSnapPoints()
         {
-            return new List<SnapPoint>() {__center};
+            return new List<SnapBase>() {__center};
         }
 
         public bool isHitObject(PointF hit)

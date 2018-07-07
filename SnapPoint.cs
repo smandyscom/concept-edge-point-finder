@@ -17,6 +17,8 @@ namespace WindowsFormsApp2
         edge
     };
 
+    // Equals(object obj)
+    //  https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
 
     public abstract class SnapBase : Idraw
     {
@@ -24,7 +26,6 @@ namespace WindowsFormsApp2
         //public SnapPoint upstream = null;
 
         // public Idraw owner = null;
-
 
         public PointF Location;
         float range = 10;
@@ -60,30 +61,9 @@ namespace WindowsFormsApp2
             return Math.Pow(Location.X - p.X, 2) + Math.Pow(Location.Y - p.Y, 2);
         }
 
-
         public void draw(Graphics g)
         {
             g.DrawRectangle(new Pen(Color.Cyan), Location.X - range / 2, Location.Y - range / 2, range, range);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
-            if (GetType() != obj.GetType())
-                return false;
-
-            SnapBase right = (SnapBase)obj;
-
-            if (Type != right.Type)
-                return false;
-
-            return (Location.X == right.Location.X) && (Location.Y == right.Location.Y);
-        }
-
-        public override int GetHashCode()
-        {
-            return (int)Math.Pow(Location.X, Location.Y) * (int)Type;
         }
 
         public List<SnapBase> GetSnapPoints()
@@ -106,16 +86,7 @@ namespace WindowsFormsApp2
         public SnapPoint(PointF location, PointType type) : base(location, type)
         {
         }
-
-        public override bool Equals(object obj)
-        {
-            if (base.Equals(obj))
-            {
-                SnapPoint right = obj as SnapPoint;
-                return upstream == right.upstream;
-            }
-            return false;
-        }
+      
         public override Idraw Update(object data = null)
         {
             if (upstream != null) Location = upstream.Location;
@@ -125,7 +96,6 @@ namespace WindowsFormsApp2
 
     public class InterSectPoint : SnapBase
     {
-
         private Idraw owner1;
         private Idraw owner2;
         public InterSectPoint( PointF location,Idraw owner1, Idraw owner2) : base(location, PointType.intersection)

@@ -15,13 +15,15 @@ namespace WindowsFormsApp2.DrawObjects
 
         public LineEdgePoint() : base()
         {
-            __mid = new SnapPoint(this, PointType.mid);
-            __edge = new SnapPoint(this, PointType.edge);
+            __mid = new SnapPoint(PointF.Empty, PointType.mid);
+            __edge = new SnapPoint(PointF.Empty, PointType.edge);
         }
         public override Idraw Update(object data = null)
         {
             Mat gray = data as Mat;
             if (gray == null) throw new Exception("input type error");
+            __start.Update();
+            __end.Update();
             __edge.Location = GetEdgePoint(gray);
             __mid.Location.X = (__start.Location.X + __end.Location.X) / 2;
             __mid.Location.Y = (__start.Location.Y + __end.Location.Y) / 2;
@@ -34,9 +36,9 @@ namespace WindowsFormsApp2.DrawObjects
             graphics.DrawEllipse(__penGreen, __edge.Location.X - width / 2, __edge.Location.Y - width / 2, width, width);
         }
 
-        public override List<SnapPoint> GetSnapPoints()
+        public override List<SnapBase> GetSnapPoints()
         {
-            List<SnapPoint> points = new List<SnapPoint>();
+            List<SnapBase> points = new List<SnapBase>();
             points.AddRange(base.GetSnapPoints());
             points.Add(__mid);
             points.Add(__edge);

@@ -8,7 +8,7 @@ namespace WindowsFormsApp2.Interface
     public interface Idraw
     {
         void draw(Graphics graphics);
-        List<SnapPoint> GetSnapPoints();
+        List<SnapBase> GetSnapPoints();
         bool isSelected { get; set; }
         bool isHitObject(PointF hit);
         Idraw Update(object data = null);

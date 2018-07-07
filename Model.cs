@@ -13,7 +13,6 @@ namespace WindowsFormsApp2
     public partial class Model
     {
 
-
         public List<Layer> LayerCollection { get; set; } = new List<Layer>();
 
         Layer activeLayer;
@@ -29,25 +28,15 @@ namespace WindowsFormsApp2
         }
 
 
-        public SnapPoint FindSnapPoint(Point hit)
+        public SnapBase FindSnapPoint(Point hit)
         {
-            List<SnapPoint> candidates = new List<SnapPoint>();
+            List<SnapBase> candidates = new List<SnapBase>();
             foreach (Layer la in LayerCollection.FindAll(la => la.visible))
             {
-                candidates.AddRange(la.snapPoints.FindAll(p => p.isHitObject(hit)));
+                SnapBase obj = la.GetHitObject(hit) as SnapBase;
+                if (obj != null) candidates.Add(obj);
+                if (candidates.Count > 0) return candidates.OrderBy(p => p.Distance2(hit)).First();
             }
-            if (candidates.Count > 0)
-            {
-                candidates.OrderBy(p => p.Distance2(hit));
-                double dis = candidates.First().Distance2(hit);
-
-                // find the min distance and no upstream snapPoint
-                List<SnapPoint> min = candidates.FindAll(p => p.Distance2(hit) == dis);
-                List<SnapPoint> isolate = min.FindAll(p => p.upstream == null);
-                return min.Union(isolate).First();
-            }
-
-
             return null;
         }
 
@@ -98,20 +87,7 @@ namespace WindowsFormsApp2
             {
                 foreach (Idraw obj in layer.drawObjects)
                 {
-                    foreach (SnapPoint p in obj.GetSnapPoints())
-                    {
-                        if (p.upstream != null)
-                            p.Location = p.upstream.Location;
-                    }
-                    //temp assume obj is line
-                    Type type = obj.GetType();
-                    if (type == typeof(LineEdgePoint))
-                        (obj as LineEdgePoint).Update(gray);
-                    else if (type == typeof(LineFitted))
-                    {
-                        (obj as LineFitted).Update();
-                    }
-
+                    obj.Update(gray);
                 }
             }
         }
@@ -135,7 +111,7 @@ namespace WindowsFormsApp2
         /// <param name="selection"></param>
         /// <param name="add"></param>
         /// <returns></returns>
-        public LineFitted FitLine(List<SnapPoint> selection, bool add)
+        public LineFitted FitLine(List<SnapBase> selection, bool add)
         {
             LineFitted line = new LineFitted();
             line.__selectedPoints = selection;
@@ -145,7 +121,7 @@ namespace WindowsFormsApp2
             return line;
         }
 
-        public CircleFitted FitCircle(List<SnapPoint> selection, bool add)
+        public CircleFitted FitCircle(List<SnapBase> selection, bool add)
         {
             CircleFitted __circle = new CircleFitted();
             __circle.__selectedPoints = selection;

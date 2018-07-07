@@ -13,7 +13,7 @@ namespace WindowsFormsApp2.DrawObjects
     {
         Mat __coefficient = new Mat();
 
-        public List<SnapPoint> __selectedPoints = new List<SnapPoint>();
+        public List<SnapBase> __selectedPoints = new List<SnapBase>();
 
         enum CoefficientDefinition : int
         {
@@ -44,7 +44,7 @@ namespace WindowsFormsApp2.DrawObjects
 
         public override Idraw Update(object data = null)
         {
-            //
+            __selectedPoints.ForEach(p => p.Update());
             Mat __yVectors = Mat.Zeros(__selectedPoints.Count, 1, MatType.CV_64FC1);
             PointF __point;
 

@@ -7,9 +7,9 @@ using WindowsFormsApp2.Interface;
 namespace WindowsFormsApp2
 {
 
-    public  enum  PointType :short
+    public enum PointType : short
     {
-        start =1,
+        start = 1,
         end,
         mid,
         center,
@@ -17,31 +17,26 @@ namespace WindowsFormsApp2
         edge
     };
 
+    // Equals(object obj)
+    //  https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
 
-    public class SnapPoint : Idraw
+    public abstract class SnapBase : Idraw
     {
         public PointType Type = PointType.start;
-        public SnapPoint upstream = null;
+        //public SnapPoint upstream = null;
 
-        public Idraw owner = null;
-
+        // public Idraw owner = null;
 
         public PointF Location;
         float range = 10;
 
         public bool isSelected { get; set; }
-        
-          
 
-        public SnapPoint(PointF location, Idraw Owner, PointType type = PointType.mid)
+
+
+        public SnapBase(PointF location, PointType type)
         {
             Location = location;
-            owner = Owner;
-        }
-
-        public SnapPoint(Idraw Owner, PointType type)
-        {
-            owner = Owner;
             Type = type;
         }
 
@@ -66,34 +61,14 @@ namespace WindowsFormsApp2
             return Math.Pow(Location.X - p.X, 2) + Math.Pow(Location.Y - p.Y, 2);
         }
 
-
         public void draw(Graphics g)
         {
             g.DrawRectangle(new Pen(Color.Cyan), Location.X - range / 2, Location.Y - range / 2, range, range);
         }
 
-        public override bool Equals(object obj)
+        public List<SnapBase> GetSnapPoints()
         {
-            if (obj == null)
-                return false;
-            if (GetType() != obj.GetType())
-                return false;
-
-            SnapPoint right = (SnapPoint)obj;
-            if (upstream != right.upstream || Type != right.Type)
-                return false;
-
-            return (Location.X == right.Location.X) && (Location.Y == right.Location.Y);
-        }
-
-        public override int GetHashCode()
-        {
-            return (int)Math.Pow(Location.X, Location.Y) * (int) Type;
-        }
-
-        public List<SnapPoint> GetSnapPoints()
-        {
-            return new List<SnapPoint>() { this};
+            return new List<SnapBase>() { this };
         }
 
         public override string ToString()
@@ -101,9 +76,39 @@ namespace WindowsFormsApp2
             return Type.ToString() + Location.ToString();
         }
 
-        public Idraw Update(object data = null)
+        public abstract Idraw Update(object data = null);
+    }
+
+    public class SnapPoint : SnapBase
+    {
+        public SnapBase upstream;
+
+        public SnapPoint(PointF location, PointType type) : base(location, type)
         {
-            throw new NotImplementedException();
+        }
+      
+        public override Idraw Update(object data = null)
+        {
+            if (upstream != null) Location = upstream.Location;
+            return this;
         }
     }
+
+    public class InterSectPoint : SnapBase
+    {
+        private Idraw owner1;
+        private Idraw owner2;
+        public InterSectPoint( PointF location,Idraw owner1, Idraw owner2) : base(location, PointType.intersection)
+        {
+            this.owner1 = owner1;
+            this.owner2 = owner2;
+        }
+
+        public override Idraw Update(object data = null)
+        {
+            Location = Utils.GetIntersectPoint(owner1, owner2);
+            return this;
+        }
+    }
+
 }

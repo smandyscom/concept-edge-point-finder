@@ -171,7 +171,7 @@ namespace WindowsFormsApp2
         {
             Point diff = e.Location - new Size(mouseLocation.down);
             double dis = Math.Abs(diff.X) + Math.Abs(diff.Y);
-            if (isDragging && __selectedObject != null && dis > 10)
+            if (isDragging && __selectedObject != null && dis > 5)
                 Reorganize();
 
             isDragging = false;

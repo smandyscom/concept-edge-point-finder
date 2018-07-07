@@ -22,6 +22,8 @@ namespace WindowsFormsApp2.DrawObjects
         {
             Mat gray = data as Mat;
             if (gray == null) throw new Exception("input type error");
+            __start.Update();
+            __end.Update();
             __edge.Location = GetEdgePoint(gray);
             __mid.Location.X = (__start.Location.X + __end.Location.X) / 2;
             __mid.Location.Y = (__start.Location.Y + __end.Location.Y) / 2;

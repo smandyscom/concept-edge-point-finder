@@ -38,6 +38,7 @@ namespace WindowsFormsApp2.DrawObjects
 
         public override Idraw Update(object data = null)
         {
+            __selectedPoints.ForEach(p => p.Update());
             //turns selection snap point into coeff array
             Mat __yVectors = Mat.Zeros(__selectedPoints.Count, 1, MatType.CV_64FC1);
             Coefficient =

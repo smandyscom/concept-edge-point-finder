@@ -87,10 +87,6 @@ namespace WindowsFormsApp2
             {
                 foreach (Idraw obj in layer.drawObjects)
                 {
-                    foreach (SnapBase p in obj.GetSnapPoints())
-                    {
-                        p.Update();
-                    }
                     obj.Update(gray);
                 }
             }

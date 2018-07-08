@@ -62,6 +62,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arch\CoordianteBase.cs" />
+    <Compile Include="Arch\ElementBase.cs" />
+    <Compile Include="Arch\SequenceBase.cs" />
     <Compile Include="DisplayInteraction.cs" />
     <Compile Include="DrawObjects\CircleBase.cs" />
     <Compile Include="DrawObjects\CircleFitted.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataStructure\HierarchyTree.cs" />
     <Compile Include="Interface\IDisplay.cs" />
     <Compile Include="Interface\Interface.cs" />
     <Compile Include="Layer.cs" />

@@ -11,11 +11,16 @@ using OpenCvSharp;
 
 namespace WindowsFormsApp2.Arch
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class CoordianteBase
     {
         //define CoordinateBase*PositionVector
         //define CoordinateBase*CoodianteBase
 
         //Tag , used to identify 
+
+        //TODO , when stored in linkedlist,  mark out the 'reverse node' ( start to do matrix inversion
     }
 }

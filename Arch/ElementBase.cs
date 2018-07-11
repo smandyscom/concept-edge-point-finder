@@ -15,14 +15,14 @@ namespace WindowsFormsApp2.Arch
         /// Holding depended elements' reference
         /// Which to determine this element's profile
         /// </summary>
-        List<ElementBase> __dependencies = new List<ElementBase>();
+        internal List<ElementBase> _dependencies = new List<ElementBase>();
 
         /// <summary>
-        /// updated coefficient... internal datas...etc
+        /// updated coefficient... internal features...etc
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        void OnDependeciesValueChanged(Object sender, EventArgs args)
+        public virtual void OnDependeciesValueChanged(Object sender, EventArgs args)
         {
         }
 
@@ -31,16 +31,21 @@ namespace WindowsFormsApp2.Arch
         /// </summary>
         public ElementBase(List<ElementBase> dependencies)
         {
-            __dependencies = dependencies;
+            //check if all dependcies in the same coordinate system
+
+            _dependencies = dependencies;
+
+            //inherit coordinate reference
+            _coordinateReference = _dependencies.First<ElementBase>()._coordinateReference;
         }
 
         /// <summary>
         ///Referenced coodiante system
         /// </summary>
-        HierarchyTreeNode<CoordinateBase> coordinateReference = null;
+        internal HierarchyTreeNode<CoordinateBase> _coordinateReference = null;
         /// <summary>
         /// 
         /// </summary>
-        LinkedListNode<SequenceBase> sequenceReference = null;
+        internal LinkedListNode<SequenceBase> _sequenceReference = null;
     }
 }

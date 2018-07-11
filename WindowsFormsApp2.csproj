@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arch\CoordinateBase.cs" />
+    <Compile Include="Arch\CoordinateComposed.cs" />
     <Compile Include="Arch\ElementBase.cs" />
     <Compile Include="Arch\PositionBase.cs" />
     <Compile Include="Arch\SequenceBase.cs" />

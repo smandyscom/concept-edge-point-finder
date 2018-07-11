@@ -9,13 +9,13 @@ namespace WindowsFormsApp2.Arch
     /// <summary>
     /// The base class for all graphical elements
     /// </summary>
-    public class ElementBase
+    public abstract class ElementBase
     {
         /// <summary>
         /// Holding depended elements' reference
         /// Which to determine this element's profile
         /// </summary>
-        List<ElementBase> dependencies = new List<ElementBase>();
+        List<ElementBase> __dependencies = new List<ElementBase>();
 
         /// <summary>
         /// updated coefficient... internal datas...etc
@@ -26,11 +26,21 @@ namespace WindowsFormsApp2.Arch
         {
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ElementBase(List<ElementBase> dependencies)
+        {
+            __dependencies = dependencies;
+        }
+
+        /// <summary>
         ///Referenced coodiante system
-
-        
-
-        
-        LinkedListNode<SequenceBase> sequenceReference;
+        /// </summary>
+        HierarchyTreeNode<CoordinateBase> coordinateReference = null;
+        /// <summary>
+        /// 
+        /// </summary>
+        LinkedListNode<SequenceBase> sequenceReference = null;
     }
 }

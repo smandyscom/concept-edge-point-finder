@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Arch\CoordianteBase.cs" />
     <Compile Include="Arch\ElementBase.cs" />
+    <Compile Include="Arch\PositionVectorBase.cs" />
     <Compile Include="Arch\SequenceBase.cs" />
     <Compile Include="DisplayInteraction.cs" />
     <Compile Include="DrawObjects\CircleBase.cs" />

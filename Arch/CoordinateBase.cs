@@ -35,7 +35,6 @@ namespace WindowsFormsApp2.Arch
             Y_END=2,
             Z_END=3,
         }
-        
 
         /// <summary>
         /// Editing interface
@@ -45,11 +44,12 @@ namespace WindowsFormsApp2.Arch
         {
             get
             {
-                return __transformation[0, __transformation.Rows - 1, 0, __transformation.Cols - 1];
+                UpdateTransformation();
+                return _transformation[0, _transformation.Rows - 1, 0, _transformation.Cols - 1];
             }
             set
             {
-                __transformation[0, __transformation.Rows - 1, 0, __transformation.Cols - 1] = value;
+                _transformation[0, _transformation.Rows - 1, 0, _transformation.Cols - 1] = value;
             }
         }
         /// <summary>
@@ -60,43 +60,80 @@ namespace WindowsFormsApp2.Arch
         {
             get
             {
-                return __transformation.Col[__transformation.Cols - 1];
+                UpdateTransformation();
+                return _transformation.Col[_transformation.Cols - 1];
             }
             set
             {
-                __transformation.Col[__transformation.Cols - 1] = value;
+                _transformation.Col[_transformation.Cols - 1] = value;
             }
         }
         /// <summary>
-        /// 
+        /// Transformation to parent
         /// </summary>
         public Mat Transformation
         {
             get
             {
-                return __transformation;
+                UpdateTransformation();
+                return _transformation;
+            }
+        }
+        /// <summary>
+        /// Transformation to any family member
+        /// if destination = null , means to root
+        /// </summary>
+        /// <returns></returns>
+        public CoordinateComposed Generate(HierarchyTreeNode<CoordinateBase> destination=null)
+        {
+            var _path = Node.Path(destination);
+            return new CoordinateComposed(_path.ToList<ElementBase>());
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public HierarchyTreeNode<CoordinateBase> Node
+        {
+            get
+            {
+                if (_node == null)
+                {
+                    _node = new HierarchyTreeNode<CoordinateBase>(this);
+                    _node.Parent = _coordinateReference;
+                }
+                return _node;
             }
         }
 
         /// <summary>
-        /// 
+        /// Left for derived class
         /// </summary>
-        internal Mat __transformation;
-        internal DefinitionDimension __dimension;
+        internal virtual void UpdateTransformation()
+        {
+
+        }
+
         /// <summary>
-        /// build transform matrix to parent by points set
+        /// Transformation to parent
+        /// </summary>
+        internal Mat _transformation;
+        internal DefinitionDimension __dimension;
+        internal HierarchyTreeNode<CoordinateBase> _node = null;
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <param name="dependencies"></param>
         public CoordinateBase(List<ElementBase> dependencies) : base(dependencies)
         {
-            
         }
         /// <summary>
         /// Default constructor (Root creation
         /// </summary>
         public CoordinateBase(DefinitionDimension dimension= DefinitionDimension.DIM_2D) : base(null)
         {
-            __transformation = Mat.Eye((int)dimension, (int)dimension, MatType.CV_64FC1);
+            _dependencies = null;
+            _transformation = Mat.Eye((int)dimension, (int)dimension, MatType.CV_64FC1);
         }
         /// <summary>
         /// 
@@ -108,6 +145,7 @@ namespace WindowsFormsApp2.Arch
             switch (__dimension)
             {
                 case DefinitionDimension.DIM_2D:
+                    //TODO
                     //setup origin
                     //calculate unit vector of X_END - ORIGIN as X_VECTOR
                     //calculate Y_VECTOR = (unit vector of Y_END - ORIGIN) - X_VECTOR
@@ -130,9 +168,6 @@ namespace WindowsFormsApp2.Arch
             return other._coordinateReference == this._coordinateReference;
         }
 
-
-        //TODO , traverse to desitionation coordinate
-
         //define CoordinateBase*CoodianteBase , ? ( HTM composed
 
         #region "operator overload"
@@ -145,7 +180,7 @@ namespace WindowsFormsApp2.Arch
             return new CoordinateBase()
             {
                 _coordinateReference = left._coordinateReference,
-                __transformation = left.__transformation * right.__transformation
+                _transformation = left._transformation * right._transformation
             };
         }
         #endregion

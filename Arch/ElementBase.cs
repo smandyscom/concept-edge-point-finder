@@ -24,6 +24,7 @@ namespace WindowsFormsApp2.Arch
         /// <param name="args"></param>
         public virtual void OnDependeciesValueChanged(Object sender, EventArgs args)
         {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -36,7 +37,8 @@ namespace WindowsFormsApp2.Arch
             _dependencies = dependencies;
 
             //inherit coordinate reference
-            _coordinateReference = _dependencies.First<ElementBase>()._coordinateReference;
+            _coordinateReference = _dependencies.Last()._coordinateReference;
+            OnDependeciesValueChanged(null, null);
         }
 
         /// <summary>

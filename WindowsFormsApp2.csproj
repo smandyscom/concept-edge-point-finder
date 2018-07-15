@@ -62,9 +62,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arch\CoordianteBase.cs" />
+    <Compile Include="Arch\CoordinateBase.cs" />
+    <Compile Include="Arch\CoordinateComposed.cs" />
     <Compile Include="Arch\ElementBase.cs" />
-    <Compile Include="Arch\PositionVectorBase.cs" />
+    <Compile Include="Arch\PositionBase.cs" />
     <Compile Include="Arch\SequenceBase.cs" />
     <Compile Include="DisplayInteraction.cs" />
     <Compile Include="DrawObjects\CircleBase.cs" />

@@ -24,7 +24,13 @@ namespace WindowsFormsApp2.Arch
         /// <param name="args"></param>
         public virtual void OnDependeciesValueChanged(Object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            //raise next level's update
+            //if not last node
+            if(_sequenceReference.Next != null)
+            {
+                _sequenceReference.Next.Value.OnUpdate(sender, args);
+            }
         }
 
         /// <summary>
@@ -46,7 +52,7 @@ namespace WindowsFormsApp2.Arch
         /// </summary>
         internal HierarchyTreeNode<CoordinateBase> _coordinateReference = null;
         /// <summary>
-        /// 
+        /// Referenced creation generation
         /// </summary>
         internal LinkedListNode<SequenceBase> _sequenceReference = null;
     }

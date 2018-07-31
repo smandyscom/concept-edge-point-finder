@@ -155,6 +155,7 @@ namespace WindowsFormsApp2.Arch
                 default:
                     break;
             }
+            base.OnDependeciesValueChanged(sender, args);
         }
 
         /// <summary>

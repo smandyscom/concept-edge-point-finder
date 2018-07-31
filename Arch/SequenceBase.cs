@@ -11,5 +11,14 @@ namespace WindowsFormsApp2.Arch
     /// </summary>
     class SequenceBase
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        protected event EventHandler Update;
+
+        public void OnUpdate(Object sender, EventArgs e)
+        {
+            Update(sender, e);
+        }
     }
 }

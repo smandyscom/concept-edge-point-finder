@@ -34,6 +34,7 @@ namespace WindowsFormsApp2.Arch
         public override void OnDependeciesValueChanged(object sender, EventArgs args)
         {
             UpdateTransformation();
+            base.OnDependeciesValueChanged(sender, args);
         }
         
         /// <summary>

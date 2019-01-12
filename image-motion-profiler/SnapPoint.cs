@@ -32,9 +32,9 @@ namespace WindowsFormsApp2
 
         public bool isSelected { get; set; }
 
+		public SnapBase upstream;
 
-
-        public SnapBase(PointF location, PointType type)
+		public SnapBase(PointF location, PointType type)
         {
             Location = location;
             Type = type;
@@ -81,8 +81,6 @@ namespace WindowsFormsApp2
 
     public class SnapPoint : SnapBase
     {
-        public SnapBase upstream;
-
         public SnapPoint(PointF location, PointType type) : base(location, type)
         {
         }

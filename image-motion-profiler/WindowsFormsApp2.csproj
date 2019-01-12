@@ -98,6 +98,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SnapPoint.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <Compile Include="WPF\UserControlCanvs.xaml.cs">
+      <DependentUpon>UserControlCanvs.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\ZoomBorder.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -125,7 +128,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="WPF\UserControlCanvs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

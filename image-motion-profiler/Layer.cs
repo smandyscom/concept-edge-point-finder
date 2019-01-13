@@ -21,16 +21,23 @@ namespace WindowsFormsApp2
             foreach (Idraw shape in drawObjects)
             {
                 if ((intersection = Utils.GetIntersectPoint(obj, shape)) != PointF.Empty)
-					needAdd.Add(new InterSectPoint(intersection, obj,shape));
+                {
+                    Idraw isp = new InterSectPoint(intersection, obj, shape);
+                    needAdd.Add(isp);
+                    
+
+                }
             }
+					
 			drawObjects.AddRange(needAdd);
         }
         public void DrawAllObject(Graphics graphics)
         {
 			drawObjects.ForEach(instance =>
 			{
-				if (!instance.GetType().IsSubclassOf(typeof(SnapBase)))
-					instance.draw(graphics);
+                
+				//if (!instance.GetType().IsSubclassOf(typeof(SnapBase)))
+					instance.draw(graphics);//intersection is not 
 				}
 			);
         }

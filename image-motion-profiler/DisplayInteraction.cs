@@ -175,6 +175,8 @@ namespace WindowsFormsApp2
                 Reorganize();
 
             isDragging = false;
+
+            DrawAllLayersObjects();
         }
 
 

@@ -28,7 +28,7 @@ namespace WindowsFormsApp2
         // public Idraw owner = null;
 
         public PointF Location;
-        float range = 10;
+        protected float range = 10;
 
         public bool isSelected { get; set; }
 
@@ -61,7 +61,7 @@ namespace WindowsFormsApp2
             return Math.Pow(Location.X - p.X, 2) + Math.Pow(Location.Y - p.Y, 2);
         }
 
-        public void draw(Graphics g)
+        public virtual void draw(Graphics g)
         {
             g.DrawRectangle(new Pen(Color.Cyan), Location.X - range / 2, Location.Y - range / 2, range, range);
         }
@@ -106,6 +106,11 @@ namespace WindowsFormsApp2
         {
             Location = Utils.GetIntersectPoint(owner1, owner2);
             return this;
+        }
+
+        public override void draw(Graphics g)
+        {
+            g.DrawEllipse(new Pen(Color.Yellow), Location.X - range / 2, Location.Y - range / 2, range, range);
         }
     }
 

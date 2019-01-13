@@ -11,7 +11,7 @@ using WindowsFormsApp2.Interface;
 using WindowsFormsApp2.DrawObjects;
 
 using WindowsFormsApp2.Fitting;
-
+using System.Windows.Forms.Integration;
 
 namespace WindowsFormsApp2
 {
@@ -109,8 +109,9 @@ namespace WindowsFormsApp2
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            __box = new PictureBoxIpl();
-            Controls.Add(__box);
+	
+			__box = new PictureBoxIpl();
+			tabPage1.Controls.Add(__box);
             __box.Dock = DockStyle.Fill;
 
             OpenCvSharp.Mat __raw = OpenCvSharp.Cv2.ImRead(@"../../lenna.png");

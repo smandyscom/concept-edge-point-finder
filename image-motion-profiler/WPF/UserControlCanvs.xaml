@@ -4,14 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WindowsFormsApp2.WPF"
+			 xmlns:Zoom ="clr-namespace:PanAndZoom"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+              Height="480" Width="512" SnapsToDevicePixels="True">
 	<UserControl.Resources>
 		<local:Lines  x:Key="Lines"/>
 	</UserControl.Resources>
-	<Grid>
-		<Image Source="@../../lenna.png" HorizontalAlignment="Left"/>
-		<ItemsControl ItemsSource="{Binding Source={StaticResource Lines}}">
+	<Zoom:ZoomBorder>
+		<Grid>
+			<Image Source="pack://application:,,,/lenna.png" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True"/>
+			<ItemsControl ItemsSource="{Binding Source={StaticResource Lines}}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
 					<Canvas/>
@@ -23,8 +25,8 @@
 						  X2="{Binding To.X}" Y2="{Binding To.Y}"
 						  Stroke="DarkGray" StrokeThickness="3"/>
 				</DataTemplate>
-
 			</ItemsControl.Resources>
 		</ItemsControl>
 	</Grid>
+	</Zoom:ZoomBorder>
 </UserControl>

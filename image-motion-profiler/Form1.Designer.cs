@@ -28,181 +28,239 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnNewLayer = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.btnLine = new System.Windows.Forms.Button();
-            this.btnSelect = new System.Windows.Forms.Button();
-            this.buttonFittingLine = new System.Windows.Forms.Button();
-            this.textBoxSelectionCounter = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.buttonSelectionClear = new System.Windows.Forms.Button();
-            this.checkBoxMulti = new System.Windows.Forms.CheckBox();
-            this.buttonCircle = new System.Windows.Forms.Button();
-            this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.btnNewLayer = new System.Windows.Forms.Button();
+			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+			this.checkBox1 = new System.Windows.Forms.CheckBox();
+			this.btnLine = new System.Windows.Forms.Button();
+			this.btnSelect = new System.Windows.Forms.Button();
+			this.buttonFittingLine = new System.Windows.Forms.Button();
+			this.textBoxSelectionCounter = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.buttonSelectionClear = new System.Windows.Forms.Button();
+			this.checkBoxMulti = new System.Windows.Forms.CheckBox();
+			this.buttonCircle = new System.Windows.Forms.Button();
+			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+			this.userControlCanvs1 = new WindowsFormsApp2.WPF.UserControlCanvs();
+			this.statusStrip1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+			this.tabControl1.SuspendLayout();
+			this.tabPage2.SuspendLayout();
+			this.SuspendLayout();
+			// 
+			// statusStrip1
+			// 
+			this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
-            this.statusStrip1.TabIndex = 0;
-            this.statusStrip1.Text = "Status";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(128, 17);
-            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
-            // 
-            // btnNewLayer
-            // 
-            this.btnNewLayer.Location = new System.Drawing.Point(700, 275);
-            this.btnNewLayer.Margin = new System.Windows.Forms.Padding(2);
-            this.btnNewLayer.Name = "btnNewLayer";
-            this.btnNewLayer.Size = new System.Drawing.Size(56, 18);
-            this.btnNewLayer.TabIndex = 1;
-            this.btnNewLayer.Text = "NewLayer";
-            this.btnNewLayer.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(693, 89);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+			this.statusStrip1.Location = new System.Drawing.Point(0, 680);
+			this.statusStrip1.Name = "statusStrip1";
+			this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
+			this.statusStrip1.Size = new System.Drawing.Size(1067, 24);
+			this.statusStrip1.TabIndex = 0;
+			this.statusStrip1.Text = "Status";
+			// 
+			// toolStripStatusLabel1
+			// 
+			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(158, 19);
+			this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+			// 
+			// btnNewLayer
+			// 
+			this.btnNewLayer.Location = new System.Drawing.Point(933, 344);
+			this.btnNewLayer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.btnNewLayer.Name = "btnNewLayer";
+			this.btnNewLayer.Size = new System.Drawing.Size(75, 22);
+			this.btnNewLayer.TabIndex = 1;
+			this.btnNewLayer.Text = "NewLayer";
+			this.btnNewLayer.UseVisualStyleBackColor = true;
+			// 
+			// numericUpDown1
+			// 
+			this.numericUpDown1.Location = new System.Drawing.Point(924, 111);
+			this.numericUpDown1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.numericUpDown1.Maximum = new decimal(new int[] {
             0,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(90, 22);
-            this.numericUpDown1.TabIndex = 2;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(693, 132);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(56, 16);
-            this.checkBox1.TabIndex = 3;
-            this.checkBox1.Text = "Visible";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // btnLine
-            // 
-            this.btnLine.Location = new System.Drawing.Point(610, 315);
-            this.btnLine.Margin = new System.Windows.Forms.Padding(2);
-            this.btnLine.Name = "btnLine";
-            this.btnLine.Size = new System.Drawing.Size(56, 18);
-            this.btnLine.TabIndex = 4;
-            this.btnLine.Text = "Line";
-            this.btnLine.UseVisualStyleBackColor = true;
-            // 
-            // btnSelect
-            // 
-            this.btnSelect.Location = new System.Drawing.Point(610, 354);
-            this.btnSelect.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSelect.Name = "btnSelect";
-            this.btnSelect.Size = new System.Drawing.Size(56, 18);
-            this.btnSelect.TabIndex = 5;
-            this.btnSelect.Text = "Select";
-            this.btnSelect.UseVisualStyleBackColor = true;
-            // 
-            // buttonFittingLine
-            // 
-            this.buttonFittingLine.Location = new System.Drawing.Point(610, 193);
-            this.buttonFittingLine.Name = "buttonFittingLine";
-            this.buttonFittingLine.Size = new System.Drawing.Size(75, 23);
-            this.buttonFittingLine.TabIndex = 6;
-            this.buttonFittingLine.Text = "Fitting a line";
-            this.buttonFittingLine.UseVisualStyleBackColor = true;
-            this.buttonFittingLine.Click += new System.EventHandler(this.fittingFeatureClick);
-            // 
-            // textBoxSelectionCounter
-            // 
-            this.textBoxSelectionCounter.Location = new System.Drawing.Point(663, 167);
-            this.textBoxSelectionCounter.Name = "textBoxSelectionCounter";
-            this.textBoxSelectionCounter.ReadOnly = true;
-            this.textBoxSelectionCounter.Size = new System.Drawing.Size(56, 22);
-            this.textBoxSelectionCounter.TabIndex = 7;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(572, 177);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 12);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Selection counter";
-            // 
-            // buttonSelectionClear
-            // 
-            this.buttonSelectionClear.Location = new System.Drawing.Point(725, 167);
-            this.buttonSelectionClear.Name = "buttonSelectionClear";
-            this.buttonSelectionClear.Size = new System.Drawing.Size(75, 23);
-            this.buttonSelectionClear.TabIndex = 9;
-            this.buttonSelectionClear.Text = "Clear";
-            this.buttonSelectionClear.UseVisualStyleBackColor = true;
-            this.buttonSelectionClear.Click += new System.EventHandler(this.fittingFeatureClick);
-            // 
-            // checkBoxMulti
-            // 
-            this.checkBoxMulti.AutoSize = true;
-            this.checkBoxMulti.Location = new System.Drawing.Point(700, 200);
-            this.checkBoxMulti.Name = "checkBoxMulti";
-            this.checkBoxMulti.Size = new System.Drawing.Size(49, 16);
-            this.checkBoxMulti.TabIndex = 10;
-            this.checkBoxMulti.Text = "Multi";
-            this.checkBoxMulti.UseVisualStyleBackColor = true;
-            this.checkBoxMulti.CheckedChanged += new System.EventHandler(this.multiSelectHandler);
-            // 
-            // buttonCircle
-            // 
-            this.buttonCircle.Location = new System.Drawing.Point(610, 222);
-            this.buttonCircle.Name = "buttonCircle";
-            this.buttonCircle.Size = new System.Drawing.Size(95, 23);
-            this.buttonCircle.TabIndex = 11;
-            this.buttonCircle.Text = "Fitting a circle";
-            this.buttonCircle.UseVisualStyleBackColor = true;
-            this.buttonCircle.Click += new System.EventHandler(this.fittingFeatureClick);
-            // 
-            // Form1
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.buttonCircle);
-            this.Controls.Add(this.checkBoxMulti);
-            this.Controls.Add(this.buttonSelectionClear);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBoxSelectionCounter);
-            this.Controls.Add(this.buttonFittingLine);
-            this.Controls.Add(this.btnSelect);
-            this.Controls.Add(this.btnLine);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.btnNewLayer);
-            this.Controls.Add(this.statusStrip1);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+			this.numericUpDown1.Name = "numericUpDown1";
+			this.numericUpDown1.Size = new System.Drawing.Size(120, 25);
+			this.numericUpDown1.TabIndex = 2;
+			this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+			// 
+			// checkBox1
+			// 
+			this.checkBox1.AutoSize = true;
+			this.checkBox1.Checked = true;
+			this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBox1.Location = new System.Drawing.Point(924, 165);
+			this.checkBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.checkBox1.Name = "checkBox1";
+			this.checkBox1.Size = new System.Drawing.Size(69, 19);
+			this.checkBox1.TabIndex = 3;
+			this.checkBox1.Text = "Visible";
+			this.checkBox1.UseVisualStyleBackColor = true;
+			this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+			// 
+			// btnLine
+			// 
+			this.btnLine.Location = new System.Drawing.Point(813, 394);
+			this.btnLine.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.btnLine.Name = "btnLine";
+			this.btnLine.Size = new System.Drawing.Size(75, 22);
+			this.btnLine.TabIndex = 4;
+			this.btnLine.Text = "Line";
+			this.btnLine.UseVisualStyleBackColor = true;
+			// 
+			// btnSelect
+			// 
+			this.btnSelect.Location = new System.Drawing.Point(813, 442);
+			this.btnSelect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.btnSelect.Name = "btnSelect";
+			this.btnSelect.Size = new System.Drawing.Size(75, 22);
+			this.btnSelect.TabIndex = 5;
+			this.btnSelect.Text = "Select";
+			this.btnSelect.UseVisualStyleBackColor = true;
+			// 
+			// buttonFittingLine
+			// 
+			this.buttonFittingLine.Location = new System.Drawing.Point(813, 241);
+			this.buttonFittingLine.Margin = new System.Windows.Forms.Padding(4);
+			this.buttonFittingLine.Name = "buttonFittingLine";
+			this.buttonFittingLine.Size = new System.Drawing.Size(100, 29);
+			this.buttonFittingLine.TabIndex = 6;
+			this.buttonFittingLine.Text = "Fitting a line";
+			this.buttonFittingLine.UseVisualStyleBackColor = true;
+			this.buttonFittingLine.Click += new System.EventHandler(this.fittingFeatureClick);
+			// 
+			// textBoxSelectionCounter
+			// 
+			this.textBoxSelectionCounter.Location = new System.Drawing.Point(884, 209);
+			this.textBoxSelectionCounter.Margin = new System.Windows.Forms.Padding(4);
+			this.textBoxSelectionCounter.Name = "textBoxSelectionCounter";
+			this.textBoxSelectionCounter.ReadOnly = true;
+			this.textBoxSelectionCounter.Size = new System.Drawing.Size(73, 25);
+			this.textBoxSelectionCounter.TabIndex = 7;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(763, 221);
+			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(105, 15);
+			this.label1.TabIndex = 8;
+			this.label1.Text = "Selection counter";
+			// 
+			// buttonSelectionClear
+			// 
+			this.buttonSelectionClear.Location = new System.Drawing.Point(967, 209);
+			this.buttonSelectionClear.Margin = new System.Windows.Forms.Padding(4);
+			this.buttonSelectionClear.Name = "buttonSelectionClear";
+			this.buttonSelectionClear.Size = new System.Drawing.Size(100, 29);
+			this.buttonSelectionClear.TabIndex = 9;
+			this.buttonSelectionClear.Text = "Clear";
+			this.buttonSelectionClear.UseVisualStyleBackColor = true;
+			this.buttonSelectionClear.Click += new System.EventHandler(this.fittingFeatureClick);
+			// 
+			// checkBoxMulti
+			// 
+			this.checkBoxMulti.AutoSize = true;
+			this.checkBoxMulti.Location = new System.Drawing.Point(933, 250);
+			this.checkBoxMulti.Margin = new System.Windows.Forms.Padding(4);
+			this.checkBoxMulti.Name = "checkBoxMulti";
+			this.checkBoxMulti.Size = new System.Drawing.Size(61, 19);
+			this.checkBoxMulti.TabIndex = 10;
+			this.checkBoxMulti.Text = "Multi";
+			this.checkBoxMulti.UseVisualStyleBackColor = true;
+			this.checkBoxMulti.CheckedChanged += new System.EventHandler(this.multiSelectHandler);
+			// 
+			// buttonCircle
+			// 
+			this.buttonCircle.Location = new System.Drawing.Point(813, 278);
+			this.buttonCircle.Margin = new System.Windows.Forms.Padding(4);
+			this.buttonCircle.Name = "buttonCircle";
+			this.buttonCircle.Size = new System.Drawing.Size(127, 29);
+			this.buttonCircle.TabIndex = 11;
+			this.buttonCircle.Text = "Fitting a circle";
+			this.buttonCircle.UseVisualStyleBackColor = true;
+			this.buttonCircle.Click += new System.EventHandler(this.fittingFeatureClick);
+			// 
+			// tabControl1
+			// 
+			this.tabControl1.Controls.Add(this.tabPage1);
+			this.tabControl1.Controls.Add(this.tabPage2);
+			this.tabControl1.Location = new System.Drawing.Point(0, 1);
+			this.tabControl1.Name = "tabControl1";
+			this.tabControl1.SelectedIndex = 0;
+			this.tabControl1.Size = new System.Drawing.Size(756, 675);
+			this.tabControl1.TabIndex = 12;
+			// 
+			// tabPage1
+			// 
+			this.tabPage1.Location = new System.Drawing.Point(4, 25);
+			this.tabPage1.Name = "tabPage1";
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage1.Size = new System.Drawing.Size(748, 646);
+			this.tabPage1.TabIndex = 0;
+			this.tabPage1.Text = "tabPage1";
+			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// tabPage2
+			// 
+			this.tabPage2.Controls.Add(this.elementHost1);
+			this.tabPage2.Location = new System.Drawing.Point(4, 25);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage2.Size = new System.Drawing.Size(748, 646);
+			this.tabPage2.TabIndex = 1;
+			this.tabPage2.Text = "tabPage2";
+			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
+			// elementHost1
+			// 
+			this.elementHost1.Location = new System.Drawing.Point(0, 0);
+			this.elementHost1.Name = "elementHost1";
+			this.elementHost1.Size = new System.Drawing.Size(512, 480);
+			this.elementHost1.TabIndex = 0;
+			this.elementHost1.Text = "elementHost1";
+			this.elementHost1.Child = this.userControlCanvs1;
+			// 
+			// Form1
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(1067, 704);
+			this.Controls.Add(this.tabControl1);
+			this.Controls.Add(this.buttonCircle);
+			this.Controls.Add(this.checkBoxMulti);
+			this.Controls.Add(this.buttonSelectionClear);
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.textBoxSelectionCounter);
+			this.Controls.Add(this.buttonFittingLine);
+			this.Controls.Add(this.btnSelect);
+			this.Controls.Add(this.btnLine);
+			this.Controls.Add(this.checkBox1);
+			this.Controls.Add(this.numericUpDown1);
+			this.Controls.Add(this.btnNewLayer);
+			this.Controls.Add(this.statusStrip1);
+			this.Margin = new System.Windows.Forms.Padding(4);
+			this.Name = "Form1";
+			this.Text = "Form1";
+			this.Load += new System.EventHandler(this.Form1_Load);
+			this.statusStrip1.ResumeLayout(false);
+			this.statusStrip1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+			this.tabControl1.ResumeLayout(false);
+			this.tabPage2.ResumeLayout(false);
+			this.ResumeLayout(false);
+			this.PerformLayout();
 
         }
 
@@ -221,6 +279,11 @@
         private System.Windows.Forms.Button buttonSelectionClear;
         private System.Windows.Forms.CheckBox checkBoxMulti;
         private System.Windows.Forms.Button buttonCircle;
-    }
+		private System.Windows.Forms.TabControl tabControl1;
+		private System.Windows.Forms.TabPage tabPage1;
+		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.Integration.ElementHost elementHost1;
+		private WPF.UserControlCanvs userControlCanvs1;
+	}
 }
 

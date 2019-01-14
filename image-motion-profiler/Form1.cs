@@ -109,10 +109,8 @@ namespace WindowsFormsApp2
         {
 
             mainBox = new PictureBoxIpl();
-            Controls.Add(mainBox);
+            tabPage1.Controls.Add(mainBox);
             mainBox.Dock = DockStyle.Fill;
-
-            
 
            
             mainDisplay.DoInvalid += delegate { mainBox.Invalidate(false); };

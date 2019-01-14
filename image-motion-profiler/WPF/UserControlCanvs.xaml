@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="WindowsFormsApp2.WPF.UserControlCanvs"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WindowsFormsApp2.WPF"
+			 xmlns:Zoom ="clr-namespace:PanAndZoom"
+             mc:Ignorable="d" 
+              Height="480" Width="512" SnapsToDevicePixels="True">
+	<UserControl.Resources>
+		<local:Lines  x:Key="Lines"/>
+	</UserControl.Resources>
+	<Zoom:ZoomBorder>
+		<Grid>
+			<Image Source="pack://application:,,,/lenna.png" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True"/>
+			<ItemsControl ItemsSource="{Binding Source={StaticResource Lines}}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Canvas/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.Resources>
+				<DataTemplate DataType="{x:Type local:Line}">
+					<Line X1="{Binding From.X}" Y1="{Binding From.Y}"
+						  X2="{Binding To.X}" Y2="{Binding To.Y}"
+						  Stroke="DarkGray" StrokeThickness="3"/>
+				</DataTemplate>
+			</ItemsControl.Resources>
+		</ItemsControl>
+	</Grid>
+	</Zoom:ZoomBorder>
+</UserControl>

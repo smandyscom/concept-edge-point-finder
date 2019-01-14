@@ -14,7 +14,7 @@ namespace WindowsFormsApp2
         {
             Type type1 = shape1.GetType();
             Type type2 = shape2.GetType();
-            if (type1 == typeof(LineBase) && type2 == typeof(LineBase))
+            if (type1.IsSubclassOf(typeof(LineBase)) && type2.IsSubclassOf(typeof(LineBase)))
             {
                 LineBase line1 = shape1 as LineBase;
                 LineBase line2 = shape2 as LineBase;

@@ -19,20 +19,19 @@ namespace WindowsFormsApp2
 
     public partial class Form1 : Form
     {
-        PictureBoxIpl __box;
 
+        /// <summary>
+        /// TODO , these three things may be combined as one single object? would be better
+        /// </summary>
+        PictureBoxIpl mainBox;
+        IDisplay mainDisplay = new DisplayInteraction();
+        Graphics mainGraphics = null; //current Graphics to drasw
+        OpenCvSharp.Mat mainGrayImage = new OpenCvSharp.Mat();
 
-
-        IDisplay DspInteraction = new DisplayInteraction();
-
-        OpenCvSharp.Mat __gray = new OpenCvSharp.Mat();
         bool __isLoaded = false;
 
 
-        Graphics __graphics = null; //current Graphics to drasw
-
-  
-
+      
         /// <summary>
         /// Forehand of fitting
         /// </summary>
@@ -51,22 +50,22 @@ namespace WindowsFormsApp2
      
         private void MouseMoveHandler(object sender, MouseEventArgs e)
         {
-            if (__isLoaded && e.X <= __gray.Cols && e.Y <= __gray.Rows)
+            if (__isLoaded && e.X <= mainGrayImage.Cols && e.Y <= mainGrayImage.Rows)
                 Text = String.Format("{0},{1},{2}",
                     e.X, e.Y,
-               __gray.At<byte>(e.X, e.Y));
+               mainGrayImage.At<byte>(e.X, e.Y));
 
-            DspInteraction.HandleMouseMove(sender, e);
+            mainDisplay.HandleMouseMove(sender, e);
         
         }
 
         private void MouseClickHandler(object sender, MouseEventArgs e)
         {
 
-            if (e.X > __gray.Cols || e.Y > __gray.Rows || __graphics == null)
+            if (e.X > mainGrayImage.Cols || e.Y > mainGrayImage.Rows || mainGraphics == null)
                 return;
 
-            DspInteraction.HandleMouseClick(sender, e);
+            mainDisplay.HandleMouseClick(sender, e);
 
                 //toolStripStatusLabel1.Text = lineEngaged.__start.ToString() + lineEngaged.__end.ToString();
             }
@@ -78,14 +77,14 @@ namespace WindowsFormsApp2
 
             PictureBoxIpl __control = (PictureBoxIpl)sender;
 
-            DspInteraction.HandleMouseDown(sender, e);
+            mainDisplay.HandleMouseDown(sender, e);
 
             //!multi selection
             if (__isMultiSelection)
             {
-                if (DspInteraction.SelectedObject is SnapBase)
+                if (mainDisplay.SelectedObject is SnapBase)
                 {
-                    __selectedPoints.Add((SnapBase)DspInteraction.SelectedObject);
+                    __selectedPoints.Add((SnapBase)mainDisplay.SelectedObject);
                 }
             }
 
@@ -94,11 +93,11 @@ namespace WindowsFormsApp2
 
         private void MouseUpHandler(object sender, MouseEventArgs e)
         {
-            DspInteraction.HandleMouseUp(sender, e);
+            mainDisplay.HandleMouseUp(sender, e);
         }
         private void PaintEventHandler(object sender, PaintEventArgs e)
         {
-            DspInteraction.HandlePaintEvent(sender, e);
+            mainDisplay.HandlePaintEvent(sender, e);
         }
 
         /// <summary>
@@ -109,48 +108,37 @@ namespace WindowsFormsApp2
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            __box = new PictureBoxIpl();
-            Controls.Add(__box);
-            __box.Dock = DockStyle.Fill;
+            mainBox = new PictureBoxIpl();
+            Controls.Add(mainBox);
+            mainBox.Dock = DockStyle.Fill;
 
-            OpenCvSharp.Mat __raw = OpenCvSharp.Cv2.ImRead(@"../../lenna.png");
+            
 
-            OpenCvSharp.Cv2.CvtColor(__raw, __gray, OpenCvSharp.ColorConversionCodes.BGR2GRAY);
-
-
-
-            Bitmap bitmap = new Bitmap(__gray.Width, __gray.Height);
-            __box.Image = bitmap;
-            __graphics = Graphics.FromImage(bitmap);
-            __graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-            __graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-            __graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
-            __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
-
-
-            DspInteraction.Graphics = __graphics;
-            DspInteraction.Gray = __gray;
-            DspInteraction.DoInvalid += delegate { __box.Invalidate(false); };
-            DspInteraction.StatusChange += delegate { ClearAndDraw(); };
+           
+            mainDisplay.DoInvalid += delegate { mainBox.Invalidate(false); };
+            mainDisplay.StatusChange += delegate { ClearAndDraw(); }; //TODO , take as internal handler?
             
 
             ///mouse coordinate not match with image coordinate
-            __box.MouseMove += MouseMoveHandler;
-            __box.MouseClick += MouseClickHandler;
-            __box.MouseDown += MouseDownHandler;
-            __box.MouseUp += MouseUpHandler;
+            mainBox.MouseMove += MouseMoveHandler;
+            mainBox.MouseClick += MouseClickHandler;
+            mainBox.MouseDown += MouseDownHandler;
+            mainBox.MouseUp += MouseUpHandler;
 
-            __box.Paint += PaintEventHandler;
+            mainBox.Paint += PaintEventHandler;
             btnNewLayer.Click += btnNewLayser_Click;
             btnLine.Click += btnTask_Click;
             btnSelect.Click += btnTask_Click;
+
+            loadPicture(@"../../lenna.png");
+
             __isLoaded = true;
         }
 
       
         private void btnNewLayser_Click(object sender, EventArgs e)
         {
-            numericUpDown1.Maximum = DspInteraction.DataModel.CreateNewLayer();
+            numericUpDown1.Maximum = mainDisplay.DataModel.CreateNewLayer();
             numericUpDown1.Value = numericUpDown1.Maximum;
         }
 
@@ -159,38 +147,38 @@ namespace WindowsFormsApp2
         {
 
             if (sender == btnLine)
-                DspInteraction.Task = TaskType.SearchEdge;
+                mainDisplay.Task = TaskType.SearchEdge;
             else if (sender == btnSelect)
-                DspInteraction.Task = TaskType.Select;
+                mainDisplay.Task = TaskType.Select;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-           DspInteraction.DataModel.IndexofActiveLayer = (int)numericUpDown1.Value;
+           mainDisplay.DataModel.IndexofActiveLayer = (int)numericUpDown1.Value;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            DspInteraction.DataModel.SetLayerVisible((int)numericUpDown1.Value, checkBox1.Checked);
+            mainDisplay.DataModel.SetLayerVisible((int)numericUpDown1.Value, checkBox1.Checked);
         }
 
         private void ClearAndDraw()
         {
-            __graphics.Clear(Color.White);
-            __graphics.DrawImage(__gray.ToBitmap(), new Point(0, 0));
-            DspInteraction.DataModel.DrawAllLayersObjects(__graphics);
-            __box.Invalidate(false);
+            mainGraphics.Clear(Color.White);
+            mainGraphics.DrawImage(mainGrayImage.ToBitmap(), new Point(0, 0));
+            mainDisplay.DataModel.DrawAllLayersObjects(mainGraphics);
+            mainBox.Invalidate(false);
         }
      
         private void fittingFeatureClick(object sender, EventArgs e)
         {
             if (sender == buttonFittingLine)
             {
-                DspInteraction.DataModel.FitLine(__selectedPoints, true).draw(__graphics);
+                mainDisplay.DataModel.FitLine(__selectedPoints, true).draw(mainGraphics);
             }
             else if (sender == buttonCircle)
             {
-                DspInteraction.DataModel.FitCircle(__selectedPoints, true).draw(__graphics);
+                mainDisplay.DataModel.FitCircle(__selectedPoints, true).draw(mainGraphics);
             }
             else if (sender == buttonSelectionClear)
             {
@@ -202,6 +190,41 @@ namespace WindowsFormsApp2
         private void multiSelectHandler(object sender, EventArgs e)
         {
             __isMultiSelection = checkBoxMulti.Checked;
+        }
+
+        /// <summary>
+        /// Handling menu action
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuActionHandler(object sender, EventArgs e)
+        {
+            if (sender == openToolStripMenuItem)
+            {
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    loadPicture(openFileDialog1.FileName);
+                }
+            }
+        }
+
+        private void loadPicture(String filename)
+        {
+            //@"../../lenna.png"
+            OpenCvSharp.Mat m_raw = OpenCvSharp.Cv2.ImRead(filename);
+            OpenCvSharp.Cv2.CvtColor(m_raw, mainGrayImage, OpenCvSharp.ColorConversionCodes.BGR2GRAY);
+
+            Bitmap bitmap = new Bitmap(mainGrayImage.Width, mainGrayImage.Height);
+            mainBox.Image = bitmap;
+
+            mainGraphics = Graphics.FromImage(bitmap);
+            mainGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+            mainGraphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            mainGraphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
+
+            mainDisplay.Graphics = mainGraphics;
+            mainDisplay.Gray = mainGrayImage;
+            mainGraphics.DrawImage(mainGrayImage.ToBitmap(), new Point(0, 0));
         }
     }
 

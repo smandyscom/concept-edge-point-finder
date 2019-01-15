@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using OpenCvSharp;
 
-namespace WindowsFormsApp2.Arch
+namespace Core.Arch
 {
     /// <summary>
     /// /// Define the homogenous transformation dimension
@@ -99,7 +99,7 @@ namespace WindowsFormsApp2.Arch
                 if (_node == null)
                 {
                     _node = new HierarchyTreeNode<CoordinateBase>(this);
-                    _node.Parent = _coordinateReference;
+                    _node.Parent = m_coordinateReference;
                 }
                 return _node;
             }
@@ -132,7 +132,7 @@ namespace WindowsFormsApp2.Arch
         /// </summary>
         public CoordinateBase(DefinitionDimension dimension= DefinitionDimension.DIM_2D) : base(null)
         {
-            _dependencies = null;
+            m_dependencies = null;
             _transformation = Mat.Eye((int)dimension, (int)dimension, MatType.CV_64FC1);
         }
         /// <summary>
@@ -140,7 +140,7 @@ namespace WindowsFormsApp2.Arch
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        public override void OnDependeciesValueChanged(object sender, EventArgs args)
+        public override void OnValueChanged(object sender, EventArgs args)
         {
             switch (__dimension)
             {
@@ -155,7 +155,7 @@ namespace WindowsFormsApp2.Arch
                 default:
                     break;
             }
-            base.OnDependeciesValueChanged(sender, args);
+            base.OnValueChanged(sender, args);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace WindowsFormsApp2.Arch
         public bool Equals(CoordinateBase other)
         {
             //reference equvalent
-            return other._coordinateReference == this._coordinateReference;
+            return other.m_coordinateReference == this.m_coordinateReference;
         }
 
         //define CoordinateBase*CoodianteBase , ? ( HTM composed
@@ -180,7 +180,7 @@ namespace WindowsFormsApp2.Arch
             //check if reference matched
             return new CoordinateBase()
             {
-                _coordinateReference = left._coordinateReference,
+                m_coordinateReference = left.m_coordinateReference,
                 _transformation = left._transformation * right._transformation
             };
         }

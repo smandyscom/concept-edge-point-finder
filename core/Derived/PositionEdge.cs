@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsFormsApp2.Arch;
-namespace WindowsFormsApp2.Derived
+using Core.Arch;
+namespace Core.Derived
 {
     /// <summary>
     /// 

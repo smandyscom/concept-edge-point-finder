@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindowsFormsApp2.Arch
+namespace Core.Arch
 {
     /// <summary>
     /// The base class for all graphical elements
@@ -15,22 +15,24 @@ namespace WindowsFormsApp2.Arch
         /// Holding depended elements' reference
         /// Which to determine this element's profile
         /// </summary>
-        internal List<ElementBase> _dependencies = new List<ElementBase>();
+        internal List<ElementBase> m_dependencies = new List<ElementBase>();
+
+        /// <summary>
+        /// Inform next level to update
+        /// </summary>
+        internal event EventHandler ValueChangedEvent;
 
         /// <summary>
         /// updated coefficient... internal features...etc
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        public virtual void OnDependeciesValueChanged(Object sender, EventArgs args)
+        public virtual void OnValueChanged(Object sender, EventArgs args)
         {
-            //throw new NotImplementedException();
-            //raise next level's update
-            //if not last node
-            if(_sequenceReference.Next != null)
-            {
-                _sequenceReference.Next.Value.OnUpdate(sender, args);
-            }
+
+            //TODO, do some calculation
+            //inform next level
+            ValueChangedEvent(this, null);
         }
 
         /// <summary>
@@ -39,21 +41,18 @@ namespace WindowsFormsApp2.Arch
         public ElementBase(List<ElementBase> dependencies)
         {
             //check if all dependcies in the same coordinate system
-
-            _dependencies = dependencies;
+            m_dependencies = dependencies;
+            m_dependencies.ForEach(item => item.ValueChangedEvent += OnValueChanged); 
 
             //inherit coordinate reference
-            _coordinateReference = _dependencies.Last()._coordinateReference;
-            OnDependeciesValueChanged(null, null);
+            m_coordinateReference = m_dependencies.Last().m_coordinateReference;
+
+            OnValueChanged(null, null);
         }
 
         /// <summary>
         ///Referenced coodiante system
         /// </summary>
-        internal HierarchyTreeNode<CoordinateBase> _coordinateReference = null;
-        /// <summary>
-        /// Referenced creation generation
-        /// </summary>
-        internal LinkedListNode<SequenceBase> _sequenceReference = null;
+        internal HierarchyTreeNode<CoordinateBase> m_coordinateReference = null;
     }
 }

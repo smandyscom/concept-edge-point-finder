@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using OpenCvSharp;
 
-namespace WindowsFormsApp2.Arch
+namespace Core.Arch
 {
     /// <summary>
     /// Or point base
@@ -25,7 +25,7 @@ namespace WindowsFormsApp2.Arch
             
         }
 
-        public override void OnDependeciesValueChanged(object sender, EventArgs args)
+        public override void OnValueChanged(object sender, EventArgs args)
         {
             //derived type implement this
         }
@@ -35,14 +35,14 @@ namespace WindowsFormsApp2.Arch
         {
             //reference upward
             return new PositionBase(null) {
-                _coordinateReference = coord._coordinateReference,
+                m_coordinateReference = coord.m_coordinateReference,
                 _position = coord.Transformation * position._position};
         }
         public static PositionBase operator +(PositionBase position1, PositionBase position2)
         {
             return new PositionBase(null)
             {
-                _coordinateReference = position1._coordinateReference,
+                m_coordinateReference = position1.m_coordinateReference,
                 _position = position1._position + position2._position
             };
         }
@@ -50,7 +50,7 @@ namespace WindowsFormsApp2.Arch
         {
             return new PositionBase(null)
             {
-                _coordinateReference = position1._coordinateReference,
+                m_coordinateReference = position1.m_coordinateReference,
                 _position = position1._position - position2._position
             };
         }

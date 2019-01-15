@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsFormsApp2.Arch;
+using Core.Arch;
 
 using OpenCvSharp;
 
-namespace WindowsFormsApp2.Derived
+namespace Core.Derived
 {
     /// <summary>
     /// The image node, used by following elements (i.e find edge/further processing ..etc

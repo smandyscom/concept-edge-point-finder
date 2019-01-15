@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using OpenCvSharp;
 
-namespace WindowsFormsApp2.Arch
+namespace Core.Arch
 {
     /// <summary>
     /// Composed coordinate , 
@@ -31,10 +31,10 @@ namespace WindowsFormsApp2.Arch
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        public override void OnDependeciesValueChanged(object sender, EventArgs args)
+        public override void OnValueChanged(object sender, EventArgs args)
         {
             UpdateTransformation();
-            base.OnDependeciesValueChanged(sender, args);
+            base.OnValueChanged(sender, args);
         }
         
         /// <summary>
@@ -43,8 +43,8 @@ namespace WindowsFormsApp2.Arch
         /// </summary>
         internal override void UpdateTransformation()
         {
-            var enumerator = _dependencies.GetEnumerator();
-            var _parent = ((CoordinateBase)_dependencies.First()).Node;
+            var enumerator = m_dependencies.GetEnumerator();
+            var _parent = ((CoordinateBase)m_dependencies.First()).Node;
 
             _transformation = Mat.Eye(4, 4, MatType.CV_64FC1);//TODO , inconsistent
             //from source to destination
@@ -62,7 +62,7 @@ namespace WindowsFormsApp2.Arch
                     _transformation = _transformation * ((CoordinateBase)enumerator.Current).Transformation.Inv();
                 }
 
-                _parent = enumerator.Current._coordinateReference; //move forward to compare
+                _parent = enumerator.Current.m_coordinateReference; //move forward to compare
             }
         }
     }

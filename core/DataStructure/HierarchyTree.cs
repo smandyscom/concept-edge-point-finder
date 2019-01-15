@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindowsFormsApp2
+namespace Core
 {
     /// <summary>
     /// https://stackoverflow.com/questions/66893/tree-data-structure-in-c-sharp

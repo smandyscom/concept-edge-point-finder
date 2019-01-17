@@ -46,7 +46,7 @@ namespace Core.Arch
             var enumerator = m_dependencies.GetEnumerator();
             var _parent = ((CoordinateBase)m_dependencies.First()).Node;
 
-            _transformation = Mat.Eye(4, 4, MatType.CV_64FC1);//TODO , inconsistent
+            m_transformation = Mat.Eye(4, 4, MatType.CV_64FC1);//TODO , inconsistent
             //from source to destination
             // S->D
             while (enumerator.MoveNext())
@@ -54,12 +54,12 @@ namespace Core.Arch
                 if (_parent == ((CoordinateBase)enumerator.Current).Node)
                 {
                     //parent matched , aligned
-                    _transformation = _transformation * ((CoordinateBase)enumerator.Current).Transformation;
+                    m_transformation = m_transformation * ((CoordinateBase)enumerator.Current).Transformation;
                 }
                 else
                 {
                     //parent not matched, implicty reversed
-                    _transformation = _transformation * ((CoordinateBase)enumerator.Current).Transformation.Inv();
+                    m_transformation = m_transformation * ((CoordinateBase)enumerator.Current).Transformation.Inv();
                 }
 
                 _parent = enumerator.Current.m_coordinateReference; //move forward to compare

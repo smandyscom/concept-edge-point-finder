@@ -20,7 +20,7 @@ namespace Core.Arch
         /// <summary>
         /// Inform next level to update
         /// </summary>
-        internal event EventHandler ValueChangedEvent;
+        protected event EventHandler ValueChangedEvent;
 
         /// <summary>
         /// updated coefficient... internal features...etc
@@ -47,7 +47,7 @@ namespace Core.Arch
             //inherit coordinate reference
             m_coordinateReference = m_dependencies.Last().m_coordinateReference;
 
-            OnValueChanged(null, null);
+            //OnValueChanged(null, null);
         }
 
         /// <summary>

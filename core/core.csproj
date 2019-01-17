@@ -59,12 +59,12 @@
     <Compile Include="Arch\CoordinateBase.cs" />
     <Compile Include="Arch\CoordinateComposed.cs" />
     <Compile Include="Arch\ElementBase.cs" />
-    <Compile Include="Arch\PositionBase.cs" />
+    <Compile Include="Arch\PointBase.cs" />
     <Compile Include="DataStructure\HierarchyTree.cs" />
     <Compile Include="Derived\ArcBase.cs" />
-    <Compile Include="Derived\ImageNode.cs" />
+    <Compile Include="Derived\GrayImage.cs" />
     <Compile Include="Derived\LineBase.cs" />
-    <Compile Include="Derived\PositionEdge.cs" />
+    <Compile Include="Derived\PointEdge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

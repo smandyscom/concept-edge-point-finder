@@ -45,11 +45,11 @@ namespace Core.Arch
             get
             {
                 UpdateTransformation();
-                return _transformation[0, _transformation.Rows - 1, 0, _transformation.Cols - 1];
+                return m_transformation[0, m_transformation.Rows - 1, 0, m_transformation.Cols - 1];
             }
             set
             {
-                _transformation[0, _transformation.Rows - 1, 0, _transformation.Cols - 1] = value;
+                m_transformation[0, m_transformation.Rows - 1, 0, m_transformation.Cols - 1] = value;
             }
         }
         /// <summary>
@@ -61,11 +61,11 @@ namespace Core.Arch
             get
             {
                 UpdateTransformation();
-                return _transformation.Col[_transformation.Cols - 1];
+                return m_transformation.Col[m_transformation.Cols - 1];
             }
             set
             {
-                _transformation.Col[_transformation.Cols - 1] = value;
+                m_transformation.Col[m_transformation.Cols - 1] = value;
             }
         }
         /// <summary>
@@ -76,7 +76,7 @@ namespace Core.Arch
             get
             {
                 UpdateTransformation();
-                return _transformation;
+                return m_transformation;
             }
         }
         /// <summary>
@@ -86,8 +86,8 @@ namespace Core.Arch
         /// <returns></returns>
         public CoordinateComposed Generate(HierarchyTreeNode<CoordinateBase> destination=null)
         {
-            var _path = Node.Path(destination);
-            return new CoordinateComposed(_path.ToList<ElementBase>());
+            var m_path = Node.Path(destination);
+            return new CoordinateComposed(m_path.ToList<ElementBase>());
         }
         /// <summary>
         /// 
@@ -96,12 +96,12 @@ namespace Core.Arch
         {
             get
             {
-                if (_node == null)
+                if (m_node == null)
                 {
-                    _node = new HierarchyTreeNode<CoordinateBase>(this);
-                    _node.Parent = m_coordinateReference;
+                    m_node = new HierarchyTreeNode<CoordinateBase>(this);
+                    m_node.Parent = m_coordinateReference;
                 }
-                return _node;
+                return m_node;
             }
         }
 
@@ -116,9 +116,9 @@ namespace Core.Arch
         /// <summary>
         /// Transformation to parent
         /// </summary>
-        internal Mat _transformation;
-        internal DefinitionDimension __dimension;
-        internal HierarchyTreeNode<CoordinateBase> _node = null;
+        internal Mat m_transformation;
+        internal DefinitionDimension m_dimension;
+        internal HierarchyTreeNode<CoordinateBase> m_node = null;
 
         /// <summary>
         /// 
@@ -133,7 +133,7 @@ namespace Core.Arch
         public CoordinateBase(DefinitionDimension dimension= DefinitionDimension.DIM_2D) : base(null)
         {
             m_dependencies = null;
-            _transformation = Mat.Eye((int)dimension, (int)dimension, MatType.CV_64FC1);
+            m_transformation = Mat.Eye((int)dimension, (int)dimension, MatType.CV_64FC1);
         }
         /// <summary>
         /// 
@@ -142,7 +142,7 @@ namespace Core.Arch
         /// <param name="args"></param>
         public override void OnValueChanged(object sender, EventArgs args)
         {
-            switch (__dimension)
+            switch (m_dimension)
             {
                 case DefinitionDimension.DIM_2D:
                     //TODO
@@ -181,7 +181,7 @@ namespace Core.Arch
             return new CoordinateBase()
             {
                 m_coordinateReference = left.m_coordinateReference,
-                _transformation = left._transformation * right._transformation
+                m_transformation = left.m_transformation * right.m_transformation
             };
         }
         #endregion

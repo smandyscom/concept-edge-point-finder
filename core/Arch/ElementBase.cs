@@ -42,11 +42,13 @@ namespace Core.Arch
         {
             //check if all dependcies in the same coordinate system
             m_dependencies = dependencies;
-            m_dependencies.ForEach(item => item.ValueChangedEvent += OnValueChanged); 
-
-            //inherit coordinate reference
-            m_coordinateReference = m_dependencies.Last().m_coordinateReference;
-
+            if (dependencies != null)
+            {
+                m_dependencies.ForEach(item => item.ValueChangedEvent += OnValueChanged);
+                //inherit coordinate reference
+                m_coordinateReference = m_dependencies.Last().m_coordinateReference;
+            }
+            
             //OnValueChanged(null, null);
         }
 

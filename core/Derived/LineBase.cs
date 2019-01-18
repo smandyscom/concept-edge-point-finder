@@ -12,7 +12,7 @@ namespace Core.Derived
     /// Dependencies
     /// Two points
     /// </summary>
-    class LineBase : ElementBase
+    public class LineBase : ElementBase
     {
         public Mat Vector
         {

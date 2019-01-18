@@ -67,6 +67,7 @@
     <Compile Include="Derived\LineFitted.cs" />
     <Compile Include="Derived\PointEdge.cs" />
     <Compile Include="Derived\PointIntersection.cs" />
+    <Compile Include="Fitting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

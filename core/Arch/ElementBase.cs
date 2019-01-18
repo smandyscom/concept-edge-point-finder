@@ -30,7 +30,7 @@ namespace Core.Arch
         public virtual void OnValueChanged(Object sender, EventArgs args)
         {
 
-            //TODO, do some calculation
+            //do some calculation, update internal variables
             //inform next level
             ValueChangedEvent(this, null);
         }

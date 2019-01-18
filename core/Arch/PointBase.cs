@@ -42,11 +42,6 @@ namespace Core.Arch
             
         }
 
-        public override void OnValueChanged(object sender, EventArgs args)
-        {
-            //derived type implement this
-        }
-
         #region "operator overload"
         public static PointBase operator *(CoordinateBase coord, PointBase position)
         {

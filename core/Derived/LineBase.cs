@@ -35,6 +35,10 @@ namespace Core.Derived
             get { return m_end2; }
         }
 
+        /// <summary>
+        /// TODO , ouput coeffcient , ax+by+c=0
+        /// </summary>
+
 
         internal PointBase m_end1 = null;
         internal PointBase m_end2 = null;
@@ -45,5 +49,7 @@ namespace Core.Derived
             m_end1 = dependencies.First() as PointBase;
             m_end2 = dependencies.Last() as PointBase;
         }
+
+
     }
 }

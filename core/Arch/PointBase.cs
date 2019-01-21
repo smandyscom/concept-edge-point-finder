@@ -23,13 +23,16 @@ namespace Core.Arch
             get { return m_point; }
             set
             {
-                m_point = value;
+                m_point = value.Clone(); //value copy
                 OnValueChanged(this, null);
             }
         }
 
         /// <summary>
-        /// Dimension restricted
+        /// Dimension restricted , homogenous
+        /// [x]
+        /// [y]
+        /// [1]
         /// </summary>
         internal Mat m_point = Mat.Ones((int)DefinitionDimension.DIM_2D,1,MatType.CV_64FC1);
 

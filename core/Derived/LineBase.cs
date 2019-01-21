@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Arch;
+using Core.LA;
 using OpenCvSharp;
 
 namespace Core.Derived
@@ -12,7 +13,7 @@ namespace Core.Derived
     /// Dependencies
     /// Two points
     /// </summary>
-    public class LineBase : ElementBase
+    public class LineBase : ElementBase , IGeometricItem
     {
         public Mat Vector
         {
@@ -36,9 +37,24 @@ namespace Core.Derived
         }
 
         /// <summary>
-        /// TODO , ouput coeffcient , ax+by+c=0
+        /// ouput coeffcient , ax+by+c=0
+        /// Solve : [0] = [x1   y1  1]  [a]
+        ///         [0]   [x2   y2  1]  [b]
+        ///                             [c]
         /// </summary>
+        public Mat Coefficient()
+        {
+            Mat xVectors = new Mat();
+            List<Mat> coord = new List<Mat>{
+                m_end1.Point.Transpose(),
+                m_end2.Point.Transpose()
+            };
+            //vertical concate
+            Cv2.VConcat(coord.ToArray(), xVectors);
 
+
+            return LinearAlgebra.RightSingularVector(xVectors);
+        }
 
         internal PointBase m_end1 = null;
         internal PointBase m_end2 = null;
@@ -50,6 +66,6 @@ namespace Core.Derived
             m_end2 = dependencies.Last() as PointBase;
         }
 
-
+        
     }
 }

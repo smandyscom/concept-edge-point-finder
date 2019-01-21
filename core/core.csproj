@@ -8,8 +8,8 @@
     <ProjectGuid>{7FC8336E-8668-4792-B2B6-99F1C4DDC757}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>core</RootNamespace>
-    <AssemblyName>core</AssemblyName>
+    <RootNamespace>Core</RootNamespace>
+    <AssemblyName>Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -48,6 +48,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,6 +61,7 @@
     <Compile Include="Arch\CoordinateBase.cs" />
     <Compile Include="Arch\CoordinateComposed.cs" />
     <Compile Include="Arch\ElementBase.cs" />
+    <Compile Include="Arch\IGeometricItem.cs" />
     <Compile Include="Arch\PointBase.cs" />
     <Compile Include="DataStructure\HierarchyTree.cs" />
     <Compile Include="Derived\ArcBase.cs" />
@@ -67,7 +70,7 @@
     <Compile Include="Derived\LineFitted.cs" />
     <Compile Include="Derived\PointEdge.cs" />
     <Compile Include="Derived\PointIntersection.cs" />
-    <Compile Include="Fitting.cs" />
+    <Compile Include="LinearAlgebra.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

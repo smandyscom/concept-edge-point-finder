@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 using OpenCvSharp;
 
-namespace WindowsFormsApp2.Fitting
+namespace Core.LA
 {
-    public class Fitting
+    public class LinearAlgebra
     {
         /// <summary>
         /// SVD solve minimum error solution
@@ -22,12 +22,12 @@ namespace WindowsFormsApp2.Fitting
             Mat vt = new Mat();
             Cv2.SVDecomp(matrix, w, u, vt);
 
-            Point __minLocation = new Point();
-            Point __maxLocation = new Point();
-            Cv2.MinMaxLoc(w,out __minLocation,out __maxLocation);
+            Point minLocation = new Point();
+            Point maxLocation = new Point();
+            Cv2.MinMaxLoc(w,out minLocation,out maxLocation);
 
             //find smallest sigular value
-            return vt.T().Col[__minLocation.Y];            
+            return vt.T().Col[minLocation.Y];            
         }
 
         /// <summary>
@@ -39,22 +39,22 @@ namespace WindowsFormsApp2.Fitting
         {
             //turns(stack pointClund into vertical stacked matrix
             Mat concatedCoords = new Mat();
-            Mat __point = OpenCvSharp.Mat.Ones(1, 3, MatType.CV_32FC1); // row vector
+            Mat point = OpenCvSharp.Mat.Ones(1, 3, MatType.CV_32FC1); // row vector
             foreach (OpenCvSharp.Point var in pointCloud)
             {
-                __point.Set<double>(0, 0, var.X);
-                __point.Set<double>(0, 1, var.Y);
+                point.Set<double>(0, 0, var.X);
+                point.Set<double>(0, 1, var.Y);
 
-                OpenCvSharp.Cv2.VConcat(__point,concatedCoords, concatedCoords); //vertical concate
+                OpenCvSharp.Cv2.VConcat(point,concatedCoords, concatedCoords); //vertical concate
             }
 
             // solve right singular vecotr at first stage
-            Mat __uvw =  RightSingularVector(concatedCoords);
+            Mat uvw =  RightSingularVector(concatedCoords);
             Mat concatedUVWs = new Mat();
             //horizon concate uvw
             for (int i = 0; i < pointCloud.Count; i++)
             {
-                OpenCvSharp.Cv2.HConcat(__uvw, concatedUVWs, concatedUVWs);
+                OpenCvSharp.Cv2.HConcat(uvw, concatedUVWs, concatedUVWs);
             }
 
             Mat coeefs =  concatedUVWs * concatedCoords.T().Inv(DecompTypes.SVD);
@@ -88,29 +88,29 @@ namespace WindowsFormsApp2.Fitting
         public static Mat DataFitting(Mat xVectors, Mat yVectors, FittingCategrory categrory, params int[] args)
         {
             Mat xCoeffMatrix = new Mat();
-            Mat __eachCoeff = new Mat();
-            Mat __eachX = new Mat();
+            Mat eachCoeff = new Mat();
+            Mat eachX = new Mat();
 
             for (int i = 0; i < xVectors.Rows; i++)
             {
-                __eachX = xVectors[i, i+1, 0, xVectors.Cols];
+                eachX = xVectors[i, i+1, 0, xVectors.Cols];
 
                 switch (categrory)
                 {
                     case FittingCategrory.Polynominal:
-                        __eachCoeff = GeneratePolynomialCoeff(__eachX, args[0]);
+                        eachCoeff = GeneratePolynomialCoeff(eachX, args[0]);
                         break;
                     case FittingCategrory.Ellipse:
-                        __eachCoeff = GenerateEllipseCoeff(__eachX);
+                        eachCoeff = GenerateEllipseCoeff(eachX);
                         break;
                     default:
                         break;
                 }
 
                 if (i == 0)
-                    xCoeffMatrix = __eachCoeff;
+                    xCoeffMatrix = eachCoeff;
                 else
-                    Cv2.VConcat(xCoeffMatrix, __eachCoeff, xCoeffMatrix);
+                    Cv2.VConcat(xCoeffMatrix, eachCoeff, xCoeffMatrix);
             }
 
             //General solution (yVecotr:=zero vector) + Particular solution (yVector:=non zero vector

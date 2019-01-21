@@ -32,7 +32,9 @@ namespace Core.Arch
 
             //do some calculation, update internal variables
             //inform next level
-            ValueChangedEvent(this, null);
+            EventHandler handler = ValueChangedEvent;
+            if(handler!=null)
+                handler(this, args);
         }
 
         /// <summary>

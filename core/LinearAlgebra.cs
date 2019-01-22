@@ -20,14 +20,22 @@ namespace Core.LA
             Mat w = new Mat(); //diagonal singular value matrix
             Mat u = new Mat();
             Mat vt = new Mat();
-            Cv2.SVDecomp(matrix, w, u, vt);
+            Cv2.SVDecomp(matrix, w, u, vt,SVD.Flags.FullUV);
 
-            Point minLocation = new Point();
-            Point maxLocation = new Point();
-            Cv2.MinMaxLoc(w,out minLocation,out maxLocation);
+            if (w.Size().Height < vt.Size().Height)
+            {
+                //the orthogonal base to kernal(0-vector mapping
+                return vt.T().Col[vt.Size().Height-1];
+            }
+            else
+            {
+                Point minLocation = new Point();
+                Point maxLocation = new Point();
+                Cv2.MinMaxLoc(w, out minLocation, out maxLocation);
 
-            //find smallest sigular value
-            return vt.T().Col[minLocation.Y];            
+                //find smallest sigular value
+                return vt.T().Col[minLocation.Y];
+            }                 
         }
 
         /// <summary>

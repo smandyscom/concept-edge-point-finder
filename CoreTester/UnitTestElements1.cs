@@ -9,44 +9,67 @@ namespace CoreTester
     [TestClass]
     public class UnitTestElements1
     {
+        CoordinateBase c1 = new CoordinateBase();
+        PointBase p00;
+        PointBase p55;
+        PointBase p05;
+        PointBase p50;
+        LineBase l0000;
+        LineBase l0550;
+        LineBase l0055;
+
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            p00 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
+            p55 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
+            p05 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
+            p50 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
+
+            p00.Point.SetArray(0, 0, new double[,]{{0},{0}}); //good mat initilizer
+            p55.Point.SetArray(0, 0, new double[,] { { 5 }, { 5 } }); //good mat initilizer
+            p05.Point.SetArray(0, 0, new double[,] { { 0 }, { 5 } }); //good mat initilizer
+            p50.Point.SetArray(0, 0, new double[,] { { 5 }, { 0 } }); //good mat initilizer
+
+        }
 
         [TestMethod]
         public void TestMethodPointAndLine()
         {
-            CoordinateBase c1 = new CoordinateBase();
-            PointBase p1 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
-            PointBase p2 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
-            LineBase l1 = new LineBase(new System.Collections.Generic.List<ElementBase> { p1, p2 });
+            l0000 = new LineBase(new System.Collections.Generic.List<ElementBase> { p00, p00 });
 
-            Assert.AreEqual(l1.Length,0);
+            Assert.AreEqual(l0000.Length,0);
 
         }
 
         [TestMethod]
         public void TestMethodSolveLineCoeff()
         {
-            CoordinateBase c1 = new CoordinateBase();
-            PointBase p1 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
-            PointBase p2 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
-            LineBase l1 = new LineBase(new System.Collections.Generic.List<ElementBase> { p1, p2 });
+            l0550 = new LineBase(new System.Collections.Generic.List<ElementBase> { p05, p50 });
 
-            Mat point = Mat.Ones((int)DefinitionDimension.DIM_2D, 1, MatType.CV_64FC1);
-            point.Set<double>(0, 0); //x1 
-            point.Set<double>(1, 5); //y1
-            p1.Point = point;
+            
 
-            point.Set<double>(0, 5); //x2
-            point.Set<double>(1, 0); //y2
-            p2.Point = point;
-
-            Mat coeff = l1.Coefficient();
-            Trace.WriteLine(l1.Coefficient().ToString());
+            Mat coeff = l0550.Coefficient();
+            Trace.WriteLine(l0550.Coefficient().ToString());
 
             //shoule equals to zero
-            Trace.WriteLine((coeff.Transpose() * p1.Point).ToMat().Norm());
-            Trace.WriteLine((coeff.Transpose() * p2.Point).ToMat().Norm());
+            Trace.WriteLine((coeff.Transpose() * p05.Point).ToMat().Norm());
+            Trace.WriteLine((coeff.Transpose() * p50.Point).ToMat().Norm());
+
+           
+        }
+
+        /// <summary>
+        /// Intersected/Parralel
+        /// </summary>
+        [TestMethod]
+        public void TestMethodSolvePointIntersect()
+        {
 
         }
+
+
 
         [TestMethod]
         public void TestMethodLineFitted()

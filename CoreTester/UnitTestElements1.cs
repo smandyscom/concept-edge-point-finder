@@ -32,13 +32,17 @@ namespace CoreTester
             p05.Point.SetArray(0, 0, new double[,] { { 0 }, { 5 } }); //good mat initilizer
             p50.Point.SetArray(0, 0, new double[,] { { 5 }, { 0 } }); //good mat initilizer
 
+            l0000 = new LineBase(new System.Collections.Generic.List<ElementBase> { p00, p00 });
+            l0550 = new LineBase(new System.Collections.Generic.List<ElementBase> { p05, p50 });
+            l0055 = new LineBase(new System.Collections.Generic.List<ElementBase> { p00, p55 });
+
+
         }
 
         [TestMethod]
         public void TestMethodPointAndLine()
         {
-            l0000 = new LineBase(new System.Collections.Generic.List<ElementBase> { p00, p00 });
-
+ 
             Assert.AreEqual(l0000.Length,0);
 
         }
@@ -46,7 +50,6 @@ namespace CoreTester
         [TestMethod]
         public void TestMethodSolveLineCoeff()
         {
-            l0550 = new LineBase(new System.Collections.Generic.List<ElementBase> { p05, p50 });
 
             
 
@@ -67,6 +70,9 @@ namespace CoreTester
         public void TestMethodSolvePointIntersect()
         {
 
+            PointIntersection pit = new PointIntersection(new System.Collections.Generic.List<ElementBase> { l0550, l0055 });
+
+            Trace.WriteLine(pit.Point.Get<double>(0));
         }
 
 

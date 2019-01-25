@@ -27,16 +27,18 @@ namespace CoreTester
             p05 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
             p50 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
 
-            p00.Point.SetArray(0, 0, new double[,]{{0},{0}}); //good mat initilizer
-            p55.Point.SetArray(0, 0, new double[,] { { 5 }, { 5 } }); //good mat initilizer
-            p05.Point.SetArray(0, 0, new double[,] { { 0 }, { 5 } }); //good mat initilizer
-            p50.Point.SetArray(0, 0, new double[,] { { 5 }, { 0 } }); //good mat initilizer
+            p00.Point.SetArray(0, 0, new double[] {  0 ,  0  }); //good mat initilizer
+            p55.Point.SetArray(0, 0, new double[] {  5 ,  5  }); //good mat initilizer
+            p05.Point = new Mat(3, 1, MatType.CV_64FC1, new double[] {  0 ,  5 , 1 }); //good mat initilizer
+            p50.Point = new Mat(3, 1, MatType.CV_64FC1, new double[] {  5 ,  0 , 1 }); //good mat initilizer
+
 
             l0000 = new LineBase(new System.Collections.Generic.List<ElementBase> { p00, p00 });
             l0550 = new LineBase(new System.Collections.Generic.List<ElementBase> { p05, p50 });
             l0055 = new LineBase(new System.Collections.Generic.List<ElementBase> { p00, p55 });
 
-
+            Mat coeff0550 = l0550.Coefficient();
+            Mat coeff0055 = l0055.Coefficient();
         }
 
         [TestMethod]

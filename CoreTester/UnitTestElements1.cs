@@ -4,6 +4,12 @@ using Core.Derived;
 using OpenCvSharp;
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
+using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
+
+using System;
+
 namespace CoreTester
 {
     [TestClass]
@@ -82,7 +88,29 @@ namespace CoreTester
         [TestMethod]
         public void TestMethodLineFitted()
         {
+            Random rnd = new Random(DateTime.Now.Millisecond);
 
+            //generate point set alone one line (10 points
+            List<ElementBase> pSet = new List<ElementBase>();
+
+            PointBase start = new PointBase(new List<ElementBase> { c1 });
+            start.Point = new Mat(3, 1, MatType.CV_64FC1, new double[] { 0, 0, 1 });
+            for (int i = 0; i < 10; i++)
+            {
+                PointBase next = new PointBase(new List<ElementBase> { c1 });
+                next.Point =
+                    start.Point +
+                    l0055.Vector * i + 
+                    new Mat(3,1,MatType.CV_64FC1,new double[] {
+                        rnd.NextDouble() -1,
+                        rnd.NextDouble() -1,
+                        1 });
+                pSet.Add(next);
+            }
+
+            LineFitted lf = new LineFitted(pSet);
+
+            Trace.WriteLine(lf.Coefficient());
         }
     }
 }

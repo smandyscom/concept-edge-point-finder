@@ -21,7 +21,7 @@ namespace Core.Derived
         /// <param name="dependencies"></param>
         public LineFitted(List<ElementBase> dependencies) : base(dependencies)
         {
-
+            OnValueChanged(this, null);
         }
 
         public override void OnValueChanged(object sender, EventArgs args)

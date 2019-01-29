@@ -58,5 +58,18 @@ namespace Core.Arch
         ///Referenced coodiante system
         /// </summary>
         internal HierarchyTreeNode<CoordinateBase> m_coordinateReference = null;
+
+
+        /// <summary>
+        /// Put bunch of elements and check if satisfied the avtivation contion for 
+        /// derived class
+        /// TODO
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <returns></returns>
+        public static bool isDependencySatisfied(List<ElementBase> collection)
+        {
+            return false;
+        }
     }
 }

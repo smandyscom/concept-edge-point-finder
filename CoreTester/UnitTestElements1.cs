@@ -82,6 +82,7 @@ namespace CoreTester
         [TestMethod]
         public void TestMethodLineFitted()
         {
+
         }
     }
 }

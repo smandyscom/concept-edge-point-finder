@@ -22,10 +22,10 @@ namespace Core.LA
             Mat vt = new Mat();
             Cv2.SVDecomp(matrix, w, u, vt,SVD.Flags.FullUV);
 
-            if (w.Size().Height < vt.Size().Height)
+            if (w.Cols < vt.Cols)
             {
                 //the orthogonal base to kernal(0-vector mapping
-                return vt.T().Col[vt.Size().Height-1];
+                return vt.T().Col[vt.Cols-1];
             }
             else
             {

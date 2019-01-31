@@ -102,8 +102,8 @@ namespace CoreTester
                     start.Point +
                     l0055.Vector * i + 
                     new Mat(3,1,MatType.CV_64FC1,new double[] {
-                        rnd.NextDouble() -1,
-                        rnd.NextDouble() -1,
+                        (rnd.NextDouble() -1)*1,
+                        (rnd.NextDouble() -1)*1,
                         1 });
                 pSet.Add(next);
             }

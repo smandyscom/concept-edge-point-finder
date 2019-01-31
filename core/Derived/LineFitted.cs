@@ -38,7 +38,8 @@ namespace Core.Derived
             m_coeff =  
                 LinearAlgebra.DataFitting(xVectors,
                 Mat.Zeros(xVectors.Rows, 1, xVectors.Type()),
-                LinearAlgebra.FittingCategrory.Polynominal);
+                LinearAlgebra.FittingCategrory.Polynominal,
+                1);
 
             //TODO , calculate m_end1, m_en2
 
@@ -83,7 +84,8 @@ namespace Core.Derived
 
             //find the max one
             int maxIndex = lengthTable.ToList().IndexOf(lengthTable.Max());
-            m_end1 = new PointBase(new List<ElementBase> { this});
+            if(m_end1 != null)
+                m_end1 = new PointBase(new List<ElementBase> { this});
             m_end1.Point = projectionList.ToList()[maxIndex];
 
             //find the another end
@@ -91,7 +93,8 @@ namespace Core.Derived
             {
                 return ((Mat)(point - m_end1.Point)).Norm();
             });
-            m_end2 = new PointBase(new List<ElementBase> { this });
+            if(m_end2 != null)
+                m_end2 = new PointBase(new List<ElementBase> { this });
             m_end2.Point = projectionList.ToList()[lengthTable.ToList().IndexOf(lengthTable.Max())];
         }
     }

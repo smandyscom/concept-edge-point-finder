@@ -9,7 +9,25 @@ namespace PanAndZoom
 {
     public class ZoomBorder : Border
     {
-        private UIElement child = null;
+
+		public double PrimaryX
+		{
+			get { return (double)GetValue(PrimaryXProperty); }
+		}
+		// Using a DependencyProperty as the backing store for ZoomX.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty PrimaryXProperty =
+			DependencyProperty.Register(nameof(PrimaryX), typeof(double), typeof(ZoomBorder), new PropertyMetadata(double.NaN));
+
+
+		public double PrimaryY
+		{
+			get { return (double)GetValue(PrimaryYProperty); }
+		}
+		// Using a DependencyProperty as the backing store for ZoomY.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty PrimaryYProperty =
+			DependencyProperty.Register(nameof(PrimaryY), typeof(double), typeof(ZoomBorder), new PropertyMetadata(double.NaN));
+
+		private UIElement child = null;
         private Point origin;
         private Point start;
 
@@ -97,7 +115,6 @@ namespace PanAndZoom
 
                 tt.X = abosuluteX - relative.X * st.ScaleX;
                 tt.Y = abosuluteY - relative.Y * st.ScaleY;
-                Debug.WriteLine(string.Format("rx:{0}, ry:{1}", relative.X, relative.Y));
             }
         }
 
@@ -131,14 +148,26 @@ namespace PanAndZoom
         {
             if (child != null)
             {
-                if (child.IsMouseCaptured)
+				var click = e.GetPosition(this);
+				var tt = GetTranslateTransform(child);
+				var st = GetScaleTransform(child);
+
+				if (child.IsMouseCaptured)
                 {
-                    var tt = GetTranslateTransform(child);
-                    Vector v = start - e.GetPosition(this);
+                  
+					
+					Vector v = start - click;
                     tt.X = origin.X - v.X;
                     tt.Y = origin.Y - v.Y;
                 }
-            }
+
+
+				double zoom1x = (click.X - tt.X) / st.ScaleX;
+				double zoom1y = (click.Y - tt.Y) / st.ScaleY;
+				SetValue(PrimaryXProperty, zoom1x);
+				SetValue(PrimaryYProperty, zoom1y);
+			
+			}
         }
 
         #endregion

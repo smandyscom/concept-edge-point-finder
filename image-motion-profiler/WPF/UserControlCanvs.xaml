@@ -10,9 +10,17 @@
 	<UserControl.Resources>
 		<local:Lines  x:Key="Lines"/>
 	</UserControl.Resources>
-	<Zoom:ZoomBorder>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">
 		<Grid>
-			<Image Source="pack://application:,,,/lenna.png" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True"/>
+			<Image Source="pack://application:,,,/lenna.png" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True" Stretch="None"/>
 			<ItemsControl ItemsSource="{Binding Source={StaticResource Lines}}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
@@ -29,4 +37,15 @@
 		</ItemsControl>
 	</Grid>
 	</Zoom:ZoomBorder>
+		
+		
+		<TextBlock Grid.Row="1" Grid.Column="0" FontSize="20">
+			<TextBlock.Text>
+				<MultiBinding StringFormat="X:{0}		Y:{1}">
+					<Binding ElementName="Border" Path="PrimaryX"/>
+					<Binding ElementName="Border" Path="PrimaryY"/>
+				</MultiBinding>
+			</TextBlock.Text>
+		</TextBlock>
+	</Grid>
 </UserControl>

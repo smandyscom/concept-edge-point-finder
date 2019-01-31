@@ -23,7 +23,7 @@ namespace WindowsFormsApp2.WPF
 	{
 		public Lines()
 		{
-			Add(new Line { From = new Point(0, 0), To = new Point(502, 470) });
+			Add(new Line { From = new Point(0, 0), To = new Point(512, 480) });
 			Add(new Line { From = new Point(180, 180), To = new Point(20, 180) });
 			Add(new Line { From = new Point(20, 180), To = new Point(100, 20) });
 			Add(new Line { From = new Point(20, 50), To = new Point(180, 150) });

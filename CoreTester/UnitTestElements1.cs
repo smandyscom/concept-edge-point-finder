@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Core.Arch;
 using Core.Derived;
+using Core.LA;
+
 using OpenCvSharp;
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
@@ -23,6 +25,7 @@ namespace CoreTester
         LineBase l0000;
         LineBase l0550;
         LineBase l0055;
+        LineFitted lf;
 
 
         [TestInitialize]
@@ -83,8 +86,6 @@ namespace CoreTester
             Trace.WriteLine(pit.Point.Get<double>(0));
         }
 
-
-
         [TestMethod]
         public void TestMethodLineFitted()
         {
@@ -108,9 +109,21 @@ namespace CoreTester
                 pSet.Add(next);
             }
 
-            LineFitted lf = new LineFitted(pSet);
+            lf = new LineFitted(pSet);
 
             Trace.WriteLine(lf.Coefficient());
+        }
+
+        [TestMethod]
+        public void TestProjection()
+        {
+            Mat line = new Mat(1, 3, MatType.CV_64FC1, new double[] {0 , 1,  0 });
+            Mat point1 = new Mat(3, 1, MatType.CV_64FC1, new double[] {0.5,0.5,1 });
+            Mat point2 = new Mat(3, 1, MatType.CV_64FC1, new double[] {0.5,-0.5,1 });
+
+
+            Mat result = LinearAlgebra.CalculateProjection(line, point1);
+            result = LinearAlgebra.CalculateProjection(line, point2);
         }
     }
 }

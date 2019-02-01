@@ -97,5 +97,7 @@ namespace Core.Derived
                 m_end2 = new PointBase(new List<ElementBase> { this });
             m_end2.Point = projectionList.ToList()[lengthTable.ToList().IndexOf(lengthTable.Max())];
         }
+
+        
     }
 }

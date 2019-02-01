@@ -163,5 +163,30 @@ namespace Core.LA
 
             return coeffVector;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="coeff">
+        /// The geometric object , mxn
+        /// </param>
+        /// <param name="nearby">
+        /// The point not allocated on the geo object , nx1
+        /// </param>
+        /// <returns></returns>
+        public static Mat CalculateProjection(Mat coeff, Mat nearby)
+        {
+            var distance = coeff * nearby; //would be 1x1 constant
+
+            var subtract = coeff.SubMat(0,
+                coeff.Rows,
+                0,
+                coeff.Cols-1).Inv(DecompTypes.SVD); // (n-1)xm , the minimal length solution
+
+            subtract = -1* (subtract * distance).ToMat(); //scale would be -1*lambda
+            subtract.Resize(nearby.Rows, 0); //inorder to cascade back of nearby
+
+            return  nearby + subtract;
+        }
     }
 }

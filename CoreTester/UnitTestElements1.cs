@@ -87,7 +87,7 @@ namespace CoreTester
         }
 
         [TestMethod]
-        public void TestMethodLineFitted()
+        public void TestMethodLineFittedCoeff()
         {
             Random rnd = new Random(DateTime.Now.Millisecond);
 
@@ -105,7 +105,7 @@ namespace CoreTester
                     new Mat(3,1,MatType.CV_64FC1,new double[] {
                         (rnd.NextDouble() -1)*1,
                         (rnd.NextDouble() -1)*1,
-                        1 });
+                        0 });
                 pSet.Add(next);
             }
 
@@ -120,7 +120,6 @@ namespace CoreTester
             Mat line = new Mat(1, 3, MatType.CV_64FC1, new double[] {0 , 1,  0 });
             Mat point1 = new Mat(3, 1, MatType.CV_64FC1, new double[] {0.5,0.5,1 });
             Mat point2 = new Mat(3, 1, MatType.CV_64FC1, new double[] {0.5,-0.5,1 });
-
 
             Mat result = LinearAlgebra.CalculateProjection(line, point1);
             result = LinearAlgebra.CalculateProjection(line, point2);

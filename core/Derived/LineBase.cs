@@ -50,10 +50,6 @@ namespace Core.Derived
 
         public LineBase(List<ElementBase> dependencies) : base(dependencies)
         {
-            //perform downcasting , lack of exception handling
-            m_end1 = dependencies.First() as PointBase;
-            m_end2 = dependencies.Last() as PointBase;
-
             OnValueChanged(this, null);
         }
 
@@ -67,6 +63,10 @@ namespace Core.Derived
         /// <param name="args"></param>
         public override void OnValueChanged(object sender, EventArgs args)
         {
+            //perform downcasting , lack of exception handling
+            m_end1 = m_dependencies.First() as PointBase;
+            m_end2 = m_dependencies.Last() as PointBase;
+
             Mat xVectors = new Mat();
             List<Mat> coord = new List<Mat>{
                 m_end1.Point.Transpose(),
@@ -75,7 +75,6 @@ namespace Core.Derived
             //vertical concate
             Cv2.VConcat(coord.ToArray(), xVectors);
             m_coeff = LinearAlgebra.RightSingularVector(xVectors); ;
-
 
             base.OnValueChanged(sender, args);
         }

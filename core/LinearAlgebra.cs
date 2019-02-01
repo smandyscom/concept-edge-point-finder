@@ -177,7 +177,8 @@ namespace Core.LA
         public static Mat CalculateProjection(Mat coeff, Mat nearby)
         {
             var distance = coeff * nearby; //would be 1x1 constant
-
+            
+            /// the complement vector to geo
             var subtract = coeff.SubMat(0,
                 coeff.Rows,
                 0,

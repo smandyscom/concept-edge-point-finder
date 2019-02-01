@@ -33,25 +33,17 @@ namespace Core.Arch
         /// <param name="args"></param>
         public override void OnValueChanged(object sender, EventArgs args)
         {
-            UpdateTransformation();
-            base.OnValueChanged(sender, args);
-        }
-        
-        /// <summary>
-        /// Resolve referenced coordinates
-        /// Compute out overall transformation matrix
-        /// </summary>
-        internal override void UpdateTransformation()
-        {
             var enumerator = m_dependencies.GetEnumerator();
-            var _parent = ((CoordinateBase)m_dependencies.First()).Node;
+            var parent = ((CoordinateBase)m_dependencies.First()).Node;
 
-            m_transformation = Mat.Eye(4, 4, MatType.CV_64FC1);//TODO , inconsistent
+            //reset
+            m_transformation = Mat.Eye((int)m_dimension, (int)m_dimension, MatType.CV_64FC1);
+
             //from source to destination
             // S->D
             while (enumerator.MoveNext())
             {
-                if (_parent == ((CoordinateBase)enumerator.Current).Node)
+                if (parent == ((CoordinateBase)enumerator.Current).Node)
                 {
                     //parent matched , aligned
                     m_transformation = m_transformation * ((CoordinateBase)enumerator.Current).Transformation;
@@ -62,8 +54,10 @@ namespace Core.Arch
                     m_transformation = m_transformation * ((CoordinateBase)enumerator.Current).Transformation.Inv();
                 }
 
-                _parent = enumerator.Current.m_coordinateReference; //move forward to compare
+                parent = enumerator.Current.m_coordinateReference; //move forward to compare
             }
-        }
+
+            base.OnValueChanged(sender, args);
+        }       
     }
 }

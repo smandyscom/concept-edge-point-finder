@@ -28,7 +28,7 @@ namespace Core.Arch
         /// <summary>
         /// Defines reference points meaning
         /// </summary>
-        public enum DefinitionDependecies
+        public enum DefinitionDependecies : int
         {
             ORIGIN = 0,
             X_END=1,
@@ -44,28 +44,18 @@ namespace Core.Arch
         {
             get
             {
-                UpdateTransformation();
                 return m_transformation[0, m_transformation.Rows - 1, 0, m_transformation.Cols - 1];
-            }
-            set
-            {
-                m_transformation[0, m_transformation.Rows - 1, 0, m_transformation.Cols - 1] = value;
             }
         }
         /// <summary>
         /// Editing interface
         /// Last column
         /// </summary>
-        public Mat Translation
+        public Mat Origin
         {
             get
             {
-                UpdateTransformation();
                 return m_transformation.Col[m_transformation.Cols - 1];
-            }
-            set
-            {
-                m_transformation.Col[m_transformation.Cols - 1] = value;
             }
         }
         /// <summary>
@@ -75,7 +65,6 @@ namespace Core.Arch
         {
             get
             {
-                UpdateTransformation();
                 return m_transformation;
             }
         }
@@ -84,7 +73,7 @@ namespace Core.Arch
         /// if destination = null , means to root
         /// </summary>
         /// <returns></returns>
-        public CoordinateComposed Generate(HierarchyTreeNode<CoordinateBase> destination=null)
+        public CoordinateBase Generate(HierarchyTreeNode<CoordinateBase> destination=null)
         {
             var m_path = Node.Path(destination);
             return new CoordinateComposed(m_path.ToList<ElementBase>());
@@ -104,24 +93,19 @@ namespace Core.Arch
                 return m_node;
             }
         }
-
         /// <summary>
-        /// Left for derived class
-        /// </summary>
-        internal virtual void UpdateTransformation()
-        {
-
-        }
-
-        /// <summary>
-        /// Transformation to parent
+        /// Transformation to parent , 3x3 for 2D , 4x4 for 3D
         /// </summary>
         internal Mat m_transformation;
-        internal DefinitionDimension m_dimension;
+        
+        internal DefinitionDimension m_dimension = DefinitionDimension.DIM_2D;
+        /// <summary>
+        /// My node
+        /// </summary>
         internal HierarchyTreeNode<CoordinateBase> m_node = null;
 
         /// <summary>
-        /// 
+        /// Depends on 3points , origin-x_end-y_end
         /// </summary>
         /// <param name="dependencies"></param>
         public CoordinateBase(List<ElementBase> dependencies) : base(dependencies)
@@ -142,13 +126,27 @@ namespace Core.Arch
         /// <param name="args"></param>
         public override void OnValueChanged(object sender, EventArgs args)
         {
+            Mat origin = (m_dependencies.First() as PointBase).Point;
+            Mat xEnd = (m_dependencies[Convert.ToInt32(DefinitionDependecies.X_END)] as PointBase).Point;
+            Mat yEnd = (m_dependencies[Convert.ToInt32(DefinitionDependecies.Y_END)] as PointBase).Point;
+
             switch (m_dimension)
             {
                 case DefinitionDimension.DIM_2D:
-                    //TODO
                     //setup origin
                     //calculate unit vector of X_END - ORIGIN as X_VECTOR
                     //calculate Y_VECTOR = (unit vector of Y_END - ORIGIN) - X_VECTOR
+
+                    Mat xVec = (xEnd - origin);
+                    xVec /= xVec.Norm();
+
+                    Mat yVec = (yEnd - origin);
+                    yVec /= yVec.Norm();
+                    yVec -= xVec;
+
+                    //output
+                    Cv2.HConcat(new Mat[] { xVec, yVec, origin }, m_transformation);
+
                     break;
                 case DefinitionDimension.DIM_3D:
                     break;

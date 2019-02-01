@@ -18,6 +18,10 @@ namespace Core.Derived
         //Graphic reference
         internal LineBase m_line = null;
         internal GrayImage m_image = null;
+        /// <summary>
+        /// Coodinate chain to images' coordinate
+        /// </summary>
+        internal CoordinateBase m_chain = null;
 
         /// <summary>
         /// Dependencies : line and image
@@ -26,23 +30,24 @@ namespace Core.Derived
         /// <param name="list"></param>
         public PointEdge(List<ElementBase> dependencies) : base(dependencies)
         {
-            m_line = dependencies.Find(x => x.GetType() == typeof(LineBase)) as LineBase;
-            m_image = dependencies.Find(x => x.GetType() == typeof(GrayImage)) as GrayImage;
+            //vector project to image's coordinate , then find
+            m_line = m_dependencies.Find(x => x.GetType() == typeof(LineBase)) as LineBase;
+            m_image = m_dependencies.Find(x => x.GetType() == typeof(GrayImage)) as GrayImage;
+            m_chain = m_coordinateReference.Value.Generate(m_image.m_coordinateReference);
 
             OnValueChanged(this, null);//updated
         }
 
         /// <summary>
         /// Method to find out edge
+        /// operated in image's coordinate
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
         public override void OnValueChanged(object sender, EventArgs args)
         {
-            //TODO vector project to image's coordinate , then find
-
-            Mat currentPoint = m_line.m_end1.Point;
-            Mat unit = m_line.Vector / m_line.Length;
+            Mat currentPoint = m_chain.Transformation * m_line.m_end1.Point;
+            Mat searchingVector = m_chain.Transformation * (m_line.Vector / m_line.Length);
             double accumulatedLength = 0;
 
             Dictionary<Mat, byte> grayValueTable = new Dictionary<Mat, byte>();
@@ -50,7 +55,7 @@ namespace Core.Derived
 
             while (accumulatedLength <= m_line.Length)
             {
-                currentPoint += unit;
+                currentPoint += searchingVector;
                 grayValueTable.Add(currentPoint,
                     m_image.Image.At<byte>(
                         currentPoint.At<int>(0),
@@ -73,6 +78,9 @@ namespace Core.Derived
 
             //edge point calculated
             m_point = grayValueTable.Keys.ElementAt(edgeIndex);
+
+            //represent in local coordinate ( as same as line's coordinate
+            m_point = m_chain.Transformation.Inv() * m_point;
 
             base.OnValueChanged(sender, args);
         }

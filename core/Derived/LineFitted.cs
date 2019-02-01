@@ -31,8 +31,8 @@ namespace Core.Derived
             //output m_end1 , m_end2
             calculateCoeff();
 
-            //TODO , calculate m_end1, m_en2
-
+            //calculate m_end1, m_en2
+            calculateEndPoints();
             //base.OnValueChanged(sender, args);
         }
 
@@ -55,7 +55,7 @@ namespace Core.Derived
 
             //find the max one (farest one) , as one end
             int maxIndex = lengthTable.ToList().IndexOf(lengthTable.Max());
-            if(m_end1 != null)
+            if(m_end1 == null)
                 m_end1 = new PointBase(new List<ElementBase> { this});
             m_end1.Point = projectionList.ToList()[maxIndex];
 
@@ -64,7 +64,7 @@ namespace Core.Derived
             {
                 return ((Mat)(point - m_end1.Point)).Norm();
             });
-            if(m_end2 != null)
+            if(m_end2 == null)
                 m_end2 = new PointBase(new List<ElementBase> { this });
 
             //get farest point as end point

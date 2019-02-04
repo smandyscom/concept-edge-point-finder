@@ -15,7 +15,7 @@ using System;
 namespace CoreTester
 {
     [TestClass]
-    public class UnitTestElements1
+    public class UnitTestPointsLines
     {
         CoordinateBase c1 = new CoordinateBase();
         PointBase p00;

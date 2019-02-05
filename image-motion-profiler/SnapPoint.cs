@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using WindowsFormsApp2.Interface;
@@ -20,19 +21,21 @@ namespace WindowsFormsApp2
     // Equals(object obj)
     //  https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
 
-    public abstract class SnapBase : Idraw
-    {
+    public abstract class SnapBase : Idraw , INotifyPropertyChanged
+	{
         public PointType Type = PointType.start;
         //public SnapPoint upstream = null;
 
         // public Idraw owner = null;
 
-        public PointF Location;
+        public PointF Location { get; set; }
         protected float range = 10;
 
         public bool isSelected { get; set; }
 
 		public SnapBase upstream;
+
+		public event PropertyChangedEventHandler PropertyChanged;
 
 		public SnapBase(PointF location, PointType type)
         {

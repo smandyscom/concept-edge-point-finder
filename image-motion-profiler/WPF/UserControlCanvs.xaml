@@ -5,11 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WindowsFormsApp2.WPF"
 			 xmlns:Zoom ="clr-namespace:PanAndZoom"
+			 xmlns:DrawObjects ="clr-namespace:WindowsFormsApp2.DrawObjects"
              mc:Ignorable="d" 
               Height="480" Width="512" SnapsToDevicePixels="True">
-	<UserControl.Resources>
-		<local:Lines  x:Key="Lines"/>
-	</UserControl.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
@@ -21,16 +19,16 @@
 		<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">
 		<Grid>
 			<Image Source="pack://application:,,,/lenna.png" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True" Stretch="None"/>
-			<ItemsControl ItemsSource="{Binding Source={StaticResource Lines}}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
+			<ItemsControl ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
 					<Canvas/>
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>
 			<ItemsControl.Resources>
-				<DataTemplate DataType="{x:Type local:Line}">
-					<Line X1="{Binding From.X}" Y1="{Binding From.Y}"
-						  X2="{Binding To.X}" Y2="{Binding To.Y}"
+						<DataTemplate DataType="{x:Type DrawObjects:LineBase}">
+							<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
+						  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
 						  Stroke="DarkGray" StrokeThickness="3"/>
 				</DataTemplate>
 			</ItemsControl.Resources>

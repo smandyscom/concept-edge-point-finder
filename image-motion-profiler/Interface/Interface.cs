@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using WindowsFormsApp2.DrawObjects;
 using OpenCvSharp;
 
 namespace WindowsFormsApp2.Interface

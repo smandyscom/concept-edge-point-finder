@@ -5,6 +5,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using WindowsFormsApp2.DrawObjects;
+using WindowsFormsApp2.Interface;
 
 namespace WindowsFormsApp2.WPF
 {
@@ -24,9 +25,10 @@ namespace WindowsFormsApp2.WPF
 		public Lines lines { get; private set; } = new Lines();
 	}
 
-	public class Lines : ObservableCollection<LineEdgePoint>
-	{ 
+	public class Lines : ObservableCollection<Idraw>
+	{
 		private LineEdgePoint line = new LineEdgePoint();
+		private SnapPoint point = new SnapPoint(new PointF(5, 5), PointType.edge);
 		public Lines()
 		{
 			var temp = new PointF(0, 0);
@@ -36,6 +38,8 @@ namespace WindowsFormsApp2.WPF
 			line.__end.Location = temp;
 
 			Add(line);
+			Add(point);
+
 			CreateTimer();
 
 		}
@@ -56,6 +60,12 @@ namespace WindowsFormsApp2.WPF
 			temp.Y += 10;
 			line.__start.Location = temp;
 			line.isSelected = !line.isSelected;
+
+			temp = point.Location;
+			temp.X += 20;
+			temp.Y += 20;
+			point.Location = temp;
+			point.Type = (PointType)((int)(point.Type + 1) % Enum.GetNames(typeof(PointType)).Length);
 		}
 	}
 }

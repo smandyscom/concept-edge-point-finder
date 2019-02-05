@@ -5,12 +5,12 @@ using System.Drawing;
 using System.Linq;
 using WindowsFormsApp2.Interface;
 
-namespace WindowsFormsApp2
+namespace WindowsFormsApp2.DrawObjects
 {
 
     public enum PointType : short
     {
-        start = 1,
+        start = 0,
         end,
         mid,
         center,
@@ -23,7 +23,7 @@ namespace WindowsFormsApp2
 
     public abstract class SnapBase : Idraw , INotifyPropertyChanged
 	{
-        public PointType Type = PointType.start;
+        public PointType Type { get; set; } = PointType.start;
         //public SnapPoint upstream = null;
 
         // public Idraw owner = null;
@@ -36,6 +36,10 @@ namespace WindowsFormsApp2
 		public SnapBase upstream;
 
 		public event PropertyChangedEventHandler PropertyChanged;
+		protected void OnPropertyChanged(PropertyChangedEventArgs eventArgs)
+		{
+			PropertyChanged?.Invoke(this, eventArgs);
+		}
 
 		public SnapBase(PointF location, PointType type)
         {

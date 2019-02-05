@@ -104,6 +104,8 @@
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="WPF\BaseConverter.cs" />
     <Compile Include="WPF\isSelectedToBrushValueConverter.cs" />
+    <Compile Include="WPF\PointFToMarginValueConverter.cs" />
+    <Compile Include="WPF\PointTypeToBrushValueConverter.cs" />
     <Compile Include="WPF\UserControlCanvs.xaml.cs">
       <DependentUpon>UserControlCanvs.xaml</DependentUpon>
     </Compile>

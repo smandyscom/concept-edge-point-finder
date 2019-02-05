@@ -18,26 +18,29 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">
-		<Grid>
-			<Image Source="pack://application:,,,/lenna.png" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True" Stretch="None"/>
-			<ItemsControl ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<Canvas/>
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			<ItemsControl.Resources>
+			<Grid>
+				<Image Source="pack://application:,,,/lenna.png" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True" Stretch="None"/>
+				<ItemsControl ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<Canvas/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.Resources>
 						<DataTemplate DataType="{x:Type DrawObjects:LineBase}">
 							<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
-						  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
-						  Stroke="{Binding isSelected, Converter={Demo:isSelectedToBrushValueConverter}}" StrokeThickness="3"/>
-				</DataTemplate>
-			</ItemsControl.Resources>
-		</ItemsControl>
-	</Grid>
-	</Zoom:ZoomBorder>
-		
-		
+								  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
+								  Stroke="{Binding isSelected, Converter={Demo:isSelectedToBrushValueConverter}}" StrokeThickness="3"/>
+						</DataTemplate>
+						<DataTemplate DataType="{x:Type DrawObjects:SnapBase}">
+							<Ellipse Margin="{Binding Location, Converter={Demo:PointFToMarginValueConverter}}"
+									 Stroke="{Binding Type, Converter={Demo:PointTypeToBrushValueConverter}}" Width="10" Height="10"/>
+						</DataTemplate>
+					</ItemsControl.Resources>
+				</ItemsControl>
+			</Grid>
+		</Zoom:ZoomBorder>
+
 		<TextBlock Grid.Row="1" Grid.Column="0" FontSize="20">
 			<TextBlock.Text>
 				<MultiBinding StringFormat="X:{0}		Y:{1}">

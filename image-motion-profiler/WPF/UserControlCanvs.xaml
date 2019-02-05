@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:WindowsFormsApp2.WPF"
 			 xmlns:Zoom ="clr-namespace:PanAndZoom"
 			 xmlns:DrawObjects ="clr-namespace:WindowsFormsApp2.DrawObjects"
+			 xmlns:Demo ="clr-namespace:WindowsFormsApp2.WPF"
              mc:Ignorable="d" 
               Height="480" Width="512" SnapsToDevicePixels="True">
 	<Grid>
@@ -29,7 +30,7 @@
 						<DataTemplate DataType="{x:Type DrawObjects:LineBase}">
 							<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
 						  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
-						  Stroke="DarkGray" StrokeThickness="3"/>
+						  Stroke="{Binding isSelected, Converter={Demo:isSelectedToBrushValueConverter}}" StrokeThickness="3"/>
 				</DataTemplate>
 			</ItemsControl.Resources>
 		</ItemsControl>

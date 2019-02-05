@@ -102,6 +102,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SnapPoint.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <Compile Include="WPF\BaseConverter.cs" />
+    <Compile Include="WPF\isSelectedToBrushValueConverter.cs" />
     <Compile Include="WPF\UserControlCanvs.xaml.cs">
       <DependentUpon>UserControlCanvs.xaml</DependentUpon>
     </Compile>

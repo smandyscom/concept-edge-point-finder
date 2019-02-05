@@ -55,6 +55,7 @@ namespace WindowsFormsApp2.WPF
 			temp.X += 10;
 			temp.Y += 10;
 			line.__start.Location = temp;
+			line.isSelected = !line.isSelected;
 		}
 	}
 }

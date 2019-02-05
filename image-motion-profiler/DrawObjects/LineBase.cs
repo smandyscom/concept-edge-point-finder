@@ -17,6 +17,10 @@ namespace WindowsFormsApp2.DrawObjects
         public SnapPoint __end { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
+		protected void OnPropertyChanged(PropertyChangedEventArgs eventArgs)
+		{
+			PropertyChanged?.Invoke(this, eventArgs);
+		}
 
 		public virtual void draw(Graphics graphics)
         {

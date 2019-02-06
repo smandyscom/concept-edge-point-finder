@@ -28,7 +28,6 @@ namespace WindowsFormsApp2.WPF
 	public class Lines : ObservableCollection<Idraw>
 	{
 		private LineEdgePoint line = new LineEdgePoint();
-		private SnapPoint point = new SnapPoint(new PointF(5, 5), PointType.edge);
 		public Lines()
 		{
 			var temp = new PointF(0, 0);
@@ -38,7 +37,6 @@ namespace WindowsFormsApp2.WPF
 			line.__end.Location = temp;
 
 			Add(line);
-			Add(point);
 
 			CreateTimer();
 
@@ -55,17 +53,13 @@ namespace WindowsFormsApp2.WPF
 
 		private void Timer1_Elapsed(object sender, ElapsedEventArgs e)
 		{
-			var temp = line.__start.Location;
-			temp.X += 10;
-			temp.Y += 10;
-			line.__start.Location = temp;
+			var temp = line.__end.Location;
+			temp.X -= 10;
+			temp.Y -= 10;
+			line.__end.Location = temp;
 			line.isSelected = !line.isSelected;
 
-			temp = point.Location;
-			temp.X += 20;
-			temp.Y += 20;
-			point.Location = temp;
-			point.Type = (PointType)((int)(point.Type + 1) % Enum.GetNames(typeof(PointType)).Length);
+
 		}
 	}
 }

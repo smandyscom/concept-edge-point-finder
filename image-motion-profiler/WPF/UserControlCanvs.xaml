@@ -17,27 +17,58 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
+		
 		<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">
 			<Grid>
 				<Image Source="pack://application:,,,/lenna.png" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True" Stretch="None"/>
+
+				<!--for draw object in list-->
 				<ItemsControl ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<Canvas/>
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
+
+					<!--LineBase as Target type-->
 					<ItemsControl.Resources>
 						<DataTemplate DataType="{x:Type DrawObjects:LineBase}">
-							<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
-								  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
-								  Stroke="{Binding isSelected, Converter={Demo:isSelectedToBrushValueConverter}}" StrokeThickness="3"/>
-						</DataTemplate>
-						<DataTemplate DataType="{x:Type DrawObjects:SnapBase}">
-							<Ellipse Margin="{Binding Location, Converter={Demo:PointFToMarginValueConverter}}"
-									 Stroke="{Binding Type, Converter={Demo:PointTypeToBrushValueConverter}}" Width="10" Height="10"/>
+							<Grid>
+								<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
+									  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
+									  Stroke="{Binding isSelected, Converter={Demo:isSelectedToBrushValueConverter}}" StrokeThickness="3"/>
+
+								<!--for All SnapBase in a line -->
+								<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<Canvas/>
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+									
+									<!--binding Location in Canvas-->
+									<ItemsControl.ItemContainerStyle>
+										<Style TargetType="ContentPresenter">
+											<Setter Property="Canvas.Left" Value="{Binding Location.X}"/>
+											<Setter Property="Canvas.Top" Value="{Binding Location.Y}"/>
+										</Style>
+									</ItemsControl.ItemContainerStyle>
+									<ItemsControl.Resources>
+										<DataTemplate DataType="{x:Type DrawObjects:SnapBase}">
+											<Path Stroke="{Binding Type, Converter={Demo:PointTypeToBrushValueConverter}}">
+												<Path.Data>
+													<EllipseGeometry RadiusX="2" RadiusY="2"/>
+												</Path.Data>
+											</Path>
+										</DataTemplate>
+									</ItemsControl.Resources>
+								</ItemsControl>
+							</Grid>
 						</DataTemplate>
 					</ItemsControl.Resources>
+					
 				</ItemsControl>
+				
 			</Grid>
 		</Zoom:ZoomBorder>
 

@@ -49,11 +49,14 @@ namespace Core.Derived
 
             m_point = LinearAlgebra.RightSingularVector(xVectors);
 
-            //homogenous
-            m_point /= m_point.Get<double>(m_point.Rows - 1);
-
-           
-            base.OnValueChanged(sender, args);
+            if (m_point.Get<double>(m_point.Rows - 1) != 0)
+            {
+                //intersection is finite
+                //homogenous
+                m_point /= m_point.Get<double>(m_point.Rows - 1);
+                base.OnValueChanged(sender, args);
+            }
+            //TODO , otherwise , no solution or out-of range
         }
 
     }

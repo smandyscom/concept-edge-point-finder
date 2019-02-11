@@ -62,6 +62,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTestCoordinates.cs" />
     <Compile Include="UnitTestPointsLines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

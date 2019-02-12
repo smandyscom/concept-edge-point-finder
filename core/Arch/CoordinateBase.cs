@@ -96,7 +96,7 @@ namespace Core.Arch
         /// <summary>
         /// Transformation to parent , 3x3 for 2D , 4x4 for 3D
         /// </summary>
-        internal Mat m_transformation;
+        internal Mat m_transformation = new Mat();
         
         internal DefinitionDimension m_dimension = DefinitionDimension.DIM_2D;
         /// <summary>
@@ -110,6 +110,7 @@ namespace Core.Arch
         /// <param name="dependencies"></param>
         public CoordinateBase(List<ElementBase> dependencies) : base(dependencies)
         {
+            OnValueChanged(this, null);
         }
         /// <summary>
         /// Default constructor (Root creation
@@ -141,8 +142,12 @@ namespace Core.Arch
                     xVec /= xVec.Norm();
 
                     Mat yVec = (yEnd - origin);
+                    //minus complement vector
+                    var scalar = (yVec.Transpose() * xVec).ToMat();
+                    var substract = (xVec * (yVec.Transpose() * xVec)).ToMat();
+
+                    yVec -= substract;
                     yVec /= yVec.Norm();
-                    yVec -= xVec;
 
                     //output
                     Cv2.HConcat(new Mat[] { xVec, yVec, origin }, m_transformation);

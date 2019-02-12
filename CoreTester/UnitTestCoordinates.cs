@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Core.Arch;
 using OpenCvSharp;
@@ -32,7 +33,18 @@ namespace CoreTester
         [TestMethod]
         public void TestMethod1()
         {
+            c1 = new CoordinateBase(new System.Collections.Generic.List<ElementBase> { p11, p22, p12 });
 
+            //X-Axis
+            Assert.IsTrue(Math.Abs(c1.m_transformation.Col[0].Norm() - 1) < 0.00001);
+            //Y-Axis
+            var value = c1.m_transformation.Col[1].Norm(); //round-off error
+            Assert.IsTrue(Math.Abs(c1.m_transformation.Col[1].Norm() - 1) < 0.00001);
+            //Should be perpendicular (nearly zero
+            value = (c1.m_transformation.Col[0].Transpose() * c1.m_transformation.Col[1]).ToMat().Norm();
+            Assert.IsTrue((c1.m_transformation.Col[0].Transpose() * c1.m_transformation.Col[1]).ToMat().Norm() < 0.00001);
+                        
+            
         }
     }
 }

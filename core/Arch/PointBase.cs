@@ -42,7 +42,11 @@ namespace Core.Arch
         /// <param name="dependencies"></param>
         public PointBase(List<ElementBase> dependencies) : base(dependencies)
         {
-            
+            //! means 
+            if (m_coordinateReference == null)
+            {
+                m_coordinateReference = new HierarchyTreeNode<CoordinateBase>(m_dependencies.First() as CoordinateBase);
+            }
         }
 
         #region "operator overload"

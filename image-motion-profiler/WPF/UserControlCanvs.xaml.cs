@@ -28,6 +28,7 @@ namespace WindowsFormsApp2.WPF
 	public class Lines : ObservableCollection<Idraw>
 	{
 		private LineEdgePoint line = new LineEdgePoint();
+		private CircleFitted circle = new CircleFitted();
 		public Lines()
 		{
 			var temp = new PointF(0, 0);
@@ -35,11 +36,14 @@ namespace WindowsFormsApp2.WPF
 
 			temp = new PointF(512, 480);
 			line.__end.Location = temp;
-
 			Add(line);
 
-			CreateTimer();
+			temp = new PointF(256, 240);
+			circle.__radius = 10;
+			circle.__center.Location = temp;
+			Add(circle);
 
+			CreateTimer();
 		}
 		void CreateTimer()
 		{

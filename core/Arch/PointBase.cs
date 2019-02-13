@@ -42,10 +42,10 @@ namespace Core.Arch
         /// <param name="dependencies"></param>
         public PointBase(List<ElementBase> dependencies) : base(dependencies)
         {
-            //! means 
-            if (m_coordinateReference == null)
+            //! for basic point , the only dependency is Coordinate 
+            if (m_dependencies.First() is CoordinateBase reference)
             {
-                m_coordinateReference = new HierarchyTreeNode<CoordinateBase>(m_dependencies.First() as CoordinateBase);
+                m_coordinateReference = reference.Node;
             }
         }
 

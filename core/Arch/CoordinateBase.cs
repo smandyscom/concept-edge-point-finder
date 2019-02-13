@@ -83,15 +83,7 @@ namespace Core.Arch
         /// </summary>
         public HierarchyTreeNode<CoordinateBase> Node
         {
-            get
-            {
-                if (m_node == null)
-                {
-                    m_node = new HierarchyTreeNode<CoordinateBase>(this);
-                    m_node.Parent = m_coordinateReference;
-                }
-                return m_node;
-            }
+            get => m_node;        
         }
         /// <summary>
         /// Transformation to parent , 3x3 for 2D , 4x4 for 3D
@@ -110,6 +102,10 @@ namespace Core.Arch
         /// <param name="dependencies"></param>
         public CoordinateBase(List<ElementBase> dependencies) : base(dependencies)
         {
+            //establish node link
+            m_node = new HierarchyTreeNode<CoordinateBase>(this);
+            m_node.Parent = m_coordinateReference;
+
             OnValueChanged(this, null);
         }
         /// <summary>
@@ -117,6 +113,10 @@ namespace Core.Arch
         /// </summary>
         public CoordinateBase(DefinitionDimension dimension= DefinitionDimension.DIM_2D) : base(null)
         {
+            //establish node link
+            m_node = new HierarchyTreeNode<CoordinateBase>(this);
+            m_node.Parent = null;
+
             m_dependencies = null;
             m_transformation = Mat.Eye((int)dimension, (int)dimension, MatType.CV_64FC1);
         }

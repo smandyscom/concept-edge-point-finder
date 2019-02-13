@@ -137,6 +137,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WPF\Style.xaml">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </Page>
     <Page Include="WPF\UserControlCanvs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

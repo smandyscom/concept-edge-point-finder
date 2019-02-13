@@ -17,49 +17,51 @@ namespace Core
         public T Value {
             get
             {
-                return __value;
+                return m_value;
             } 
              set
             {
-                __value =value;
+                m_value =value;
             }
         }
         public HierarchyTreeNode<T> Parent
         {
             get
             {
-                return __parent;
+                return m_parent;
             }
             set
             {
-                if (__parent != null)
+                if (m_parent != null)
                 {
                     //remove me from previous parent
-                    __parent.__children.Remove(this);
+                    m_parent.m_children.Remove(this);
                 }
 
-                __parent = value; //new parent
-                value.__children.Add(this);
+                m_parent = value; //new parent
+
+                if(value!=null)
+                    value.m_children.Add(this);
             }
         }
 
-        internal HierarchyTreeNode<T> __parent = null;
+        internal HierarchyTreeNode<T> m_parent = null;
         /// <summary>
         /// valid when disposing
         /// </summary>
-        internal List<HierarchyTreeNode<T>> __children = new List<HierarchyTreeNode<T>>();
+        internal List<HierarchyTreeNode<T>> m_children = new List<HierarchyTreeNode<T>>();
 
-        internal T __value;
+        internal T m_value;
 
         public HierarchyTreeNode(T data)
         {
-            __value = data;
+            m_value = data;
         }
 
         void AddChild(T data)
         {
-            var __node = new HierarchyTreeNode<T>(data);
-            __node.Parent = this;
+            var node = new HierarchyTreeNode<T>(data);
+            node.Parent = this;
         }
 
         /// <summary>
@@ -71,15 +73,15 @@ namespace Core
         /// <returns></returns>
         public LinkedList<T> Path(HierarchyTreeNode<T> destination)
         {
-            var __capsuleList =  Path(this, destination);
+            var capsuleList =  Path(this, destination);
 
             var result = new LinkedList<T>();
 
-            var __node = __capsuleList.First;
-            while (__node != null)
+            var node = capsuleList.First;
+            while (node != null)
             {
-                result.AddLast(__node.Value.Value);
-                __node = __node.Next;
+                result.AddLast(node.Value.Value);
+                node = node.Next;
             }
 
             return result;
@@ -97,36 +99,49 @@ namespace Core
        public static LinkedList<HierarchyTreeNode<T>> Path(HierarchyTreeNode<T> source, HierarchyTreeNode<T> destination)
         {
             ///collect ancients ,find intersection
-            LinkedList<HierarchyTreeNode<T>> _sourceAncientList = new LinkedList<HierarchyTreeNode<T>>();
-            LinkedList<HierarchyTreeNode<T>> _destinationAncientList = new LinkedList<HierarchyTreeNode<T>>();
+            LinkedList<HierarchyTreeNode<T>> sourceAncientList = new LinkedList<HierarchyTreeNode<T>>();
+            LinkedList<HierarchyTreeNode<T>> destinationAncientList = new LinkedList<HierarchyTreeNode<T>>();
 
-            CollectAncients(source, _sourceAncientList);
-            CollectAncients(destination, _destinationAncientList);
+            CollectAncients(source, sourceAncientList);
 
-            //find out common ancient
-            LinkedListNode<HierarchyTreeNode<T>> _commonAncientNodeOnSource = _sourceAncientList.Last;
-            while (!_destinationAncientList.Contains(_commonAncientNodeOnSource.Value))
+            //treat as root 
+            if (destination == null)
+                destinationAncientList.AddLast(sourceAncientList.Last.Value);
+            else
+                CollectAncients(destination, destinationAncientList);
+
+            //find out common ancient, search from younger
+            LinkedList<HierarchyTreeNode<T>>.Enumerator commonAncientNodeOnSource = 
+                sourceAncientList.GetEnumerator();
+            do
             {
-                _sourceAncientList.RemoveLast(); //trim out source list as well
-                _commonAncientNodeOnSource = _sourceAncientList.Last;
-            }
+                //commonAncientNodeOnSource = sourceAncientList.First;
+
+
+
+                if (destinationAncientList.Contains(commonAncientNodeOnSource.Current))
+                    break;
+
+                //sourceAncientList.RemoveFirst(); //trim out source list as well
+            } while (commonAncientNodeOnSource.MoveNext());
 
             //attach destionation list to source list (merge
-            LinkedListNode<HierarchyTreeNode<T>> _nextAttachingNode = 
-                _destinationAncientList.Find(_commonAncientNodeOnSource.Value).Previous;
+            LinkedListNode<HierarchyTreeNode<T>> nextAttachingNode = 
+                destinationAncientList.Find(commonAncientNodeOnSource.Current).Previous;
 
-            while (_nextAttachingNode!=null)
+            while (nextAttachingNode!=null)
             {
-                _sourceAncientList.AddLast(_nextAttachingNode.Value); // value copy
-                _nextAttachingNode = _nextAttachingNode.Previous;//iterate
+                sourceAncientList.AddLast(nextAttachingNode.Value); // value copy
+                nextAttachingNode = nextAttachingNode.Previous;//iterate
             }
 
-            return _sourceAncientList;
+            return sourceAncientList;
         }
 
         /// <summary>
         /// Head(First : younger
         /// End(Last : older
+        /// Search unitl start.m_parent = null
         /// </summary>
         /// <param name="start"></param>
         /// <param name="list"></param>
@@ -135,7 +150,7 @@ namespace Core
             if (start != null)
             {
                 list.AddLast(start);
-                CollectAncients(start.__parent, list);
+                CollectAncients(start.m_parent, list);
             }
             else
             {
@@ -146,7 +161,7 @@ namespace Core
 
         public void Dispose()
         {
-            __parent.__children.Remove(this); //remove me from my parent
+            m_parent.m_children.Remove(this); //remove me from my parent
         }
     }
 }

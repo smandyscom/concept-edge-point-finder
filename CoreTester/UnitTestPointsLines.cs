@@ -53,7 +53,8 @@ namespace CoreTester
         [TestMethod]
         public void TestMethodPointAndLine()
         {
- 
+            Assert.IsNotNull(p00.m_coordinateReference);
+
             Assert.AreEqual(l0000.Length,0);
 
         }

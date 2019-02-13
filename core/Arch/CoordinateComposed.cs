@@ -25,6 +25,7 @@ namespace Core.Arch
         /// <param name="dependencies"></param>
         public CoordinateComposed(List<ElementBase> dependencies) : base(dependencies)
         {
+            //OnValueChanged(this, null);
         }
         /// <summary>
         /// 
@@ -33,31 +34,33 @@ namespace Core.Arch
         /// <param name="args"></param>
         public override void OnValueChanged(object sender, EventArgs args)
         {
-            var enumerator = m_dependencies.GetEnumerator();
-            var parent = ((CoordinateBase)m_dependencies.First()).Node;
+            var enumerator = m_dependencies.GetEnumerator(); //first : source/younger
+            HierarchyTreeNode<CoordinateBase> @ref = null;
 
             //reset
             m_transformation = Mat.Eye((int)m_dimension, (int)m_dimension, MatType.CV_64FC1);
+
 
             //from source to destination
             // S->D
             while (enumerator.MoveNext())
             {
-                if (parent == ((CoordinateBase)enumerator.Current).Node)
+                if (@ref == (enumerator.Current as CoordinateBase).Node ||
+                    @ref == null)
                 {
                     //parent matched , aligned
-                    m_transformation = m_transformation * ((CoordinateBase)enumerator.Current).Transformation;
+                    m_transformation =  (enumerator.Current as CoordinateBase).Transformation * m_transformation ;
                 }
                 else
                 {
                     //parent not matched, implicty reversed
-                    m_transformation = m_transformation * ((CoordinateBase)enumerator.Current).Transformation.Inv();
+                    m_transformation =  (enumerator.Current as CoordinateBase).Transformation.Inv() * m_transformation;
                 }
 
-                parent = enumerator.Current.m_coordinateReference; //move forward to compare
+                @ref = (enumerator.Current as CoordinateBase).m_coordinateReference; //record path
             }
 
-            base.OnValueChanged(sender, args);
-        }       
+            //base.OnValueChanged(sender, args);
+        }
     }
 }

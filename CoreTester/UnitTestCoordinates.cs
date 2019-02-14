@@ -75,7 +75,7 @@ namespace CoreTester
         }
 
         [TestMethod]
-        public void TestMethodCoordinateComposed()
+        public void TestMethodCoordinateComposedSingleChain()
         {
             cc = c2.Generate() as CoordinateComposed;
 
@@ -88,5 +88,16 @@ namespace CoreTester
 
             Trace.WriteLine("");
         }
+
+        [TestMethod]
+        public void TestMethodCoordinateComposedForkChain()
+        {
+            //    Root
+            //    /  \
+            //   c1L  c1R
+            //   /    \
+            //  c2L   c2R
+        }
+
     }
 }

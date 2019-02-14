@@ -52,10 +52,11 @@ namespace Core.Derived
 
             Dictionary<Mat, byte> grayValueTable = new Dictionary<Mat, byte>();
 
-
+            //length in unit of pixel
             while (accumulatedLength <= m_line.Length)
             {
                 currentPoint += searchingVector;
+
                 grayValueTable.Add(currentPoint,
                     m_image.Image.At<byte>(
                         currentPoint.At<int>(0),

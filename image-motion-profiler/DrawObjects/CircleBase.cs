@@ -13,8 +13,8 @@ namespace WindowsFormsApp2.DrawObjects
 	{
 		protected static Pen __pen = new Pen(Color.Yellow, 3);
 
-		internal SnapPoint __center { get; set; }
-		internal float __radius { get; set; }
+		public SnapPoint __center { get; set; }
+		public float __radius { get; set; }
 
 		public bool isSelected { get; set; } = false;
 

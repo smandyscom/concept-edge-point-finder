@@ -105,6 +105,7 @@
     <Compile Include="WPF\BaseConverter.cs" />
     <Compile Include="WPF\isSelectedToBrushValueConverter.cs" />
     <Compile Include="WPF\MethodToValueConverter.cs" />
+    <Compile Include="WPF\PointFToPointValueConverterToPointValueConverter.cs" />
     <Compile Include="WPF\PointTypeToBrushValueConverter.cs" />
     <Compile Include="WPF\UserControlCanvs.xaml.cs">
       <DependentUpon>UserControlCanvs.xaml</DependentUpon>

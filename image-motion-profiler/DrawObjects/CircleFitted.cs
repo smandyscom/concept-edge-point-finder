@@ -10,7 +10,7 @@ using System.Drawing;
 namespace WindowsFormsApp2.DrawObjects
 {
     public class CircleFitted :  CircleBase,  ICoeffcient
-    {
+	{
         Mat __coefficient = new Mat();
 
         public List<SnapBase> __selectedPoints = new List<SnapBase>();

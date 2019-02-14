@@ -15,21 +15,12 @@
 				</ItemsPanelTemplate>
 			</Setter.Value>
 		</Setter>
-		<Setter Property="ItemContainerStyle">
-			<Setter.Value>
-				<Style TargetType="ContentPresenter">
-					<Setter Property="Canvas.Left" Value="{Binding Location.X}"/>
-					<Setter Property="Canvas.Top" Value="{Binding Location.Y}"/>
-				</Style>
-			</Setter.Value>
-		</Setter>
-
 		<Setter Property="ItemTemplate">
 			<Setter.Value>
 				<DataTemplate DataType="{x:Type DrawObjects:SnapBase}">
 					<Path Stroke="{Binding Type, Converter={Demo:PointTypeToBrushValueConverter}}">
 						<Path.Data>
-							<EllipseGeometry RadiusX="2" RadiusY="2"/>
+							<EllipseGeometry RadiusX="2" RadiusY="2" Center="{Binding Location, Converter={Demo:PointFToPointValueConverter}}"/>
 						</Path.Data>
 					</Path>
 				</DataTemplate>

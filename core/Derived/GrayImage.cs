@@ -32,6 +32,7 @@ namespace Core.Derived
         public GrayImage(List<ElementBase> dependencies) : base(dependencies)
         {
             //no reference other than coordinate
+            m_coordinateReference = (m_dependencies.First() as CoordinateBase).Node;
         }
     }
 }

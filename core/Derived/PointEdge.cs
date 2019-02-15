@@ -59,8 +59,8 @@ namespace Core.Derived
 
                 grayValueTable.Add(currentPoint,
                     m_image.Image.At<byte>(
-                        currentPoint.At<int>(0),
-                        currentPoint.At<int>(1)
+                        (int)Math.Round(currentPoint.Get<double>(0)),
+                        (int)Math.Round(currentPoint.Get<double>(1))
                         )
                         );
 

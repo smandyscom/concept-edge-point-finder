@@ -62,6 +62,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTestPointEdge.cs" />
     <Compile Include="UnitTestCoordinates.cs" />
     <Compile Include="UnitTestPointsLines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +75,9 @@
       <Project>{7fc8336e-8668-4792-b2b6-99f1c4ddc757}</Project>
       <Name>Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tester1.png" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

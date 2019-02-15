@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace WindowsFormsApp2.Derived
+using OpenCvSharp;
+namespace Core.Arch
 {
-    class ArcBase
+    interface IGeometricItem
     {
+        Mat Coefficient();
     }
 }

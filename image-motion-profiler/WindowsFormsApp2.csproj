@@ -66,15 +66,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arch\CoordinateBase.cs" />
-    <Compile Include="Arch\CoordinateComposed.cs" />
-    <Compile Include="Arch\ElementBase.cs" />
-    <Compile Include="Arch\PositionBase.cs" />
-    <Compile Include="Arch\SequenceBase.cs" />
-    <Compile Include="Derived\ArcBase.cs" />
-    <Compile Include="Derived\ImageNode.cs" />
-    <Compile Include="Derived\LineBase.cs" />
-    <Compile Include="Derived\PositionEdge.cs" />
     <Compile Include="DisplayInteraction.cs" />
     <Compile Include="DrawObjects\CircleBase.cs" />
     <Compile Include="DrawObjects\CircleFitted.cs" />
@@ -89,7 +80,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataStructure\HierarchyTree.cs" />
     <Compile Include="Interface\IDisplay.cs" />
     <Compile Include="Interface\Interface.cs" />
     <Compile Include="Layer.cs" />

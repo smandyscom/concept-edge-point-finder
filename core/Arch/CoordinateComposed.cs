@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using OpenCvSharp;
 
-namespace WindowsFormsApp2.Arch
+namespace Core.Arch
 {
     /// <summary>
     /// Composed coordinate , 
@@ -25,45 +25,42 @@ namespace WindowsFormsApp2.Arch
         /// <param name="dependencies"></param>
         public CoordinateComposed(List<ElementBase> dependencies) : base(dependencies)
         {
+            //OnValueChanged(this, null);
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        public override void OnDependeciesValueChanged(object sender, EventArgs args)
+        public override void OnValueChanged(object sender, EventArgs args)
         {
-            UpdateTransformation();
-            base.OnDependeciesValueChanged(sender, args);
-        }
-        
-        /// <summary>
-        /// Resolve referenced coordinates
-        /// Compute out overall transformation matrix
-        /// </summary>
-        internal override void UpdateTransformation()
-        {
-            var enumerator = _dependencies.GetEnumerator();
-            var _parent = ((CoordinateBase)_dependencies.First()).Node;
+            var enumerator = m_dependencies.GetEnumerator(); //first : source/younger
+            HierarchyTreeNode<CoordinateBase> @ref = null;
 
-            _transformation = Mat.Eye(4, 4, MatType.CV_64FC1);//TODO , inconsistent
+            //reset
+            m_transformation = Mat.Eye((int)m_dimension, (int)m_dimension, MatType.CV_64FC1);
+
+
             //from source to destination
             // S->D
             while (enumerator.MoveNext())
             {
-                if (_parent == ((CoordinateBase)enumerator.Current).Node)
+                if (@ref == (enumerator.Current as CoordinateBase).Node ||
+                    @ref == null)
                 {
                     //parent matched , aligned
-                    _transformation = _transformation * ((CoordinateBase)enumerator.Current).Transformation;
+                    m_transformation =  (enumerator.Current as CoordinateBase).Transformation * m_transformation ;
                 }
                 else
                 {
                     //parent not matched, implicty reversed
-                    _transformation = _transformation * ((CoordinateBase)enumerator.Current).Transformation.Inv();
+                    m_transformation =  (enumerator.Current as CoordinateBase).Transformation.Inv() * m_transformation;
                 }
 
-                _parent = enumerator.Current._coordinateReference; //move forward to compare
+                @ref = (enumerator.Current as CoordinateBase).m_coordinateReference; //record path
             }
+
+            //base.OnValueChanged(sender, args);
         }
     }
 }

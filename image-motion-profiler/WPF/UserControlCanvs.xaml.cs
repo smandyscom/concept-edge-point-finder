@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using WindowsFormsApp2.DrawObjects;
 using WindowsFormsApp2.Interface;
+using WindowsFormsApp2.Extensions;
 
 namespace WindowsFormsApp2.WPF
 {
@@ -18,11 +19,14 @@ namespace WindowsFormsApp2.WPF
 		{
 
 			InitializeComponent();
-			this.DataContext = lines;
-
+			this.DataContext = layer;
+			layer.drawObjects.AddRange(lines);
+			layer.Visible = true;
 		}
 
-		public Lines lines { get; private set; } = new Lines();
+		private Lines lines= new Lines();
+		public Layer layer { get; set; } = new Layer();
+
 	}
 
 	public class Lines : ObservableCollection<Idraw>

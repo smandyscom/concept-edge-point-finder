@@ -31,7 +31,7 @@ namespace WindowsFormsApp2
         public SnapBase FindSnapPoint(Point hit)
         {
             List<SnapBase> candidates = new List<SnapBase>();
-            foreach (Layer la in LayerCollection.FindAll(la => la.visible))
+            foreach (Layer la in LayerCollection.FindAll(la => la.Visible))
             {
                 SnapBase obj = la.GetHitObject(hit) as SnapBase;
                 if (obj != null) candidates.Add(obj);
@@ -63,7 +63,7 @@ namespace WindowsFormsApp2
         public EventHandler VisibleChanged;
         public void SetLayerVisible(int index, bool visible)
         {
-            LayerCollection[index].visible = visible;
+            LayerCollection[index].Visible = visible;
             VisibleChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -71,7 +71,7 @@ namespace WindowsFormsApp2
         {
             LayerCollection.ForEach(layer =>
             {
-                if (layer.visible)
+                if (layer.Visible)
                     layer.DrawAllObject(graphics);
             });
         }
@@ -97,7 +97,7 @@ namespace WindowsFormsApp2
         {
             foreach (Layer la in LayerCollection)
             {
-                if (!la.visible) continue;
+                if (!la.Visible) continue;
                 Idraw obj = la.GetHitObject(hit);
                 if (obj != null)
                     return obj;

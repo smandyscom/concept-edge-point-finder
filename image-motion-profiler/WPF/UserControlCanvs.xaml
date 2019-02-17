@@ -9,7 +9,7 @@
 			 xmlns:Demo ="clr-namespace:WindowsFormsApp2.WPF"
              mc:Ignorable="d" 
               Height="480" Width="512" SnapsToDevicePixels="True">
-	
+
 	<!--Adding Style in resources-->
 	<UserControl.Resources>
 		<ResourceDictionary>
@@ -18,8 +18,8 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</UserControl.Resources>
-	
-	
+
+
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
@@ -28,51 +28,58 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		
+
 		<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">
 			<Grid>
 				<Image Source="pack://application:,,,/lenna.png" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True" Stretch="None"/>
 
-				<!--for draw object in list-->
-				<ItemsControl ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<Canvas/>
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
+				<!--Present layer object data-->
+				<!--binding to layer Visible property-->
+				<Grid Visibility="{Binding Visible, Converter={Demo:BoolToVisibilityValueConverter}}">
+					
+					<!--for draw object in list-->
+					<ItemsControl ItemsSource="{Binding drawObjects}" HorizontalAlignment="Left" VerticalAlignment="Top" SnapsToDevicePixels="True">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<Canvas/>
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
 
-					<!--LineBase as Target type-->
-					<ItemsControl.Resources>
-						<DataTemplate DataType="{x:Type DrawObjects:LineBase}">
-							<Grid>
-								<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
+						<!--LineBase as Target type-->
+						<ItemsControl.Resources>
+							<DataTemplate DataType="{x:Type DrawObjects:LineBase}">
+								<Grid>
+									<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
 									  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
 									  Stroke="{Binding isSelected, Converter={Demo:isSelectedToBrushValueConverter}}" StrokeThickness="3"/>
-								<!-- All SnapBase in a line -->
-								<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
+									<!-- All SnapBase in a line -->
+									<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
 											  Style="{StaticResource SnapPointStyle}">
-								</ItemsControl>
+									</ItemsControl>
 
-							</Grid>
-						</DataTemplate>
-						
-						<!--CircleBase present-->
-						<DataTemplate DataType="{x:Type DrawObjects:CircleBase}">
-							<Grid>
-								<Path Stroke="Blue">
-								<Path.Data>
-										<EllipseGeometry RadiusX="{Binding __radius}" RadiusY="{Binding __radius}" 
+								</Grid>
+							</DataTemplate>
+
+							<!--CircleBase present-->
+							<DataTemplate DataType="{x:Type DrawObjects:CircleBase}">
+								<Grid>
+									<Path Stroke="Blue">
+										<Path.Data>
+											<EllipseGeometry RadiusX="{Binding __radius}" RadiusY="{Binding __radius}" 
 														 Center="{Binding __center.Location, Converter={Demo:PointFToPointValueConverter}}"/>
-									</Path.Data>
-							</Path>
-								<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
+										</Path.Data>
+									</Path>
+									<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
 											  Style="{StaticResource SnapPointStyle}">
-								</ItemsControl>
-							</Grid>
-						</DataTemplate>
-						
-					</ItemsControl.Resources>
-				</ItemsControl>
+									</ItemsControl>
+								</Grid>
+							</DataTemplate>
+
+						</ItemsControl.Resources>
+					</ItemsControl>
+				</Grid>
+
+
 			</Grid>
 		</Zoom:ZoomBorder>
 

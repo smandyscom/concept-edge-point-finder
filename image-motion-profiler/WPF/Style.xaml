@@ -28,4 +28,10 @@
 		</Setter>
 
 	</Style>
+
+	<Style TargetType="{x:Type FrameworkElement}" x:Key="OnCanvasStyle">
+		<Setter Property="VerticalAlignment" Value="Top"/>
+		<Setter Property="HorizontalAlignment" Value="Left"/>
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
+	</Style>
 </ResourceDictionary>

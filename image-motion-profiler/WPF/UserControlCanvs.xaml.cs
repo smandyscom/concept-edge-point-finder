@@ -27,14 +27,11 @@ namespace WindowsFormsApp2.WPF
 			model.ActiveLayer.drawObjects.AddRange(lines);
 			model.ActiveLayer.drawObjects.AddRange(circles);
 			this.DataContext = model.LayerCollection;
+			Border.MouseMove += Border_MouseMove;
 		}
 
-		private void Image_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+		private void Border_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
 		{
-			if (double.IsNaN(Border.PrimaryX) || double.IsNaN(Border.PrimaryY))
-			{
-				return;
-			}
 			var point = new PointF((float)Border.PrimaryX, (float)Border.PrimaryY);
 			Idraw obj = model.FindSnapPoint(point);
 			if (obj != null) obj.isSelected = true;

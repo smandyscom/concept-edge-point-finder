@@ -31,7 +31,7 @@
 
 		<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">
 			<Grid>
-				<Image Source="pack://application:,,,/lenna.png" Style="{StaticResource OnCanvasStyle}" Stretch="None" MouseMove="Image_MouseMove"/>
+				<Image Source="pack://application:,,,/lenna.png" Style="{StaticResource OnCanvasStyle}" Stretch="None"/>
 
 				<!--Present Layers collection-->
 				<ItemsControl ItemsSource="{Binding}" Style="{StaticResource OnCanvasStyle}">

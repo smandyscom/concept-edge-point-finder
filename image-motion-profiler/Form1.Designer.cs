@@ -45,7 +45,6 @@
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-			this.userControlCanvs2 = new WindowsFormsApp2.WPF.UserControlCanvs();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -236,7 +235,6 @@
 			this.elementHost1.Size = new System.Drawing.Size(742, 610);
 			this.elementHost1.TabIndex = 0;
 			this.elementHost1.Text = "elementHost1";
-			this.elementHost1.Child = this.userControlCanvs2;
 			// 
 			// menuStrip1
 			// 
@@ -320,7 +318,6 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.Integration.ElementHost elementHost1;
-		private WPF.UserControlCanvs userControlCanvs2;
 	}
 }
 

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using WindowsFormsApp2.DrawObjects;
 using WindowsFormsApp2.Interface;
+using WindowsFormsApp2.Extensions;
 
 namespace WindowsFormsApp2
 {
@@ -13,7 +15,7 @@ namespace WindowsFormsApp2
     public partial class Model
     {
 
-        public List<Layer> LayerCollection { get; set; } = new List<Layer>();
+        public ObservableCollection<Layer> LayerCollection { get; set; } = new ObservableCollection<Layer>();
 
         Layer activeLayer;
         public Layer ActiveLayer { get { return activeLayer; } }    // user is drawing on
@@ -28,10 +30,10 @@ namespace WindowsFormsApp2
         }
 
 
-        public SnapBase FindSnapPoint(Point hit)
+        public SnapBase FindSnapPoint(PointF hit)
         {
             List<SnapBase> candidates = new List<SnapBase>();
-            foreach (Layer la in LayerCollection.FindAll(la => la.Visible))
+            foreach (Layer la in LayerCollection.Where(la => la.Visible))
             {
                 SnapBase obj = la.GetHitObject(hit) as SnapBase;
                 if (obj != null) candidates.Add(obj);
@@ -93,7 +95,7 @@ namespace WindowsFormsApp2
         }
 
 
-        public Idraw GetHitObject(Point hit)
+        public Idraw GetHitObject(PointF hit)
         {
             foreach (Layer la in LayerCollection)
             {

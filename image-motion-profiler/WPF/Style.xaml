@@ -18,7 +18,8 @@
 		<Setter Property="ItemTemplate">
 			<Setter.Value>
 				<DataTemplate DataType="{x:Type DrawObjects:SnapBase}">
-					<Path Stroke="{Binding Type, Converter={Demo:PointTypeToBrushValueConverter}}">
+					<Path Stroke="{Binding Type, Converter={Demo:PointTypeToBrushValueConverter}}" 
+						  Visibility="{Binding isSelected, Converter={Demo:BoolToVisibilityValueConverter}}">
 						<Path.Data>
 							<EllipseGeometry RadiusX="2" RadiusY="2" Center="{Binding Location, Converter={Demo:PointFToPointValueConverter}}"/>
 						</Path.Data>
@@ -26,7 +27,6 @@
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>
-
 	</Style>
 
 	<Style TargetType="{x:Type FrameworkElement}" x:Key="OnCanvasStyle">

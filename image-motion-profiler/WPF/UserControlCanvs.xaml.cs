@@ -15,15 +15,30 @@ namespace WindowsFormsApp2.WPF
 	/// </summary>
 	public partial class UserControlCanvs : UserControl
 	{
-		public LayerCollection layers = new LayerCollection();
+		public Model model = new Model();
+		private Lines lines = new Lines();
+		private Circles circles = new Circles();
+
 		public UserControlCanvs()
 		{
 
 			InitializeComponent();
-			this.DataContext = layers;
-		
+
+			model.ActiveLayer.drawObjects.AddRange(lines);
+			model.ActiveLayer.drawObjects.AddRange(circles);
+			this.DataContext = model.LayerCollection;
 		}
 
+		private void Image_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			if (double.IsNaN(Border.PrimaryX) || double.IsNaN(Border.PrimaryY))
+			{
+				return;
+			}
+			var point = new PointF((float)Border.PrimaryX, (float)Border.PrimaryY);
+			Idraw obj = model.FindSnapPoint(point);
+			if (obj != null) obj.isSelected = true;
+		}
 	}
 
 	public class LayerCollection : ObservableCollection<Layer>
@@ -54,6 +69,7 @@ namespace WindowsFormsApp2.WPF
 
 			temp = new PointF(512, 480);
 			line.__end.Location = temp;
+
 			Add(line);
 			CreateTimer();
 		}

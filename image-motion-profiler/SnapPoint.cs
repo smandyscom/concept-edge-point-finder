@@ -49,7 +49,7 @@ namespace WindowsFormsApp2.DrawObjects
 
         public bool isHitObject(PointF p)
         {
-
+			isSelected = false;
             double leftPoint = Location.X - range;
             double rightPoint = Location.X + range;
             if (p.X < leftPoint || p.X > rightPoint)
@@ -60,7 +60,8 @@ namespace WindowsFormsApp2.DrawObjects
             if (p.Y < bottomPoint || p.Y > topPoint)
                 return false;
 
-            return true;
+			isSelected = true;
+            return isSelected;
         }
 
         public double Distance2(PointF p)

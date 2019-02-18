@@ -31,12 +31,15 @@
 
 		<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">
 			<Grid>
-				<Image Source="pack://application:,,,/lenna.png" Style="{StaticResource OnCanvasStyle}" Stretch="None"/>
+				<Image Source="pack://application:,,,/lenna.png" Style="{StaticResource OnCanvasStyle}" Stretch="None" MouseMove="Image_MouseMove"/>
 
 				<!--Present Layers collection-->
 				<ItemsControl ItemsSource="{Binding}" Style="{StaticResource OnCanvasStyle}">
 					<ItemsControl.Resources>
 						<DataTemplate DataType="{x:Type local:Layer}">
+
+							<!--Present layer object data-->
+							<!--binding to layer Visible property-->
 							<Grid Visibility="{Binding Visible, Converter={Demo:BoolToVisibilityValueConverter}}">
 
 								<!--for draw object in list-->
@@ -52,8 +55,8 @@
 										<DataTemplate DataType="{x:Type DrawObjects:LineBase}">
 											<Grid>
 												<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
-									  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
-									  Stroke="{Binding isSelected, Converter={Demo:isSelectedToBrushValueConverter}}" StrokeThickness="3"/>
+													  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
+													  Stroke="{Binding isSelected, Converter={Demo:isSelectedToBrushValueConverter}}" StrokeThickness="3"/>
 												<!-- All SnapBase in a line -->
 												<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
 											  Style="{StaticResource SnapPointStyle}">
@@ -72,7 +75,7 @@
 													</Path.Data>
 												</Path>
 												<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
-											  Style="{StaticResource SnapPointStyle}">
+															  Style="{StaticResource SnapPointStyle}">
 												</ItemsControl>
 											</Grid>
 										</DataTemplate>
@@ -83,11 +86,6 @@
 						</DataTemplate>
 					</ItemsControl.Resources>
 				</ItemsControl>
-
-				<!--Present layer object data-->
-				<!--binding to layer Visible property-->
-
-
 
 			</Grid>
 		</Zoom:ZoomBorder>

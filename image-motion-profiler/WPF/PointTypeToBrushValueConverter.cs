@@ -26,7 +26,7 @@ namespace WindowsFormsApp2.WPF
 					break;
 
 				case PointType.end:
-					color = Colors.GreenYellow;
+					color = Colors.Red;
 					break;
 			}
 

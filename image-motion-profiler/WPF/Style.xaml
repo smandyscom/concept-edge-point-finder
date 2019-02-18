@@ -3,11 +3,13 @@
 					xmlns:DrawObjects ="clr-namespace:WindowsFormsApp2.DrawObjects"
 					xmlns:Demo ="clr-namespace:WindowsFormsApp2.WPF">
 
-	<Style TargetType="{x:Type ItemsControl}" x:Key="SnapPointStyle">
-		<Setter Property="HorizontalAlignment" Value="Left"/>
+	<Style TargetType="{x:Type FrameworkElement}" x:Key="OnCanvasStyle">
 		<Setter Property="VerticalAlignment" Value="Top"/>
+		<Setter Property="HorizontalAlignment" Value="Left"/>
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
+	</Style>
 
+	<Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource OnCanvasStyle}"  x:Key="SnapPointStyle">
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>
@@ -29,9 +31,4 @@
 		</Setter>
 	</Style>
 
-	<Style TargetType="{x:Type FrameworkElement}" x:Key="OnCanvasStyle">
-		<Setter Property="VerticalAlignment" Value="Top"/>
-		<Setter Property="HorizontalAlignment" Value="Left"/>
-		<Setter Property="SnapsToDevicePixels" Value="True"/>
-	</Style>
 </ResourceDictionary>

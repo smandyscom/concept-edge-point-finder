@@ -5,17 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using WindowsFormsApp2.Interface;
 using System.Drawing;
+using System.ComponentModel;
 
 namespace WindowsFormsApp2.DrawObjects
 {
-  public abstract  class LineBase : Idraw
+  public abstract  class LineBase : Idraw , INotifyPropertyChanged
     {
         protected static Pen __pen = new Pen(Color.Black, 3);
         public bool isSelected { get; set; } = false;
-        public SnapPoint __start;
-        public SnapPoint __end;
+        public SnapPoint __start { get; set; }
+        public SnapPoint __end { get; set; }
 
-        public virtual void draw(Graphics graphics)
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected void OnPropertyChanged(PropertyChangedEventArgs eventArgs)
+		{
+			PropertyChanged?.Invoke(this, eventArgs);
+		}
+
+		public virtual void draw(Graphics graphics)
         {
             if (isSelected)
                 __pen.Color = Color.Purple;

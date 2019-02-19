@@ -46,6 +46,10 @@ namespace WindowsFormsApp2
             int cols = 3;
             OpenCvSharp.Mat __input = OpenCvSharp.Mat.Ones(rows, cols, OpenCvSharp.MatType.CV_32FC1);
             OpenCvSharp.Mat __output = Fitting.Fitting.RightSingularVector(__input);
+
+
+			var canvas = new WPF.UserControlCanvs();
+			elementHost1.Child = canvas;
         }
      
         private void MouseMoveHandler(object sender, MouseEventArgs e)

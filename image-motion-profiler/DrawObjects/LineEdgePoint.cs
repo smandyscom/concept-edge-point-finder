@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using OpenCvSharp;
@@ -7,7 +8,7 @@ using WindowsFormsApp2.Interface;
 
 namespace WindowsFormsApp2.DrawObjects
 {
-    class LineEdgePoint : LineBase
+    public class LineEdgePoint : LineBase, INotifyPropertyChanged
     {
         SnapPoint __mid;
         SnapPoint __edge;
@@ -25,8 +26,8 @@ namespace WindowsFormsApp2.DrawObjects
             __start.Update();
             __end.Update();
             __edge.Location = GetEdgePoint(gray);
-            __mid.Location.X = (__start.Location.X + __end.Location.X) / 2;
-            __mid.Location.Y = (__start.Location.Y + __end.Location.Y) / 2;
+			PointF temp = new PointF((__start.Location.X + __end.Location.X) / 2, (__start.Location.Y + __end.Location.Y) / 2);
+			__mid.Location = temp;
             return this;
         }
         public override void draw(Graphics graphics)

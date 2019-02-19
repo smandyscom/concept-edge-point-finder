@@ -21,12 +21,11 @@ namespace WindowsFormsApp2.DrawObjects
             {
                 //take [a b c] turns into start/end point
                 __coefficient = value;
+				PointF temp = new PointF(0, (float)((-1 * __coefficient.At<double>(0, 2)) / __coefficient.At<double>(0, 1)));   // y = -c/b
+				__start.Location = temp;
 
-                __start.Location.X = 0;
-                __start.Location.Y = (float)((-1 * __coefficient.At<double>(0, 2)) / __coefficient.At<double>(0, 1)); // y = -c/b
-
-                __end.Location.Y = 0;
-                __end.Location.X = (float)((-1 * __coefficient.At<double>(0, 2)) / __coefficient.At<double>(0, 0));// x = -c/a
+				temp = new PointF((float)((-1 * __coefficient.At<double>(0, 2)) / __coefficient.At<double>(0, 0)), 0);
+				__end.Location = temp;
             }
         }
 

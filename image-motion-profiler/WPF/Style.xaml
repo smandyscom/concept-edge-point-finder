@@ -3,6 +3,35 @@
 					xmlns:DrawObjects ="clr-namespace:WindowsFormsApp2.DrawObjects"
 					xmlns:Demo ="clr-namespace:WindowsFormsApp2.WPF">
 
+		<Style TargetType="{x:Type Path}" x:Key="SnapMouseOverStyle">
+			<Setter Property="StrokeThickness" Value="1"/>
+			<Setter Property="Opacity" Value="0"/>
+		<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="StrokeThickness" Value="2"/>
+					<Setter Property="Opacity" Value="1"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+
+	<Style TargetType="{x:Type Line}" x:Key="LineMouseOverStyle">
+		<Setter Property="StrokeThickness" Value="3"/>
+		<Style.Triggers>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="StrokeThickness" Value="5"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<Style TargetType="{x:Type Path}" x:Key="CircleMouseOverStyle">
+		<Setter Property="StrokeThickness" Value="1"/>
+		<Style.Triggers>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="StrokeThickness" Value="3"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
 	<Style TargetType="{x:Type FrameworkElement}" x:Key="OnCanvasStyle">
 		<Setter Property="VerticalAlignment" Value="Top"/>
 		<Setter Property="HorizontalAlignment" Value="Left"/>
@@ -20,8 +49,8 @@
 		<Setter Property="ItemTemplate">
 			<Setter.Value>
 				<DataTemplate DataType="{x:Type DrawObjects:SnapBase}">
-					<Path Stroke="{Binding Type, Converter={Demo:PointTypeToBrushValueConverter}}" 
-						  Visibility="{Binding isSelected, Converter={Demo:BoolToVisibilityValueConverter}}">
+					<Path Stroke="{Binding Type, Converter={Demo:PointTypeToBrushValueConverter}}"  Visibility="Visible" Style="{StaticResource SnapMouseOverStyle}">
+						<!--Visibility="{Binding isSelected, Converter={Demo:BoolToVisibilityValueConverter}}">-->
 						<Path.Data>
 							<EllipseGeometry RadiusX="2" RadiusY="2" Center="{Binding Location, Converter={Demo:PointFToPointValueConverter}}"/>
 						</Path.Data>

@@ -10,7 +10,7 @@ using System.Drawing;
 namespace WindowsFormsApp2.DrawObjects
 {
     public class CircleFitted :  CircleBase,  ICoeffcient
-    {
+	{
         Mat __coefficient = new Mat();
 
         public List<SnapBase> __selectedPoints = new List<SnapBase>();
@@ -34,9 +34,10 @@ namespace WindowsFormsApp2.DrawObjects
                 a = (float)__coefficient.At<double>(0, (int)CoefficientDefinition.A);
                 b = (float)__coefficient.At<double>(0, (int)CoefficientDefinition.B);
                 c = (float)__coefficient.At<double>(0, (int)CoefficientDefinition.C);
-
-                __center.Location.X = (float)(-1* a)/2;
-                __center.Location.Y = (float)(-1 * b) / 2;
+				PointF temp = new PointF();
+				temp.X = (-1 * a) / 2;
+				temp.Y = (-1 * b) / 2;
+				__center.Location = temp;
 
                 __radius = (float)(Math.Sqrt(Math.Pow(a/2, 2) + Math.Pow(b/2, 2) - c));
             }

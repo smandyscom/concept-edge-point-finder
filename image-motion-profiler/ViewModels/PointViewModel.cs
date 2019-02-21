@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using System.ComponentModel;
+
+using Core.Arch;
+
+namespace WindowsFormsApp2.ViewModels 
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PointViewModel : BaseViewModel
+    {
+        /// <summary>
+        /// The model as point base
+        /// </summary>
+        internal PointBase Point
+        {
+            get => m_element as PointBase;
+        }
+    }
+}

@@ -14,9 +14,4 @@ namespace WindowsFormsApp2.Interface
         bool isHitObject(PointF hit);
         Idraw Update(object data = null);
     }
-
-    public interface ICoeffcient
-    {
-        Mat Coefficient { get; set; }
-    }
 }

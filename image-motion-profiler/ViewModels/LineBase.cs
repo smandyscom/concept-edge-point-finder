@@ -7,6 +7,8 @@ using WindowsFormsApp2.Interface;
 using System.Drawing;
 using System.ComponentModel;
 
+using Core.Derived;
+
 namespace WindowsFormsApp2.DrawObjects
 {
   public abstract  class LineBase : Idraw , INotifyPropertyChanged
@@ -15,6 +17,11 @@ namespace WindowsFormsApp2.DrawObjects
         public bool isSelected { get; set; } = false;
         public SnapPoint __start { get; set; }
         public SnapPoint __end { get; set; }
+
+        /// <summary>
+        /// Model , decide concrete type when constructing (i.e PointEdge/PointIntersection)
+        /// </summary>
+        internal LineBase m_line;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		protected void OnPropertyChanged(PropertyChangedEventArgs eventArgs)

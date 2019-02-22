@@ -7,7 +7,7 @@ using System.Windows.Data;
 using System.Windows;
 
 
-namespace WindowsFormsApp2.WPF
+namespace Presentation.Convertors
 {
 	class PointFToPointValueConverter : BaseConverter, IValueConverter
 	{

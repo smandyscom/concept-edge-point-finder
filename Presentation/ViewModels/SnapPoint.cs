@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using WindowsFormsApp2.Interface;
 
-namespace WindowsFormsApp2.DrawObjects
+namespace Presentation.ViewModels
 {
 
     public enum PointType : short
@@ -21,7 +20,7 @@ namespace WindowsFormsApp2.DrawObjects
     // Equals(object obj)
     //  https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
 
-    public abstract class SnapBase : Idraw , INotifyPropertyChanged
+    public abstract class SnapBase : IDraw , INotifyPropertyChanged
 	{
         public PointType Type { get; set; } = PointType.start;
         //public SnapPoint upstream = null;
@@ -84,7 +83,7 @@ namespace WindowsFormsApp2.DrawObjects
             return Type.ToString() + Location.ToString();
         }
 
-        public abstract Idraw Update(object data = null);
+        public abstract IDraw Update(object data = null);
     }
 
     public class SnapPoint : SnapBase
@@ -93,32 +92,10 @@ namespace WindowsFormsApp2.DrawObjects
         {
         }
       
-        public override Idraw Update(object data = null)
+        public override IDraw Update(object data = null)
         {
             if (upstream != null) Location = upstream.Location;
             return this;
-        }
-    }
-
-    public class InterSectPoint : SnapBase
-    {
-        private Idraw owner1;
-        private Idraw owner2;
-        public InterSectPoint( PointF location,Idraw owner1, Idraw owner2) : base(location, PointType.intersection)
-        {
-            this.owner1 = owner1;
-            this.owner2 = owner2;
-        }
-
-        public override Idraw Update(object data = null)
-        {
-            Location = Utils.GetIntersectPoint(owner1, owner2);
-            return this;
-        }
-
-        public override void draw(Graphics g)
-        {
-            g.DrawEllipse(new Pen(Color.Yellow), Location.X - range / 2, Location.Y - range / 2, range, range);
         }
     }
 

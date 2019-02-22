@@ -4,18 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.ComponentModel;
+
 using Core.Arch;
 
-namespace WindowsFormsApp2.ViewModels
+namespace Presentation.ViewModels 
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ViewModelBase
+    public class ViewModelPoint : ViewModelBase
     {
         /// <summary>
-        /// The model element held
+        /// The model as point base
         /// </summary>
-        internal ElementBase m_element;
+        internal PointBase Point
+        {
+            get => m_element as PointBase;
+        }
     }
 }

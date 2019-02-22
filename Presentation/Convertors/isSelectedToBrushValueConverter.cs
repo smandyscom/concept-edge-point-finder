@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace WindowsFormsApp2.WPF
+namespace Presentation.Convertors
 {
 	class isSelectedToBrushValueConverter : BaseConverter, IValueConverter
 	{

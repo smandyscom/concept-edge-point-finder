@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace WindowsFormsApp2.WPF
+namespace Presentation.Convertors
 {
 	class MethodToValueConverter : BaseConverter, IValueConverter
 	{

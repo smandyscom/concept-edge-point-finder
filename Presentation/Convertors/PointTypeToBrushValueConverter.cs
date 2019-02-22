@@ -4,9 +4,10 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Data;
-using WindowsFormsApp2.DrawObjects;
+using Presentation;
+using Presentation.ViewModels;
 
-namespace WindowsFormsApp2.WPF
+namespace Presentation.Convertors
 {
 	class PointTypeToBrushValueConverter : BaseConverter, IValueConverter
 	{

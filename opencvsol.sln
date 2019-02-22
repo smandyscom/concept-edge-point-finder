@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTester", "CoreTester\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProfiler", "ImageProfiler\ImageProfiler.csproj", "{BF374040-EB5B-44B7-9EEC-C22523D3BD6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation.csproj", "{D09B86F1-CB44-4E1B-8758-AE35C6E19B22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BF374040-EB5B-44B7-9EEC-C22523D3BD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF374040-EB5B-44B7-9EEC-C22523D3BD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF374040-EB5B-44B7-9EEC-C22523D3BD6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D09B86F1-CB44-4E1B-8758-AE35C6E19B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D09B86F1-CB44-4E1B-8758-AE35C6E19B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D09B86F1-CB44-4E1B-8758-AE35C6E19B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D09B86F1-CB44-4E1B-8758-AE35C6E19B22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -56,16 +56,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="IDraw.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="ViewModels\ViewModelCircle.cs" />
-    <Compile Include="ViewModels\ViewModelCoordinate.cs" />
-    <Compile Include="ViewModels\ViewModelEllipse.cs" />
-    <Compile Include="ViewModels\ViewModelLine.cs" />
-    <Compile Include="ViewModels\ViewModelPoint.cs" />
-    <Compile Include="ViewModels\SnapPoint.cs" />
-    <Compile Include="ViewModels\ViewModelGeneric.cs" />
-    <Compile Include="ViewModels\ZoomBorder.cs" />
     <Compile Include="Views\UserControlCanvs.xaml.cs">
       <DependentUpon>UserControlCanvs.xaml</DependentUpon>
     </Compile>
@@ -78,12 +68,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Convertors\BaseConverter.cs" />
-    <Compile Include="Convertors\BoolToVisibilityValueConverter.cs" />
-    <Compile Include="Convertors\isSelectedToBrushValueConverter.cs" />
-    <Compile Include="Convertors\MethodToValueConverter.cs" />
-    <Compile Include="Convertors\PointFToPointValueConverterToPointValueConverter.cs" />
-    <Compile Include="Convertors\PointTypeToBrushValueConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -124,9 +108,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\core\Core.csproj">
-      <Project>{7fc8336e-8668-4792-b2b6-99f1c4ddc757}</Project>
-      <Name>Core</Name>
+    <ProjectReference Include="..\Presentation\Presentation.csproj">
+      <Project>{d09b86f1-cb44-4e1b-8758-ae35c6e19b22}</Project>
+      <Name>Presentation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

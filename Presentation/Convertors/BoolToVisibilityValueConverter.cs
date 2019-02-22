@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
 
-namespace WindowsFormsApp2.WPF
+namespace Presentation.Convertors
 {
 	/// <summary>
 	/// Ture is Visible, False is Hidden

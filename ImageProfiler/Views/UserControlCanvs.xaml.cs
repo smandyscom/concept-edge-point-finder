@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using WindowsFormsApp2.DrawObjects;
 using WindowsFormsApp2.Interface;
 using WindowsFormsApp2.Extensions;
+using Presentation;
 
 namespace WindowsFormsApp2.WPF
 {
@@ -62,9 +63,9 @@ namespace WindowsFormsApp2.WPF
 		}
 	}
 
-	public class Lines : ObservableCollection<Idraw>
+	public class Lines : ObservableCollection<IDraw>
 	{
-		private LineEdgePoint line = new LineEdgePoint();
+		//private LineEdgePoint line = new LineEdgePoint();
 		public Lines()
 		{
 			var temp = new PointF(0, 0);
@@ -96,7 +97,7 @@ namespace WindowsFormsApp2.WPF
 		}
 	}
 
-	public class Circles : ObservableCollection<Idraw>
+	public class Circles : ObservableCollection<IDraw>
 	{
 		private CircleFitted circle = new CircleFitted();
 		public Circles()

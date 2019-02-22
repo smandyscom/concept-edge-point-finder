@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using WindowsFormsApp2.Interface;
 
 namespace WindowsFormsApp2.DrawObjects
 {

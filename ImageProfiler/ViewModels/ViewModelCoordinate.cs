@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.ComponentModel;
+
 using Core.Arch;
 
 namespace WindowsFormsApp2.ViewModels
@@ -11,11 +13,14 @@ namespace WindowsFormsApp2.ViewModels
     /// <summary>
     /// 
     /// </summary>
-    public class BaseViewModel
+    public class ViewModelCoordinate : ViewModelBase
     {
         /// <summary>
-        /// The model element held
+        /// The model
         /// </summary>
-        internal ElementBase m_element;
+        internal CoordinateBase Coordinate
+        {
+            get => m_element as CoordinateBase;
+        }
     }
 }

@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FittingTester", "FittingTester\FittingTester.csproj", "{A43DEE3E-8E3D-43F8-89D6-5EF7DCB8A69D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp2", "image-motion-profiler\WindowsFormsApp2.csproj", "{17C7242C-6CC5-4E07-8430-CE2DD8FC1B3D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "core\Core.csproj", "{7FC8336E-8668-4792-B2B6-99F1C4DDC757}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTester", "CoreTester\CoreTester.csproj", "{397BE4DB-53AB-4849-A8E8-EC432111B5B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProfiler", "ImageProfiler\ImageProfiler.csproj", "{BF374040-EB5B-44B7-9EEC-C22523D3BD6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A43DEE3E-8E3D-43F8-89D6-5EF7DCB8A69D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A43DEE3E-8E3D-43F8-89D6-5EF7DCB8A69D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A43DEE3E-8E3D-43F8-89D6-5EF7DCB8A69D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A43DEE3E-8E3D-43F8-89D6-5EF7DCB8A69D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17C7242C-6CC5-4E07-8430-CE2DD8FC1B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17C7242C-6CC5-4E07-8430-CE2DD8FC1B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17C7242C-6CC5-4E07-8430-CE2DD8FC1B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17C7242C-6CC5-4E07-8430-CE2DD8FC1B3D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7FC8336E-8668-4792-B2B6-99F1C4DDC757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7FC8336E-8668-4792-B2B6-99F1C4DDC757}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FC8336E-8668-4792-B2B6-99F1C4DDC757}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +23,10 @@ Global
 		{397BE4DB-53AB-4849-A8E8-EC432111B5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{397BE4DB-53AB-4849-A8E8-EC432111B5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{397BE4DB-53AB-4849-A8E8-EC432111B5B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF374040-EB5B-44B7-9EEC-C22523D3BD6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF374040-EB5B-44B7-9EEC-C22523D3BD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF374040-EB5B-44B7-9EEC-C22523D3BD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF374040-EB5B-44B7-9EEC-C22523D3BD6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

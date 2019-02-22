@@ -1,15 +1,15 @@
-﻿using System;
+﻿using ImageProfiler;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsFormsApp2.Interface;
 
 namespace WindowsFormsApp2.DrawObjects
 {
-	public abstract class CircleBase : Idraw, INotifyPropertyChanged
+	public abstract class ViewModelCircle : IDraw, INotifyPropertyChanged
 	{
 		protected static Pen __pen = new Pen(Color.Yellow, 3);
 
@@ -18,7 +18,7 @@ namespace WindowsFormsApp2.DrawObjects
 
 		public bool isSelected { get; set; } = false;
 
-		public CircleBase()
+		public ViewModelCircle()
 		{
 			__center = new SnapPoint(PointF.Empty, PointType.center);
 		}
@@ -43,18 +43,18 @@ namespace WindowsFormsApp2.DrawObjects
 				__radius * 2);
 		}
 
-		public List<SnapBase> GetSnapPoints()
-		{
-			return new List<SnapBase>() { __center };
-		}
+        //public List<SnapBase> GetSnapPoints()
+        //{
+        //    return new List<SnapBase>() { __center };
+        //}
 
-		public bool isHitObject(PointF hit)
+        public bool isHitObject(PointF hit)
 		{
 			//throw new NotImplementedException();
 			return false;
 		}
 
-		public abstract Idraw Update(object data = null);
+		public abstract IDraw Update(object data = null);
 
 	}
 }

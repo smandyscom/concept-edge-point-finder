@@ -42,7 +42,7 @@
 							<!--binding to layer Visible property-->
 							<Grid Visibility="{Binding Visible, Converter={Demo:BoolToVisibilityValueConverter}}">
 
-								<!--for draw object in list-->
+								<!--For draw object in list (Collect all drawing object / Snap reference)-->
 								<ItemsControl ItemsSource="{Binding drawObjects}" Style="{StaticResource OnCanvasStyle}">
 									<ItemsControl.ItemsPanel>
 										<ItemsPanelTemplate>
@@ -52,7 +52,7 @@
 
 									<!--LineBase as Target type-->
 									<ItemsControl.Resources>
-										<DataTemplate DataType="{x:Type DrawObjects:LineBase}">
+										<DataTemplate DataType="{x:Type DrawObjects:ViewModelLine}">
 											<Grid>
 												<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}" MouseEnter="Shape_MouseEnter"
 													  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
@@ -67,7 +67,7 @@
 										</DataTemplate>
 
 										<!--CircleBase present-->
-										<DataTemplate DataType="{x:Type DrawObjects:CircleBase}">
+										<DataTemplate DataType="{x:Type DrawObjects:ViewModelCircle}">
 											<Grid>
 												<Path Stroke="Blue" Style="{StaticResource CircleMouseOverStyle}">
 													<Path.Data>

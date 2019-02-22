@@ -13,7 +13,7 @@ namespace WindowsFormsApp2.ViewModels
     /// <summary>
     /// 
     /// </summary>
-    public class PointViewModel : BaseViewModel
+    public class ViewModelPoint : ViewModelBase
     {
         /// <summary>
         /// The model as point base

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsFormsApp2.Interface;
 using System.Drawing;
 using System.ComponentModel;
 
 using Core.Derived;
+using ImageProfiler;
 
 namespace WindowsFormsApp2.DrawObjects
 {
-  public abstract  class LineBase : Idraw , INotifyPropertyChanged
+  public abstract  class ViewModelLine : IDraw , INotifyPropertyChanged
     {
         protected static Pen __pen = new Pen(Color.Black, 3);
         public bool isSelected { get; set; } = false;
@@ -21,7 +21,7 @@ namespace WindowsFormsApp2.DrawObjects
         /// <summary>
         /// Model , decide concrete type when constructing (i.e PointEdge/PointIntersection)
         /// </summary>
-        internal LineBase m_line;
+        internal ViewModelLine m_line;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		protected void OnPropertyChanged(PropertyChangedEventArgs eventArgs)
@@ -39,16 +39,16 @@ namespace WindowsFormsApp2.DrawObjects
             graphics.DrawLine(__pen, __start.Location, __end.Location);
         }
 
-        public LineBase()
+        public ViewModelLine()
         {
             __start = new SnapPoint(PointF.Empty, PointType.start);
             __end = new SnapPoint(PointF.Empty, PointType.end);
         }
 
-        public virtual List<SnapBase> GetSnapPoints()
-        {
-            return new List<SnapBase>() { __start,__end};
-        }
+        //public virtual List<SnapBase> GetSnapPoints()
+        //{
+        //    return new List<SnapBase>() { __start,__end};
+        //}
 
         public virtual bool isHitObject(PointF hit)
         {
@@ -118,7 +118,7 @@ namespace WindowsFormsApp2.DrawObjects
             return isSelected;
         }
 
-        public abstract Idraw Update(object data = null);
+        public abstract IDraw Update(object data = null);
        
     }
 }

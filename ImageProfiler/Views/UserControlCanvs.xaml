@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="WindowsFormsApp2.WPF.UserControlCanvs"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WindowsFormsApp2"
+			 xmlns:Zoom ="clr-namespace:PanAndZoom"
+			 xmlns:DrawObjects ="clr-namespace:WindowsFormsApp2.DrawObjects"
+			 xmlns:Demo ="clr-namespace:WindowsFormsApp2.WPF"
+             mc:Ignorable="d" 
+              Height="480" Width="512" SnapsToDevicePixels="True">
+
+	<!--Adding Style in resources-->
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Style.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">
+			<Grid>
+				<Image Source="pack://application:,,,/lenna.png" Style="{StaticResource OnCanvasStyle}" Stretch="None"/>
+
+				<!--Present Layers collection-->
+				<ItemsControl ItemsSource="{Binding}" Style="{StaticResource OnCanvasStyle}">
+					<ItemsControl.Resources>
+						<DataTemplate DataType="{x:Type local:Layer}">
+
+							<!--Present layer object data-->
+							<!--binding to layer Visible property-->
+							<Grid Visibility="{Binding Visible, Converter={Demo:BoolToVisibilityValueConverter}}">
+
+								<!--For draw object in list (Collect all drawing object / Snap reference)-->
+								<ItemsControl ItemsSource="{Binding drawObjects}" Style="{StaticResource OnCanvasStyle}">
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<Canvas/>
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+
+									<!--LineBase as Target type-->
+									<ItemsControl.Resources>
+										<DataTemplate DataType="{x:Type DrawObjects:ViewModelLine}">
+											<Grid>
+												<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}" MouseEnter="Shape_MouseEnter"
+													  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
+													  Stroke="{Binding isSelected, Converter={Demo:isSelectedToBrushValueConverter}}" Style="{StaticResource LineMouseOverStyle}">
+												</Line>
+												<!-- All SnapBase in a line -->
+												<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
+															  Style="{StaticResource SnapPointStyle}" MouseEnter="Shape_MouseEnter">
+												</ItemsControl>
+
+											</Grid>
+										</DataTemplate>
+
+										<!--CircleBase present-->
+										<DataTemplate DataType="{x:Type DrawObjects:ViewModelCircle}">
+											<Grid>
+												<Path Stroke="Blue" Style="{StaticResource CircleMouseOverStyle}">
+													<Path.Data>
+														<EllipseGeometry RadiusX="{Binding __radius}" RadiusY="{Binding __radius}" 
+														 Center="{Binding __center.Location, Converter={Demo:PointFToPointValueConverter}}"/>
+													</Path.Data>
+												</Path>
+												<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
+															  Style="{StaticResource SnapPointStyle}" MouseEnter="Shape_MouseEnter">
+												</ItemsControl>
+											</Grid>
+										</DataTemplate>
+
+									</ItemsControl.Resources>
+								</ItemsControl>
+							</Grid>
+						</DataTemplate>
+					</ItemsControl.Resources>
+				</ItemsControl>
+
+			</Grid>
+		</Zoom:ZoomBorder>
+
+		<TextBlock Grid.Row="1" Grid.Column="0" FontSize="20">
+			<TextBlock.Text>
+				<MultiBinding StringFormat="X:{0}		Y:{1}">
+					<Binding ElementName="Border" Path="PrimaryX"/>
+					<Binding ElementName="Border" Path="PrimaryY"/>
+				</MultiBinding>
+			</TextBlock.Text>
+		</TextBlock>
+	</Grid>
+</UserControl>

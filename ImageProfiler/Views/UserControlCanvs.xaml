@@ -3,10 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WindowsFormsApp2"
-			 xmlns:Zoom ="clr-namespace:PanAndZoom"
-			 xmlns:DrawObjects ="clr-namespace:WindowsFormsApp2.DrawObjects"
-			 xmlns:Demo ="clr-namespace:WindowsFormsApp2.WPF"
+             xmlns:Convertors="clr-namespace:Convertors.ViewModels;assembly=Presentation"
+			 xmlns:Present ="clr-namespace:Presentation.ViewModels;assembly=Presentation"
              mc:Ignorable="d" 
               Height="480" Width="512" SnapsToDevicePixels="True">
 
@@ -29,18 +27,18 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
-		<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">
+		<!--<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">-->
 			<Grid>
 				<Image Source="pack://application:,,,/lenna.png" Style="{StaticResource OnCanvasStyle}" Stretch="None"/>
 
 				<!--Present Layers collection-->
 				<ItemsControl ItemsSource="{Binding}" Style="{StaticResource OnCanvasStyle}">
 					<ItemsControl.Resources>
-						<DataTemplate DataType="{x:Type local:Layer}">
+						
 
 							<!--Present layer object data-->
 							<!--binding to layer Visible property-->
-							<Grid Visibility="{Binding Visible, Converter={Demo:BoolToVisibilityValueConverter}}">
+							<Grid Visibility="{Binding Visible, Converter={Convertors:BoolToVisibilityValueConverter}}">
 
 								<!--For draw object in list (Collect all drawing object / Snap reference)-->
 								<ItemsControl ItemsSource="{Binding drawObjects}" Style="{StaticResource OnCanvasStyle}">
@@ -52,14 +50,14 @@
 
 									<!--LineBase as Target type-->
 									<ItemsControl.Resources>
-										<DataTemplate DataType="{x:Type DrawObjects:ViewModelLine}">
+										<DataTemplate DataType="{x:Type Present:ViewModelLine}">
 											<Grid>
 												<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}" MouseEnter="Shape_MouseEnter"
 													  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
-													  Stroke="{Binding isSelected, Converter={Demo:isSelectedToBrushValueConverter}}" Style="{StaticResource LineMouseOverStyle}">
+													  Stroke="{Binding isSelected, Converter={Convertors:isSelectedToBrushValueConverter}}" Style="{StaticResource LineMouseOverStyle}">
 												</Line>
 												<!-- All SnapBase in a line -->
-												<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
+                                        <ItemsControl ItemsSource="{Binding Converter={Convertors:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
 															  Style="{StaticResource SnapPointStyle}" MouseEnter="Shape_MouseEnter">
 												</ItemsControl>
 
@@ -67,15 +65,15 @@
 										</DataTemplate>
 
 										<!--CircleBase present-->
-										<DataTemplate DataType="{x:Type DrawObjects:ViewModelCircle}">
+										<DataTemplate DataType="{x:Type Present:ViewModelCircle}">
 											<Grid>
 												<Path Stroke="Blue" Style="{StaticResource CircleMouseOverStyle}">
 													<Path.Data>
 														<EllipseGeometry RadiusX="{Binding __radius}" RadiusY="{Binding __radius}" 
-														 Center="{Binding __center.Location, Converter={Demo:PointFToPointValueConverter}}"/>
+														 Center="{Binding __center.Location, Converter={Convertors:PointFToPointValueConverter}}"/>
 													</Path.Data>
 												</Path>
-												<ItemsControl ItemsSource="{Binding Converter={Demo:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
+                                        <ItemsControl ItemsSource="{Binding Converter={Convertors:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
 															  Style="{StaticResource SnapPointStyle}" MouseEnter="Shape_MouseEnter">
 												</ItemsControl>
 											</Grid>
@@ -84,12 +82,12 @@
 									</ItemsControl.Resources>
 								</ItemsControl>
 							</Grid>
-						</DataTemplate>
+						
 					</ItemsControl.Resources>
 				</ItemsControl>
 
 			</Grid>
-		</Zoom:ZoomBorder>
+		<!--</Zoom:ZoomBorder>-->
 
 		<TextBlock Grid.Row="1" Grid.Column="0" FontSize="20">
 			<TextBlock.Text>

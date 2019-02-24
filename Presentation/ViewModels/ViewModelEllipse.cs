@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Presentation.DrawObjects
+namespace Presentation.ViewModels
 {
     //public class Ellipse : Idraw
     //{

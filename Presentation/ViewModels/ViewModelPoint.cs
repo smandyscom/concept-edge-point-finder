@@ -20,7 +20,7 @@ namespace Presentation.ViewModels
         /// </summary>
         internal PointBase Point
         {
-            get => m_element as PointBase;
+            get { return  m_element as PointBase; }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Presentation.ViewModels
         /// </summary>
         internal CoordinateBase Coordinate
         {
-            get => m_element as CoordinateBase;
+            get { return m_element as CoordinateBase; }
         }
     }
 }

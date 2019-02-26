@@ -83,7 +83,7 @@ namespace Core.Arch
         /// </summary>
         public HierarchyTreeNode<CoordinateBase> Node
         {
-            get => m_node;        
+            get { return m_node; }
         }
         /// <summary>
         /// Transformation to parent , 3x3 for 2D , 4x4 for 3D

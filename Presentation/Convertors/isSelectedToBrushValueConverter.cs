@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace Presentation.Convertors
 {
-	class isSelectedToBrushValueConverter : BaseConverter, IValueConverter
+	public class isSelectedToBrushValueConverter : BaseConverter, IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{

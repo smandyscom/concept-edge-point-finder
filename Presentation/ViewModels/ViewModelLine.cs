@@ -9,7 +9,7 @@ using System.ComponentModel;
 using Core.Derived;
 using Presentation.ViewModels;
 
-namespace Presentation.DrawObjects
+namespace Presentation.ViewModels
 {
   public abstract  class ViewModelLine : IDraw , INotifyPropertyChanged
     {

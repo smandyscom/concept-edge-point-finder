@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
 
-namespace WindowsFormsApp2.WPF
+namespace Presentation.Convertors
 {
 	public abstract class BaseConverter : MarkupExtension
 	{

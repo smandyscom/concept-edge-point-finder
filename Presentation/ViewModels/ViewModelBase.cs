@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Core.Arch;
 
-namespace WindowsFormsApp2.ViewModels
+namespace Presentation.ViewModels
 {
     /// <summary>
     /// 

@@ -7,9 +7,9 @@ using System.Drawing;
 using System.ComponentModel;
 
 using Core.Derived;
-using ImageProfiler;
+using Presentation.ViewModels;
 
-namespace WindowsFormsApp2.DrawObjects
+namespace Presentation.ViewModels
 {
   public abstract  class ViewModelLine : IDraw , INotifyPropertyChanged
     {

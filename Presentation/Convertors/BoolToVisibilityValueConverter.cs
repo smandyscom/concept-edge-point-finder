@@ -5,21 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows;
 
-namespace WindowsFormsApp2.WPF
+namespace Presentation.Convertors
 {
-	class MethodToValueConverter : BaseConverter, IValueConverter
+	/// <summary>
+	/// Ture is Visible, False is Hidden
+	/// </summary>
+	public class BoolToVisibilityValueConverter : BaseConverter, IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var methodName = parameter as string;
-			if (value == null || methodName == null)
-				return value;
-			var methodInfo = value.GetType().GetMethod(methodName, new Type[0]);
-			if (methodInfo == null)
-				return value;
-			var gets = methodInfo.Invoke(value, new object[0]);
-			return gets;
+			var visible = (bool)value;
+
+			Visibility visibility = visible ? Visibility.Visible : Visibility.Hidden;
+			return visibility;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

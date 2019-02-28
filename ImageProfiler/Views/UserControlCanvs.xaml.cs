@@ -4,29 +4,25 @@ using System.Drawing;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using WindowsFormsApp2.DrawObjects;
-using WindowsFormsApp2.Interface;
-using WindowsFormsApp2.Extensions;
+using Presentation;
 
-namespace WindowsFormsApp2.WPF
+namespace ImageProfiler
 {
 	/// <summary>
 	/// UserControlCanvs.xaml 的互動邏輯
 	/// </summary>
 	public partial class UserControlCanvs : UserControl
 	{
-		public Model model = new Model();
-		private Lines lines = new Lines();
-		private Circles circles = new Circles();
+		//private Lines lines = new Lines();
+		//private Circles circles = new Circles();
 
 		public UserControlCanvs()
 		{
 
 			InitializeComponent();
 
-			model.ActiveLayer.drawObjects.AddRange(lines);
-			model.ActiveLayer.drawObjects.AddRange(circles);
-			this.DataContext = model.LayerCollection;
+			
+			//this.DataContext = model.LayerCollection;
 			Border.MouseMove += Border_MouseMove;
 		}
 
@@ -44,88 +40,70 @@ namespace WindowsFormsApp2.WPF
 		}
 	}
 
-	public class LayerCollection : ObservableCollection<Layer>
-	{
-		private Layer layer1 = new Layer();
-		private Layer layer2 = new Layer();
+	//public class Lines : ObservableCollection<IDraw>
+	//{
+	//	//private LineEdgePoint line = new LineEdgePoint();
+	//	public Lines()
+	//	{
+	//		var temp = new PointF(0, 0);
+	//		line.__start.Location = temp;
 
-		private Lines lines = new Lines();
-		private Circles circles = new Circles();
+	//		temp = new PointF(512, 480);
+	//		line.__end.Location = temp;
 
-		public LayerCollection()
-		{
-			Add(layer1);
-			Add(layer2);
+	//		Add(line);
+	//		CreateTimer();
+	//	}
+	//	void CreateTimer()
+	//	{
+	//		var timer1 = new Timer
+	//		{
+	//			Enabled = true,
+	//			Interval = 2000
+	//		};
+	//		timer1.Elapsed += Timer1_Elapsed;
+	//	}
 
-			layer1.drawObjects.AddRange(circles);
-			layer2.drawObjects.AddRange(lines);
-		}
-	}
+	//	private void Timer1_Elapsed(object sender, ElapsedEventArgs e)
+	//	{
+	//		var temp = line.__end.Location;
+	//		temp.X -= 10;
+	//		temp.Y -= 10;
+	//		line.__end.Location = temp;
+	//		line.isSelected = !line.isSelected;
+	//	}
+	//}
 
-	public class Lines : ObservableCollection<Idraw>
-	{
-		private LineEdgePoint line = new LineEdgePoint();
-		public Lines()
-		{
-			var temp = new PointF(0, 0);
-			line.__start.Location = temp;
+	//public class Circles : ObservableCollection<IDraw>
+	//{
+	//	private CircleFitted circle = new CircleFitted();
+	//	public Circles()
+	//	{
+	//		var temp = new PointF(256, 240);
+	//		circle.__radius = 10;
+	//		circle.__center.Location = temp;
+	//		Add(circle);
+	//		CreateTimer();
+	//	}
+	//	void CreateTimer()
+	//	{
+	//		var timer1 = new Timer
+	//		{
+	//			Enabled = true,
+	//			Interval = 2000
+	//		};
+	//		timer1.Elapsed += Timer1_Elapsed;
+	//	}
 
-			temp = new PointF(512, 480);
-			line.__end.Location = temp;
-
-			Add(line);
-			CreateTimer();
-		}
-		void CreateTimer()
-		{
-			var timer1 = new Timer
-			{
-				Enabled = true,
-				Interval = 2000
-			};
-			timer1.Elapsed += Timer1_Elapsed;
-		}
-
-		private void Timer1_Elapsed(object sender, ElapsedEventArgs e)
-		{
-			var temp = line.__end.Location;
-			temp.X -= 10;
-			temp.Y -= 10;
-			line.__end.Location = temp;
-			line.isSelected = !line.isSelected;
-		}
-	}
-
-	public class Circles : ObservableCollection<Idraw>
-	{
-		private CircleFitted circle = new CircleFitted();
-		public Circles()
-		{
-			var temp = new PointF(256, 240);
-			circle.__radius = 10;
-			circle.__center.Location = temp;
-			Add(circle);
-			CreateTimer();
-		}
-		void CreateTimer()
-		{
-			var timer1 = new Timer
-			{
-				Enabled = true,
-				Interval = 2000
-			};
-			timer1.Elapsed += Timer1_Elapsed;
-		}
-
-		private void Timer1_Elapsed(object sender, ElapsedEventArgs e)
-		{
-			var temp = circle.__center.Location;
-			temp.X += 10;
-			temp.Y += 10;
-			circle.__center.Location = temp;
-			circle.__radius += 1;
-		}
-	}
+	//	private void Timer1_Elapsed(object sender, ElapsedEventArgs e)
+	//	{
+	//		var temp = circle.__center.Location;
+	//		temp.X += 10;
+	//		temp.Y += 10;
+	//		circle.__center.Location = temp;
+	//		circle.__radius += 1;
+	//	}
+	//}
 
 
 }

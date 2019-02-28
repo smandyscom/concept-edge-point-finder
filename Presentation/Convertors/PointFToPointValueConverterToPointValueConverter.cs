@@ -7,9 +7,9 @@ using System.Windows.Data;
 using System.Windows;
 
 
-namespace WindowsFormsApp2.WPF
+namespace Presentation.Convertors
 {
-	class PointFToPointValueConverter : BaseConverter, IValueConverter
+	public class PointFToPointValueConverter : BaseConverter, IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{

@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 using System.ComponentModel;
 
-namespace ImageProfiler.ViewModels
+namespace Presentation.ViewModels
 {
     class ViewModelGeneric<TModel> : INotifyPropertyChanged
 

@@ -8,19 +8,19 @@ using System.ComponentModel;
 
 using Core.Arch;
 
-namespace WindowsFormsApp2.ViewModels
+namespace Presentation.ViewModels 
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ViewModelCoordinate : ViewModelBase
+    public class ViewModelPoint : ViewModelBase
     {
         /// <summary>
-        /// The model
+        /// The model as point base
         /// </summary>
-        internal CoordinateBase Coordinate
+        internal PointBase Point
         {
-            get => m_element as CoordinateBase;
+            get { return  m_element as PointBase; }
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Diagnostics;
 
-namespace PanAndZoom
+namespace Presentation.ViewModels
 {
     public class ZoomBorder : Border
     {

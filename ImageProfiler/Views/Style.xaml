@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:DrawObjects ="clr-namespace:WindowsFormsApp2.DrawObjects"
-					xmlns:Demo ="clr-namespace:WindowsFormsApp2.WPF">
+					xmlns:DrawObjects ="clr-namespace:Presentation.ViewModels;assembly=Presentation"
+					xmlns:Convertors="clr-namespace:Presentation.Convertors;assembly=Presentation">
 
-		<Style TargetType="{x:Type Path}" x:Key="SnapMouseOverStyle">
+	<Style TargetType="{x:Type Path}" x:Key="SnapMouseOverStyle">
 			<Setter Property="StrokeThickness" Value="1"/>
 			<Setter Property="Opacity" Value="0"/>
 		<Style.Triggers>
@@ -49,12 +49,13 @@
 		<Setter Property="ItemTemplate">
 			<Setter.Value>
 				<DataTemplate DataType="{x:Type DrawObjects:SnapBase}">
-					<Path Stroke="{Binding Type, Converter={Demo:PointTypeToBrushValueConverter}}"  Visibility="Visible" Style="{StaticResource SnapMouseOverStyle}">
+					<Path Stroke="{Binding Type, Converter={Convertors:PointTypeToBrushValueConverter}}"  Visibility="Visible" Style="{StaticResource SnapMouseOverStyle}">
 						<!--Visibility="{Binding isSelected, Converter={Demo:BoolToVisibilityValueConverter}}">-->
 						<Path.Data>
-							<EllipseGeometry RadiusX="2" RadiusY="2" Center="{Binding Location, Converter={Demo:PointFToPointValueConverter}}"/>
+							<EllipseGeometry RadiusX="2" RadiusY="2" Center="{Binding Location, Converter={Convertors:PointFToPointValueConverter}}"/>
 						</Path.Data>
 					</Path>
+			
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>

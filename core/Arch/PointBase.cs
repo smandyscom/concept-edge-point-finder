@@ -43,9 +43,11 @@ namespace Core.Arch
         public PointBase(List<ElementBase> dependencies) : base(dependencies)
         {
             //! for basic point , the only dependency is Coordinate 
-            if (m_dependencies.First() is CoordinateBase reference)
+            if (m_dependencies.First() is CoordinateBase)
             {
-                m_coordinateReference = reference.Node;
+				var reference = m_dependencies.First() as CoordinateBase;
+
+				m_coordinateReference = reference.Node;
             }
         }
 

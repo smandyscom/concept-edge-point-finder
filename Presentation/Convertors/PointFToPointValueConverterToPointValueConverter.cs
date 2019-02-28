@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace Presentation.Convertors
 {
-	class PointFToPointValueConverter : BaseConverter, IValueConverter
+	public class PointFToPointValueConverter : BaseConverter, IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{

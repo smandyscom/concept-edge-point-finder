@@ -1,21 +1,11 @@
-﻿<UserControl x:Class="WindowsFormsApp2.WPF.UserControlCanvs"
+﻿<UserControl x:Class="ImageProfiler.UserControlCanvs"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:Convertors="clr-namespace:Convertors.ViewModels;assembly=Presentation"
 			 xmlns:Present ="clr-namespace:Presentation.ViewModels;assembly=Presentation"
-             mc:Ignorable="d" 
-              Height="480" Width="512" SnapsToDevicePixels="True">
-
-	<!--Adding Style in resources-->
-	<UserControl.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Style.xaml" />
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</UserControl.Resources>
+			 xmlns:Convertors="clr-namespace:Presentation.Convertors;assembly=Presentation"
+             mc:Ignorable="d">
 
 
 	<Grid>
@@ -27,15 +17,15 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
-		<!--<Zoom:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">-->
+		<Present:ZoomBorder Grid.Row="0" Grid.Column="0" x:Name="Border">
 			<Grid>
 				<Image Source="pack://application:,,,/lenna.png" Style="{StaticResource OnCanvasStyle}" Stretch="None"/>
 
 				<!--Present Layers collection-->
 				<ItemsControl ItemsSource="{Binding}" Style="{StaticResource OnCanvasStyle}">
 					<ItemsControl.Resources>
-						
 
+						<DataTemplate DataType="{x:Type Present:ViewModelPoint}">
 							<!--Present layer object data-->
 							<!--binding to layer Visible property-->
 							<Grid Visibility="{Binding Visible, Converter={Convertors:BoolToVisibilityValueConverter}}">
@@ -52,13 +42,13 @@
 									<ItemsControl.Resources>
 										<DataTemplate DataType="{x:Type Present:ViewModelLine}">
 											<Grid>
-												<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}" MouseEnter="Shape_MouseEnter"
+												<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
 													  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
 													  Stroke="{Binding isSelected, Converter={Convertors:isSelectedToBrushValueConverter}}" Style="{StaticResource LineMouseOverStyle}">
 												</Line>
 												<!-- All SnapBase in a line -->
-                                        <ItemsControl ItemsSource="{Binding Converter={Convertors:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
-															  Style="{StaticResource SnapPointStyle}" MouseEnter="Shape_MouseEnter">
+												<ItemsControl ItemsSource="{Binding Converter={Convertors:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
+															  Style="{StaticResource SnapPointStyle}">
 												</ItemsControl>
 
 											</Grid>
@@ -73,8 +63,8 @@
 														 Center="{Binding __center.Location, Converter={Convertors:PointFToPointValueConverter}}"/>
 													</Path.Data>
 												</Path>
-                                        <ItemsControl ItemsSource="{Binding Converter={Convertors:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
-															  Style="{StaticResource SnapPointStyle}" MouseEnter="Shape_MouseEnter">
+												<ItemsControl ItemsSource="{Binding Converter={Convertors:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
+															  Style="{StaticResource SnapPointStyle}">
 												</ItemsControl>
 											</Grid>
 										</DataTemplate>
@@ -82,12 +72,13 @@
 									</ItemsControl.Resources>
 								</ItemsControl>
 							</Grid>
-						
+						</DataTemplate>
+
 					</ItemsControl.Resources>
 				</ItemsControl>
 
 			</Grid>
-		<!--</Zoom:ZoomBorder>-->
+		</Present:ZoomBorder>
 
 		<TextBlock Grid.Row="1" Grid.Column="0" FontSize="20">
 			<TextBlock.Text>

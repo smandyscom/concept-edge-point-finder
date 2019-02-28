@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace Presentation.Convertors
 {
-	class MethodToValueConverter : BaseConverter, IValueConverter
+	public class MethodToValueConverter : BaseConverter, IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{

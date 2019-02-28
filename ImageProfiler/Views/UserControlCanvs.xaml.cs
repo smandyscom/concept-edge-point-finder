@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Presentation;
 
-namespace WindowsFormsApp2.WPF
+namespace ImageProfiler
 {
 	/// <summary>
 	/// UserControlCanvs.xaml 的互動邏輯

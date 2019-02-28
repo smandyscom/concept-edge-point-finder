@@ -9,7 +9,7 @@ using Presentation.ViewModels;
 
 namespace Presentation.Convertors
 {
-	class PointTypeToBrushValueConverter : BaseConverter, IValueConverter
+	public class PointTypeToBrushValueConverter : BaseConverter, IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{

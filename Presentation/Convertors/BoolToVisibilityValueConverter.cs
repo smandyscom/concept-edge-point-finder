@@ -12,7 +12,7 @@ namespace Presentation.Convertors
 	/// <summary>
 	/// Ture is Visible, False is Hidden
 	/// </summary>
-	class BoolToVisibilityValueConverter : BaseConverter, IValueConverter
+	public class BoolToVisibilityValueConverter : BaseConverter, IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{

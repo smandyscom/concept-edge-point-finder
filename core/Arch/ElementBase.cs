@@ -20,7 +20,7 @@ namespace Core.Arch
         /// <summary>
         /// Inform next level to update
         /// </summary>
-        protected event EventHandler ValueChangedEvent;
+        public event EventHandler ValueChangedEvent;
 
         /// <summary>
         /// updated coefficient... internal features...etc

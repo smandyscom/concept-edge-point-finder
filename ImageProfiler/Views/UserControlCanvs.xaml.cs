@@ -4,7 +4,9 @@ using System.Drawing;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using Presentation;
+using Core.Arch;
+using OpenCvSharp;
+using Presentation.ViewModels;
 
 namespace ImageProfiler
 {
@@ -13,7 +15,7 @@ namespace ImageProfiler
 	/// </summary>
 	public partial class UserControlCanvs : UserControl
 	{
-		//private Lines lines = new Lines();
+		private ElementBaseCollection lines = new ElementBaseCollection();
 		//private Circles circles = new Circles();
 
 		public UserControlCanvs()
@@ -21,8 +23,8 @@ namespace ImageProfiler
 
 			InitializeComponent();
 
-			
-			//this.DataContext = model.LayerCollection;
+
+			this.DataContext = lines;
 			Border.MouseMove += Border_MouseMove;
 		}
 
@@ -40,70 +42,56 @@ namespace ImageProfiler
 		}
 	}
 
-	//public class Lines : ObservableCollection<IDraw>
-	//{
-	//	//private LineEdgePoint line = new LineEdgePoint();
-	//	public Lines()
-	//	{
-	//		var temp = new PointF(0, 0);
-	//		line.__start.Location = temp;
+	public class ElementBaseCollection : ObservableCollection<ViewModelBase>
+	{
 
-	//		temp = new PointF(512, 480);
-	//		line.__end.Location = temp;
+		PointBase p2;
+		public ElementBaseCollection()
+		{
+			CoordinateBase c1 = new CoordinateBase();
+			PointBase p1 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
+			p2 = new PointBase(new System.Collections.Generic.List<ElementBase> { c1 });
 
-	//		Add(line);
-	//		CreateTimer();
-	//	}
-	//	void CreateTimer()
-	//	{
-	//		var timer1 = new Timer
-	//		{
-	//			Enabled = true,
-	//			Interval = 2000
-	//		};
-	//		timer1.Elapsed += Timer1_Elapsed;
-	//	}
+			p1.Point = new Mat(3, 1, MatType.CV_64FC1, new double[] { 0, 0, 1 });
+			p2.Point = new Mat(3, 1, MatType.CV_64FC1, new double[] { 512, 480, 1 });
 
-	//	private void Timer1_Elapsed(object sender, ElapsedEventArgs e)
-	//	{
-	//		var temp = line.__end.Location;
-	//		temp.X -= 10;
-	//		temp.Y -= 10;
-	//		line.__end.Location = temp;
-	//		line.isSelected = !line.isSelected;
-	//	}
-	//}
 
-	//public class Circles : ObservableCollection<IDraw>
-	//{
-	//	private CircleFitted circle = new CircleFitted();
-	//	public Circles()
-	//	{
-	//		var temp = new PointF(256, 240);
-	//		circle.__radius = 10;
-	//		circle.__center.Location = temp;
-	//		Add(circle);
-	//		CreateTimer();
-	//	}
-	//	void CreateTimer()
-	//	{
-	//		var timer1 = new Timer
-	//		{
-	//			Enabled = true,
-	//			Interval = 2000
-	//		};
-	//		timer1.Elapsed += Timer1_Elapsed;
-	//	}
+			Add(ViewModelsFactory.CreateViewModel(c1));
+			Add(ViewModelsFactory.CreateViewModel(p1));
+			Add(ViewModelsFactory.CreateViewModel(p2));
+			CreateTimer();
+		}
+		void CreateTimer()
+		{
+			var timer1 = new Timer
+			{
+				Enabled = true,
+				Interval = 2000
+			};
+			timer1.Elapsed += Timer1_Elapsed;
+		}
 
-	//	private void Timer1_Elapsed(object sender, ElapsedEventArgs e)
-	//	{
-	//		var temp = circle.__center.Location;
-	//		temp.X += 10;
-	//		temp.Y += 10;
-	//		circle.__center.Location = temp;
-	//		circle.__radius += 1;
-	//	}
-	//}
+		private void Timer1_Elapsed(object sender, ElapsedEventArgs e)
+		{
+			var mat = new Mat(3, 1, MatType.CV_64FC1, new double[] { -10, -10, 0 });
+			p2.Point +=mat;
+		}
+	}
+
+	public  class ViewModelsFactory
+	{
+		public static ViewModelBase CreateViewModel(ElementBase element)
+		{
+			ViewModelBase vm = null;
+			if (element is PointBase)
+			{
+				vm = new ViewModelPoint(element as PointBase);
+			}
+
+			return vm;
+		}
+
+	}
 
 
 }

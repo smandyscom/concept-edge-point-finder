@@ -15,12 +15,21 @@ namespace Presentation.ViewModels
     /// </summary>
     public class ViewModelCoordinate : ViewModelBase
     {
-        /// <summary>
-        /// The model
-        /// </summary>
-        internal CoordinateBase Coordinate
+		public ViewModelCoordinate(CoordinateBase Element) : base(Element)
+		{
+		}
+
+		/// <summary>
+		/// The model
+		/// </summary>
+		internal CoordinateBase Coordinate
         {
             get { return m_element as CoordinateBase; }
         }
-    }
+
+		protected override void ElementValueChanged(object sender, EventArgs e)
+		{
+			RaisePropertyChanged("Coordinate");
+		}
+	}
 }

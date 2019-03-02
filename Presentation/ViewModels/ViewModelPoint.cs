@@ -15,21 +15,16 @@ namespace Presentation.ViewModels
     /// </summary>
     public class ViewModelPoint : ViewModelBase
     {
-	
-		public ViewModelPoint(PointBase Element) : base(Element)
-		{
-		}
-
 		/// <summary>
 		/// The model as point base
 		/// </summary>
 		public PointBase Point
-        {
-            get { return  m_element as PointBase; }
-        }
-		protected override void ElementValueChanged(object sender, EventArgs e)
 		{
-			RaisePropertyChanged("Point");
+			get { return m_element as PointBase; }
 		}
+
+		public ViewModelPoint(PointBase Element) : base(Element) { }
+
+		
 	}
 }

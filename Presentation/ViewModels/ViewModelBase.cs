@@ -10,24 +10,33 @@ using Core.Arch;
 
 namespace Presentation.ViewModels
 {
-    /// <summary>
-    /// 
-    /// </summary>
+  
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
+		/// <summary>
+		/// The model element held
+		/// </summary>
+		protected readonly ElementBase m_element;
+
 		public ViewModelBase(ElementBase Element)
 		{
 			m_element = Element;
 			Element.ValueChangedEvent += ElementValueChanged;
 		}
 
-		protected abstract void ElementValueChanged(object sender, EventArgs e);
-
 		/// <summary>
-		/// The model element held
+		/// All properties RaisePropertyChanged
 		/// </summary>
-		protected readonly ElementBase m_element;
-
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected virtual void ElementValueChanged(object sender, EventArgs e)
+		{
+			Type type = this.GetType();
+			foreach (var pro in type.GetProperties())
+			{
+				RaisePropertyChanged(pro.Name);
+			}
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")

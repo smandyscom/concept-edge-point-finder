@@ -10,26 +10,20 @@ using Core.Arch;
 
 namespace Presentation.ViewModels
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class ViewModelCoordinate : ViewModelBase
-    {
-		public ViewModelCoordinate(CoordinateBase Element) : base(Element)
-		{
-		}
+	/// <summary>
+	/// 
+	/// </summary>
+	public class ViewModelCoordinate : ViewModelBase
+	{
+		public ViewModelCoordinate(CoordinateBase Element) : base(Element) { }
 
 		/// <summary>
-		/// The model
+		/// The model asCoordinateBase
 		/// </summary>
 		internal CoordinateBase Coordinate
-        {
-            get { return m_element as CoordinateBase; }
-        }
-
-		protected override void ElementValueChanged(object sender, EventArgs e)
 		{
-			RaisePropertyChanged("Coordinate");
+			get { return m_element as CoordinateBase; }
 		}
+
 	}
 }

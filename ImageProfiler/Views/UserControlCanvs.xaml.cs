@@ -8,6 +8,7 @@ using Core.Arch;
 using OpenCvSharp;
 using Presentation.ViewModels;
 
+
 namespace ImageProfiler
 {
 	/// <summary>
@@ -56,9 +57,9 @@ namespace ImageProfiler
 			p2.Point = new Mat(3, 1, MatType.CV_64FC1, new double[] { 512, 480, 1 });
 
 
-			Add(ViewModelsFactory.CreateViewModel(c1));
-			Add(ViewModelsFactory.CreateViewModel(p1));
-			Add(ViewModelsFactory.CreateViewModel(p2));
+			Add(ViewModelFactory.CreateViewModel(c1));
+			Add(ViewModelFactory.CreateViewModel(p1));
+			Add(ViewModelFactory.CreateViewModel(p2));
 			CreateTimer();
 		}
 		void CreateTimer()
@@ -77,21 +78,5 @@ namespace ImageProfiler
 			p2.Point +=mat;
 		}
 	}
-
-	public  class ViewModelsFactory
-	{
-		public static ViewModelBase CreateViewModel(ElementBase element)
-		{
-			ViewModelBase vm = null;
-			if (element is PointBase)
-			{
-				vm = new ViewModelPoint(element as PointBase);
-			}
-
-			return vm;
-		}
-
-	}
-
 
 }

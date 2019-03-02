@@ -72,14 +72,13 @@
     <Compile Include="Convertors\MatToPointValueConverter.cs" />
     <Compile Include="Convertors\MethodToValueConverter.cs" />
     <Compile Include="Convertors\PointFToPointValueConverterToPointValueConverter.cs" />
-    <Compile Include="Convertors\PointTypeToBrushValueConverter.cs" />
+    <Compile Include="Convertors\SubtractionValueConverter.cs" />
     <Compile Include="IDraw.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\SnapPoint.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="ViewModels\ViewModelCircle.cs" />
     <Compile Include="ViewModels\ViewModelCoordinate.cs" />
     <Compile Include="ViewModels\ViewModelEllipse.cs" />
+    <Compile Include="ViewModels\ViewModelFactory.cs" />
     <Compile Include="ViewModels\ViewModelGeneric.cs" />
     <Compile Include="ViewModels\ViewModelLine.cs" />
     <Compile Include="ViewModels\ViewModelPoint.cs" />

@@ -25,7 +25,7 @@ namespace Presentation.ViewModels
 		}
 
 		/// <summary>
-		/// All properties RaisePropertyChanged
+		/// Get all properties name of ViewModel and RaisePropertyChanged 
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>

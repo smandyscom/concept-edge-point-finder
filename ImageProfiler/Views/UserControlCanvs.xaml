@@ -21,7 +21,6 @@
 			<Grid>
 				<Image Source="pack://application:,,,/lenna.png" Style="{StaticResource OnCanvasStyle}" Stretch="None"/>
 
-			
 				<ItemsControl ItemsSource="{Binding}" Style="{StaticResource OnCanvasStyle}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
@@ -29,22 +28,24 @@
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
 
-					<!--LineBase as Target type-->
+					<!--CoordinateBase-->
 					<ItemsControl.Resources>
 						<DataTemplate DataType="{x:Type Present:ViewModelCoordinate}">
-							
+							<Image Source="pack://application:,,,/Coordinate.jpg" Style="{StaticResource OnCanvasStyle}" Stretch="None" Margin="-8,-85" 
+								   Canvas.Left="{Binding OriginX}" Canvas.Top="{Binding OriginY}"/>
 						</DataTemplate>
+
+						<!--PointBase-->
 						<DataTemplate DataType="{x:Type Present:ViewModelPoint}">
 							<Path Stroke="Red" Style="{StaticResource CircleMouseOverStyle}">
 								<Path.Data>
 									<EllipseGeometry RadiusX="5"  RadiusY="5"
-														 Center="{Binding Point.Point, Converter={Convertors:MatToPointValueConverter}}"/>
+													 Center="{Binding Location, Converter={Convertors:MatToPointValueConverter}}"/>
 								</Path.Data>
 							</Path>
 						</DataTemplate>
-						
-						
-						
+
+
 						<DataTemplate DataType="{x:Type Present:ViewModelLine}">
 							<Grid>
 								<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
@@ -55,29 +56,11 @@
 								<ItemsControl ItemsSource="{Binding Converter={Convertors:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
 															  Style="{StaticResource SnapPointStyle}">
 								</ItemsControl>
-
-							</Grid>
-						</DataTemplate>
-
-						<!--CircleBase present-->
-						<DataTemplate DataType="{x:Type Present:ViewModelCircle}">
-							<Grid>
-								<Path Stroke="Blue" Style="{StaticResource CircleMouseOverStyle}">
-									<Path.Data>
-										<EllipseGeometry RadiusX="{Binding __radius}" RadiusY="{Binding __radius}" 
-														 Center="{Binding __center.Location, Converter={Convertors:PointFToPointValueConverter}}"/>
-									</Path.Data>
-								</Path>
-								<ItemsControl ItemsSource="{Binding Converter={Convertors:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
-															  Style="{StaticResource SnapPointStyle}">
-								</ItemsControl>
 							</Grid>
 						</DataTemplate>
 
 					</ItemsControl.Resources>
 				</ItemsControl>
-
-
 			</Grid>
 		</Present:ZoomBorder>
 
@@ -89,5 +72,6 @@
 				</MultiBinding>
 			</TextBlock.Text>
 		</TextBlock>
+		
 	</Grid>
 </UserControl>

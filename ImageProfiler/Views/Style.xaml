@@ -38,7 +38,7 @@
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
 	</Style>
 
-	<Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource OnCanvasStyle}"  x:Key="SnapPointStyle">
+	<!--<Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource OnCanvasStyle}"  x:Key="SnapPointStyle">
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>
@@ -50,7 +50,7 @@
 			<Setter.Value>
 				<DataTemplate DataType="{x:Type DrawObjects:SnapBase}">
 					<Path Stroke="{Binding Type, Converter={Convertors:PointTypeToBrushValueConverter}}"  Visibility="Visible" Style="{StaticResource SnapMouseOverStyle}">
-						<!--Visibility="{Binding isSelected, Converter={Demo:BoolToVisibilityValueConverter}}">-->
+						--><!--Visibility="{Binding isSelected, Converter={Demo:BoolToVisibilityValueConverter}}">--><!--
 						<Path.Data>
 							<EllipseGeometry RadiusX="2" RadiusY="2" Center="{Binding Location, Converter={Convertors:PointFToPointValueConverter}}"/>
 						</Path.Data>
@@ -59,6 +59,6 @@
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>
-	</Style>
+	</Style>-->
 
 </ResourceDictionary>

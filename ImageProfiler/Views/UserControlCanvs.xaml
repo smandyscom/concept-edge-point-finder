@@ -25,7 +25,7 @@
 				<ItemsControl ItemsSource="{Binding}" Style="{StaticResource OnCanvasStyle}">
 					<ItemsControl.Resources>
 
-						<DataTemplate DataType="{x:Type Present:ViewModelPoint}">
+						<DataTemplate DataType="{x:Type Present:ViewModelCanvas}">
 							<!--Present layer object data-->
 							<!--binding to layer Visible property-->
 							<Grid Visibility="{Binding Visible, Converter={Convertors:BoolToVisibilityValueConverter}}">

@@ -53,6 +53,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\ActionBase.cs" />
+    <Compile Include="Actions\SelectionManager.cs" />
     <Compile Include="Convertors\BaseConverter.cs" />
     <Compile Include="Convertors\BoolToVisibilityValueConverter.cs" />
     <Compile Include="Convertors\isSelectedToBrushValueConverter.cs" />

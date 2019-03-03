@@ -15,7 +15,7 @@ namespace Presentation.ViewModels
 		public ViewModelCoordinate(CoordinateBase Element) : base(Element) { }
 
 		/// <summary>
-		/// The model asCoordinateBase
+		/// The model as CoordinateBase
 		/// </summary>
 		internal CoordinateBase Coordinate
 		{

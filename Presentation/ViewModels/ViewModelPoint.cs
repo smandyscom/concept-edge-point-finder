@@ -14,7 +14,7 @@ namespace Presentation.ViewModels
 		/// <summary>
 		/// The model as point base
 		/// </summary>
-		internal PointBase Point
+		public PointBase Point
 		{
 			get { return m_element as PointBase; }
 		}

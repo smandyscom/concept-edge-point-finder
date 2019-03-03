@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using Core.Arch;
+using Core.Derived;
 using OpenCvSharp;
 using Presentation.ViewModels;
 
@@ -55,11 +57,20 @@ namespace ImageProfiler
 
 			p1.Point = new Mat(3, 1, MatType.CV_64FC1, new double[] { 0, 0, 1 });
 			p2.Point = new Mat(3, 1, MatType.CV_64FC1, new double[] { 512, 480, 1 });
+			LineBase line = new LineBase(new List<ElementBase>() { p1, p2 });
+
+			GrayImage img = new GrayImage(new List<ElementBase>() { c1 });
+			Cv2.CvtColor(Cv2.ImRead(@"..\..\lenna.png"), img.Image, ColorConversionCodes.BGR2GRAY);
+
+			PointEdge pointEdge = new PointEdge(new List<ElementBase> { img, line });
+
 
 
 			Add(ViewModelFactory.CreateViewModel(c1));
 			Add(ViewModelFactory.CreateViewModel(p1));
 			Add(ViewModelFactory.CreateViewModel(p2));
+			Add(ViewModelFactory.CreateViewModel(line));
+			Add(ViewModelFactory.CreateViewModel(pointEdge));
 			CreateTimer();
 		}
 		void CreateTimer()

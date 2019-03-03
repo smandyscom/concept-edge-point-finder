@@ -1,4 +1,5 @@
 ﻿using Core.Arch;
+using Core.Derived;
 
 namespace Presentation.ViewModels
 {
@@ -14,6 +15,10 @@ namespace Presentation.ViewModels
 			else if (element is CoordinateBase)
 			{
 				vm = new ViewModelCoordinate(element as CoordinateBase);
+			}
+			else if (element is LineBase)
+			{
+				vm = new ViewModelLineBase(element as LineBase);
 			}
 
 			return vm;

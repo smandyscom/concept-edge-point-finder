@@ -37,7 +37,7 @@
 
 						<!--PointBase-->
 						<DataTemplate DataType="{x:Type Present:ViewModelPoint}">
-							<Path Stroke="Red" Style="{StaticResource CircleMouseOverStyle}">
+							<Path Stroke="{Binding Point, Converter={Convertors:PointTypeToBrushValueConverter}}" Style="{StaticResource CircleMouseOverStyle}">
 								<Path.Data>
 									<EllipseGeometry RadiusX="5"  RadiusY="5"
 													 Center="{Binding Location, Converter={Convertors:MatToPointValueConverter}}"/>
@@ -45,18 +45,10 @@
 							</Path>
 						</DataTemplate>
 
-
-						<DataTemplate DataType="{x:Type Present:ViewModelLine}">
-							<Grid>
-								<Line X1="{Binding __start.Location.X}" Y1="{Binding __start.Location.Y}"
-													  X2="{Binding __end.Location.X}" Y2="{Binding __end.Location.Y}"
-													  Stroke="{Binding isSelected, Converter={Convertors:isSelectedToBrushValueConverter}}" Style="{StaticResource LineMouseOverStyle}">
-								</Line>
-								<!-- All SnapBase in a line -->
-								<ItemsControl ItemsSource="{Binding Converter={Convertors:MethodToValueConverter}, ConverterParameter=GetSnapPoints}" 
-															  Style="{StaticResource SnapPointStyle}">
-								</ItemsControl>
-							</Grid>
+						<!--LineBase-->
+						<DataTemplate DataType="{x:Type Present:ViewModelLineBase}">
+							<Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}"
+													   Style="{StaticResource LineMouseOverStyle}" Stroke="Red"/>
 						</DataTemplate>
 
 					</ItemsControl.Resources>

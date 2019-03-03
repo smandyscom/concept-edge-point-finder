@@ -7,7 +7,6 @@
 			 xmlns:Convertors="clr-namespace:Presentation.Convertors;assembly=Presentation"
              mc:Ignorable="d">
 
-
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
@@ -21,7 +20,7 @@
 			<Grid>
 				<Image Source="pack://application:,,,/lenna.png" Style="{StaticResource OnCanvasStyle}" Stretch="None"/>
 
-				<ItemsControl ItemsSource="{Binding}" Style="{StaticResource OnCanvasStyle}">
+				<ItemsControl ItemsSource="{Binding Elements}" Style="{StaticResource OnCanvasStyle}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<Canvas/>
@@ -48,7 +47,7 @@
 						<!--LineBase-->
 						<DataTemplate DataType="{x:Type Present:ViewModelLineBase}">
 							<Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}"
-													   Style="{StaticResource LineMouseOverStyle}" Stroke="Red"/>
+								  Style="{StaticResource LineMouseOverStyle}" Stroke="Red"/>
 						</DataTemplate>
 
 					</ItemsControl.Resources>
@@ -64,6 +63,6 @@
 				</MultiBinding>
 			</TextBlock.Text>
 		</TextBlock>
-		
+
 	</Grid>
 </UserControl>

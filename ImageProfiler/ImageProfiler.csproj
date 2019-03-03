@@ -74,7 +74,7 @@
     <Compile Include="Views\UserControlCanvs.xaml.cs">
       <DependentUpon>UserControlCanvs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\Extensions.cs" />
+    <Compile Include="ViewModels\ViewModelCanvas.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

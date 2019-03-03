@@ -1,6 +1,7 @@
 ﻿using OpenCvSharp;
 
 using Core.Arch;
+using System;
 
 namespace Presentation.ViewModels 
 {
@@ -14,12 +15,13 @@ namespace Presentation.ViewModels
 		/// <summary>
 		/// The model as point base
 		/// </summary>
-		public PointBase Point
+		internal PointBase Point
 		{
 			get { return m_element as PointBase; }
 		}
 
 		public Mat Location { get { return Point.Point; } }
+		public Type PointType { get { return Point.GetType(); } }
 
 		
 

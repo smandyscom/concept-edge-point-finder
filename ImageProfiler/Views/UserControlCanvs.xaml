@@ -37,7 +37,7 @@
 
 						<!--PointBase-->
 						<DataTemplate DataType="{x:Type Present:ViewModelPoint}">
-							<Path Stroke="{Binding Point, Converter={Convertors:PointTypeToBrushValueConverter}}" Style="{StaticResource CircleMouseOverStyle}">
+							<Path Stroke="{Binding PointType, Converter={Convertors:PointTypeToBrushValueConverter}}" Style="{StaticResource CircleMouseOverStyle}">
 								<Path.Data>
 									<EllipseGeometry RadiusX="5"  RadiusY="5"
 													 Center="{Binding Location, Converter={Convertors:MatToPointValueConverter}}"/>

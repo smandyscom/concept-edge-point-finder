@@ -20,7 +20,10 @@ namespace Presentation.ViewModels
 			{
 				vm = new ViewModelLineBase(element as LineBase);
 			}
-
+			else if (element is GrayImage)
+			{
+				vm = new ViewModelGrayImage(element as GrayImage);
+			}
 			return vm;
 		}
 	}

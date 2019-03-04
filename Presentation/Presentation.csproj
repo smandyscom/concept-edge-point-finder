@@ -80,6 +80,7 @@
     <Compile Include="ViewModels\ViewModelEllipse.cs" />
     <Compile Include="ViewModels\ViewModelFactory.cs" />
     <Compile Include="ViewModels\ViewModelGeneric.cs" />
+    <Compile Include="ViewModels\ViewModelGrayImage.cs" />
     <Compile Include="ViewModels\ViewModelLineBase.cs" />
     <Compile Include="ViewModels\ViewModelPoint.cs" />
     <Compile Include="ViewModels\ZoomBorder.cs" />

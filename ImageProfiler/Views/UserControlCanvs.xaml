@@ -27,8 +27,20 @@
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
 
-					<!--CoordinateBase-->
+					<!--<ItemsControl.ItemContainerStyle>
+						<Style TargetType="ContentPresenter">
+							<Setter Property="Panel.ZIndex" Value="{Binding Zindex}"/>
+						</Style>
+					</ItemsControl.ItemContainerStyle>-->
+
 					<ItemsControl.Resources>
+
+						<!--GrayImage-->
+						<DataTemplate DataType="{x:Type Present:ViewModelGrayImage}">
+							<Image Source="{Binding Bitmap}" Style="{StaticResource OnCanvasStyle}" Stretch="None"/>
+						</DataTemplate>
+						
+						<!--CoordinateBase-->
 						<DataTemplate DataType="{x:Type Present:ViewModelCoordinate}">
 							<Image Source="pack://application:,,,/Coordinate.jpg" Style="{StaticResource OnCanvasStyle}" Stretch="None" Margin="-8,-85" 
 								   Canvas.Left="{Binding OriginX}" Canvas.Top="{Binding OriginY}"/>

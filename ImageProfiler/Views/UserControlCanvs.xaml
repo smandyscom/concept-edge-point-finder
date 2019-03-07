@@ -27,11 +27,11 @@
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
 
-					<!--<ItemsControl.ItemContainerStyle>
+					<ItemsControl.ItemContainerStyle>
 						<Style TargetType="ContentPresenter">
 							<Setter Property="Panel.ZIndex" Value="{Binding Zindex}"/>
 						</Style>
-					</ItemsControl.ItemContainerStyle>-->
+					</ItemsControl.ItemContainerStyle>
 
 					<ItemsControl.Resources>
 

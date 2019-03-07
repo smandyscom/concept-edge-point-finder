@@ -10,9 +10,9 @@ using Core.Arch;
 
 namespace Presentation.ViewModels
 {
-  
-    public abstract class ViewModelBase : INotifyPropertyChanged
-    {
+
+	public abstract class ViewModelBase : INotifyPropertyChanged
+	{
 		/// <summary>
 		/// The model element held
 		/// </summary>
@@ -43,5 +43,10 @@ namespace Presentation.ViewModels
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
+
+		/// <summary>
+		/// Greater the value of a given, the more likely the element is to appear in the foreground
+		/// </summary>
+		public int Zindex { get; set; } = 1;
 	}
 }

@@ -6,7 +6,10 @@ namespace Presentation.ViewModels
 {
 	public class ViewModelGrayImage : ViewModelBase
 	{
-		public ViewModelGrayImage(GrayImage Element) : base(Element) { }
+		public ViewModelGrayImage(GrayImage Element) : base(Element)
+		{
+			Zindex = 0;	// base map
+		}
 
 		/// <summary>
 		/// The model as GrayImage

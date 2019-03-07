@@ -72,7 +72,7 @@ namespace ImageProfiler.ViewModels
 			PointEdge pointEdge = new PointEdge(new List<ElementBase> { img, line });
 
 			// items sequence affact ZIndex in itemsControl
-			EnvelopElements(new List<ElementBase>() { img,c1, p1, p2, line, pointEdge });
+			EnvelopElements(new List<ElementBase>() { c1, p1, p2, line, pointEdge, img });
 			CreateTimer();
 		}
 		void CreateTimer()

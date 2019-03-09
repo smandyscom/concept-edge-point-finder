@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Presentation.ViewModels;
 using Core.Derived;
+using System.Collections.ObjectModel;
 
 namespace Presentation.Actions
 {
@@ -14,6 +15,11 @@ namespace Presentation.Actions
         ActionLineFitted():base(typeof(ViewModelLine),typeof(LineFitted))
         {
 
+        }
+
+        internal override bool m_canExecute(ObservableCollection<ViewModelBase> list)
+        {
+            return base.m_canExecute(list);
         }
     }
 }

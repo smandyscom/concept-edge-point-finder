@@ -23,6 +23,8 @@ namespace ImageProfiler.Views
         public UserControlCommandBarBasic()
         {
             InitializeComponent();
+
+            
         }
     }
 }

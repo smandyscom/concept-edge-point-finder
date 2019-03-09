@@ -16,6 +16,7 @@ namespace Presentation.Actions
     /// </summary>
     public class ActionBase : ICommand
     {
+
         public ActionBase(Type viewModelType,Type modelType)
         {
             m_viewModelType = viewModelType;

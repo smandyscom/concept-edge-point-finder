@@ -59,8 +59,8 @@
     <Compile Include="Views\UserControlCanvs.xaml.cs">
       <DependentUpon>UserControlCanvs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserControlCommandBarBasic.xaml.cs">
-      <DependentUpon>UserControlCommandBarBasic.xaml</DependentUpon>
+    <Compile Include="Views\UserControlCommandLineFree.xaml.cs">
+      <DependentUpon>UserControlCommandLineFree.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\Extensions.cs" />
     <Page Include="MainWindow.xaml">
@@ -83,7 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\UserControlCommandBarBasic.xaml">
+    <Page Include="Views\UserControlCommandLineFree.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

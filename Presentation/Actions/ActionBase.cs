@@ -49,7 +49,7 @@ namespace Presentation.Actions
         /// https://stackoverflow.com/questions/13112557/passing-a-parameter-to-icommand
         /// </summary>
         /// <param name="parameter"></param>
-        public void Execute(object parameter)
+        public virtual void Execute(object parameter)
         {
             //treat parameter as a ObservableCollection<ViewModelBase>
             var vm = Activator.CreateInstance(m_viewModelType) as ViewModelBase;

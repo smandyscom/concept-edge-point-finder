@@ -14,6 +14,8 @@
     <Grid>
         <Button Content="PointFree" HorizontalAlignment="Left" Margin="202,72,0,0" VerticalAlignment="Top" Width="75" Command="{Binding ActionPointFree}" CommandParameter="{Binding Context}"/>
         <Button Content="LineFree" HorizontalAlignment="Left" Margin="303,72,0,0" VerticalAlignment="Top" Width="75" Command="{Binding ActionLineFree}" CommandParameter="{Binding Context}"/>
+        <Button Content="Coordinate" HorizontalAlignment="Left" Margin="406,72,0,0" VerticalAlignment="Top" Width="75" Command="{Binding ActionCoordinate}" CommandParameter="{Binding Context}"/>
+        
 
     </Grid>
 </UserControl>

@@ -11,6 +11,7 @@ namespace Presentation.Actions
 {
     /// <summary>
     /// Define the common behaviors for those action
+    /// 0. Mode 0 , Click Action->Pre-generate things(as the material to preview)->Final clicked->Generate item (e.g LineFree)
     /// 1. Mode 1 , Click Action->Select items->Type satisfied->Generate new item
     /// 2. Mode 2 , Select items->Check if satisfied->Change outlook->user click action
     /// </summary>
@@ -20,7 +21,7 @@ namespace Presentation.Actions
         public ActionBase(Type viewModelType,Type modelType)
         {
             m_viewModelType = viewModelType;
-            modelType = m_modelType;
+            m_modelType = modelType;
         }
 
         /// <summary>
@@ -38,10 +39,15 @@ namespace Presentation.Actions
         /// </summary>
         public bool CanExecute(object parameter)
         {
-            ObservableCollection<ViewModelBase> l = parameter as ObservableCollection<ViewModelBase>;
-            if (l == null)
+            ObservableCollection<ViewModelBase> list = parameter as ObservableCollection<ViewModelBase>;
+            if (list == null)
                 return false;
-            bool result = m_canExecute(l);
+
+            //Nothing cached , use creating mode 0/1
+            if (list.Count == 0)
+                return true;
+
+            bool result = m_canExecute(list);
             if (!result)
                 (parameter as ObservableCollection<ViewModelBase>).Clear();
             return result;

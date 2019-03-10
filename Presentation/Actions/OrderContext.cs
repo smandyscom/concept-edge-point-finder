@@ -17,8 +17,8 @@ namespace Presentation.Actions
     public class OrderContext
     {
 
-        public ObservableCollection<CoordinateBase> AvailableCoordinates { get => m_availableCoordinates; }
-        public CoordinateBase CurrentCoordinate
+        public ObservableCollection<ViewModelCoordinate> AvailableCoordinates { get => m_availableCoordinates; }
+        public ViewModelCoordinate CurrentCoordinate
         {
             get => m_currentCoordinate;
             set
@@ -31,11 +31,11 @@ namespace Presentation.Actions
         /// <summary>
         /// One of available cooridnates
         /// </summary>
-        internal CoordinateBase m_currentCoordinate = null;
+        internal ViewModelCoordinate m_currentCoordinate = null;
         /// <summary>
         /// Collect existed available cooridnates
         /// </summary>
-        internal ObservableCollection<CoordinateBase> m_availableCoordinates = new ObservableCollection<CoordinateBase>();
+        internal ObservableCollection<ViewModelCoordinate> m_availableCoordinates = new ObservableCollection<ViewModelCoordinate>();
         /// <summary>
         /// 
         /// </summary>

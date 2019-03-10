@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Media;
+using Core.Derived;
+using Core.Arch;
 using System.Windows.Data;
-using Presentation;
-using Presentation.ViewModels;
 
 namespace Presentation.Convertors
 {
@@ -13,22 +11,16 @@ namespace Presentation.Convertors
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var type = (PointType) value;
-			var color = Colors.Black;
+			var color =  Colors.Black;
+			var type = value as Type;
 
-			switch (type)
+			if (type == typeof(PointBase))
 			{
-				case PointType.center:
-					color = Colors.Yellow;
-					break;
-
-				case PointType.start:
-					color = Colors.DarkGray;
-					break;
-
-				case PointType.end:
-					color = Colors.Red;
-					break;
+				color = Colors.Red;
+			}
+			else if (type == typeof(PointEdge))
+			{
+				color = Colors.Green;
 			}
 
 			return new SolidColorBrush(color);

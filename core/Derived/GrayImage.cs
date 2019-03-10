@@ -11,7 +11,7 @@ namespace Core.Derived
     /// <summary>
     /// The image , (0,0) attached on previous reference frame
     /// </summary>
-    class GrayImage : ElementBase
+    public class GrayImage : ElementBase
     {
         /// <summary>
         /// Image loading interface

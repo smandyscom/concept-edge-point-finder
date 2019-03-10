@@ -56,6 +56,10 @@
     <Compile Include="Actions\ActionBase.cs" />
     <Compile Include="Actions\ActionLineFitted.cs" />
     <Compile Include="Actions\ActionLineFree.cs" />
+    <Compile Include="Actions\ActionPointFree.cs" />
+    <Compile Include="Actions\ActionCoordinate.cs" />
+    <Compile Include="Actions\OrderContext.cs" />
+    <Compile Include="Actions\ViewModelActionPanel.cs" />
     <Compile Include="Convertors\BaseConverter.cs" />
     <Compile Include="Convertors\BoolToVisibilityValueConverter.cs" />
     <Compile Include="Convertors\isSelectedToBrushValueConverter.cs" />

@@ -16,15 +16,13 @@ using System.Windows.Shapes;
 namespace ImageProfiler.Views
 {
     /// <summary>
-    /// Interaction logic for UserControlCommandBarBasic.xaml
+    /// Interaction logic for UserControlCommandBar.xaml
     /// </summary>
-    public partial class UserControlCommandBarBasic : UserControl
+    public partial class UserControlCommandBar : UserControl
     {
-        public UserControlCommandBarBasic()
+        public UserControlCommandBar()
         {
             InitializeComponent();
-
-            
         }
     }
 }

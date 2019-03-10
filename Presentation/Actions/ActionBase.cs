@@ -38,7 +38,10 @@ namespace Presentation.Actions
         /// </summary>
         public bool CanExecute(object parameter)
         {
-            bool result = m_canExecute(parameter as ObservableCollection<ViewModelBase>);
+            ObservableCollection<ViewModelBase> l = parameter as ObservableCollection<ViewModelBase>;
+            if (l == null)
+                return false;
+            bool result = m_canExecute(l);
             if (!result)
                 (parameter as ObservableCollection<ViewModelBase>).Clear();
             return result;

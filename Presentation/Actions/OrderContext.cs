@@ -39,6 +39,6 @@ namespace Presentation.Actions
         /// <summary>
         /// 
         /// </summary>
-        internal ObservableCollection<ViewModelBase> m_selectedViewModels = new ObservableCollection<ViewModelBase>;
+        internal ObservableCollection<ViewModelBase> m_selectedViewModels = new ObservableCollection<ViewModelBase>();
     }
 }

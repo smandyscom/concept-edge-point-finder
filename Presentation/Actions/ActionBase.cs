@@ -24,6 +24,29 @@ namespace Presentation.Actions
             m_modelType = modelType;
         }
 
+        //TODO , CanExecute property link with Enabled
+        
+            [Flags]
+        internal enum CreationMode
+        {
+            /// <summary>
+            /// Pre-generate things
+            /// </summary>
+            MODE_0=1,
+            /// <summary>
+            /// Click before selection
+            /// </summary>
+            MODE_1=2,
+            /// <summary>
+            /// Pre-select
+            /// </summary>
+            MODE_2=4
+        };
+        /// <summary>
+        /// Bound attribute to switch between different creation modes
+        /// </summary>
+        internal CreationMode m_creationFlag;
+
         /// <summary>
         /// The view model type this action would create
         /// </summary>
@@ -37,18 +60,22 @@ namespace Presentation.Actions
         /// Check if selected thing meet request
         /// Deck with selection manager
         /// </summary>
-        public bool CanExecute(object parameter)
+        public virtual bool CanExecute(object parameter)
         {
-            ObservableCollection<ViewModelBase> list = parameter as ObservableCollection<ViewModelBase>;
-            if (list == null)
-                return false;
+            OrderContext oc = parameter as OrderContext;
 
+            if (oc == null)
+                return false; //bad parameter
+
+            ObservableCollection<ViewModelBase> list = oc.SelectedViewModels;
+            
             //Nothing cached , use creating mode 0/1
             if (list.Count == 0)
                 return true;
 
             bool result = m_canExecute(list);
             if (!result)
+                //cannot execute , clear cache
                 (parameter as ObservableCollection<ViewModelBase>).Clear();
             return result;
         }
@@ -60,11 +87,13 @@ namespace Presentation.Actions
         /// <param name="parameter"></param>
         public virtual void Execute(object parameter)
         {
+            OrderContext oc = parameter as OrderContext;
+
             //treat parameter as a ObservableCollection<ViewModelBase>
             var vm = Activator.CreateInstance(m_viewModelType) as ViewModelBase;
 
             //turns into dependecy list
-            var dependencies = (parameter as ObservableCollection<ViewModelBase>).ToList().Select((ViewModelBase x) =>
+            var dependencies = (oc.SelectedViewModels).ToList().Select((ViewModelBase x) =>
             {
                 return x.m_element;
             }).ToList();
